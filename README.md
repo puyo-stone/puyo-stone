@@ -1,3 +1,3 @@
 # puyo-stone
 
-Japanese Tetris sort of!
+puyu puyo project
