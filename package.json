@@ -1,0 +1,12 @@
+{
+  "name": "puyo-stone",
+  "version": "1.0.0",
+  "description": "capstone",
+  "main": "index.js",
+  "repository": "https://github.com/puyo-stone/puyo-stone.git",
+  "author": "Doug Chin <dougmchin@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^4.1.2"
+  }
+}
