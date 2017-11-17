@@ -1,0 +1,19 @@
+{
+  "name": "puyo-stone",
+  "version": "1.0.0",
+  "description": "fsa_capstone",
+  "main": "index.js",
+  "repository": "https://github.com/puyo-stone/puyo-stone.git",
+  "author": "chicken-chicken",
+  "license": "MIT",
+  "engines": {
+    "node": ">= 7.0.0"
+  },
+  "scripts": {
+    "test": "mocha ./*.spec.js"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1"
+  }
+}
