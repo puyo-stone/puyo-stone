@@ -6,6 +6,9 @@
   "repository": "https://github.com/puyo-stone/puyo-stone.git",
   "author": "chicken-chicken",
   "license": "MIT",
+  "engines": {
+    "node": ">= 7.0.0"
+  },
   "scripts": {
     "test": "mocha ./*.spec.js"
   },
