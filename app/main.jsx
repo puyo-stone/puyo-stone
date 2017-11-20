@@ -5,10 +5,10 @@ import {render} from 'react-dom'
 
 import WhoAmI from './components/WhoAmI'
 import NotFound from './components/NotFound'
-
+import Game from './components/Game'
 import firebase from 'APP/fire'
 
-import Demos from 'APP/demos'
+//import Demos from 'APP/demos'
 
 // Get the auth API from Firebase.
 const auth = firebase.auth()
@@ -47,16 +47,15 @@ const App = ({children}) =>
           on if anyone's logged in */}
       <WhoAmI auth={auth}/>
     </nav>
-    {/* Render our children (whatever the router gives us) */}
+    {/* Render our children (whatever the router gives us) */
+    }
     {children}
   </div>
 
 render(
   <Router history={browserHistory}>
-    <Route path="/" component={App}>
-      <IndexRedirect to="demos"/>
-      {Demos /* Put all the demos and a description page at /demos */}
-    </Route>
+    <Route path="/game" component={Game} />
+    <Route path="/" component={App} />
     <Route path='*' component={NotFound}/>
   </Router>,
   document.getElementById('main')
