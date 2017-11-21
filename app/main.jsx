@@ -5,6 +5,7 @@ import {render} from 'react-dom'
 
 import WhoAmI from './components/WhoAmI'
 import NotFound from './components/NotFound'
+import Game from './components/Game'
 
 import firebase from 'APP/fire'
 
@@ -53,9 +54,8 @@ const App = ({children}) =>
 
 render(
   <Router history={browserHistory}>
+    <Route path="/game" component={Game} />
     <Route path="/" component={App}>
-      <IndexRedirect to="demos"/>
-      {Demos /* Put all the demos and a description page at /demos */}
     </Route>
     <Route path='*' component={NotFound}/>
   </Router>,
