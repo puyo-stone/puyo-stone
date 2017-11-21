@@ -28,7 +28,6 @@ class DroppingPuyo extends Component{
         .attr("width", div)
         .attr("height", div)
         .style("fill", d => {
-            console.log(d);
             return d.color
         })
     }
