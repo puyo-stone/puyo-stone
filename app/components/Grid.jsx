@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Board from '../Func/Board';
 import { select } from 'd3-selection'
 
 class Grid extends Component {
@@ -10,7 +9,6 @@ class Grid extends Component {
         this.div = 33;
         this.w = this.col * this.div;
         this.h = this.row * this.div;
-        this.gamedata = props.gamedata;
         this.drawGrid = this.drawGrid.bind(this);
         this.populate = this.populate.bind(this);
     }
@@ -23,15 +21,14 @@ class Grid extends Component {
 
     populate() {
         const node = this.node;
-        console.log(this.gamedata)
         let colors = ['#FFFF00', '#0000FF', '#9400D3', '#FF0000', '#00FF00']
         function randomColor(d,i,colors) {
-          return colors[Math.floor(Math.random() * colors.length)] 
+          return colors[Math.floor(Math.random() * colors.length)]
         }
 
         let row = select(node)
             .selectAll(".row")
-            .data(this.gamedata)
+            .data(props.gamedata)
             .enter().append("g")
             .attr("class", "row");
             const div = this.div;
