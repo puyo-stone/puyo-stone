@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { select } from 'd3-selection'
+import { select } from 'd3-selection';
+import { connect } from 'react-redux';
 
 class Grid extends Component {
     constructor(props) {
@@ -16,23 +17,17 @@ class Grid extends Component {
     componentDidMount() {
         this.drawGrid();
         this.populate();
-        console.log(this.node);
     }
 
     populate() {
         const node = this.node;
-        let colors = ['#FFFF00', '#0000FF', '#9400D3', '#FF0000', '#00FF00']
-        function randomColor(d,i,colors) {
-          return colors[Math.floor(Math.random() * colors.length)]
-        }
-
+        const div = this.div;
         let row = select(node)
             .selectAll(".row")
-            .data(props.gamedata)
+            .data(this.props.board)
             .enter().append("g")
             .attr("class", "row");
-            const div = this.div;
-            row
+        row
             .selectAll(".square")
             .data(function (d) { return d; })
             .enter().append("rect")
@@ -53,13 +48,17 @@ class Grid extends Component {
                 if (d) { return div }
                 else { return 0 }
             })
-            .style("fill", function (d) { return colors[Math.floor(Math.random() * colors.length)] })
+            .style("fill", function (d) { 
+                if(d) return d.color 
+            })
     }
 
     drawGrid() {
         const node = this.node;
+        const selectNode = select(node);
+        
         for (var i = 1; i < this.row; i++) {
-            select(node)
+            selectNode
                 .append("line")
                 .attr("x1", 0)
                 .attr("y1", i * this.div)
@@ -68,8 +67,9 @@ class Grid extends Component {
                 .attr("stroke", "lightgray")
                 .attr("stroke-width", 0.5);
         }
+
         for (var j = 1; j < this.col; j++) {
-            select(node)
+            selectNode
                 .append("line")
                 .attr("x1", j * this.div)
                 .attr("y1", 0)
@@ -79,12 +79,19 @@ class Grid extends Component {
                 .attr("stroke-width", 0.5);
         }
     }
+
     render() {
         return (
-            <svg ref={node => this.node = node} width={this.w} height={this.h}>
-            </svg>
+            <g ref={node => this.node = node} width={this.w} height={this.h}>
+            </g>
         )
     }
 }
 
-export default Grid;
+const mapStateToProps=state=>{
+    return {
+        board : state.board
+    }
+}
+
+export default connect(mapStateToProps)(Grid);
