@@ -20,15 +20,14 @@ class Board {
       return defaultGrid;
     }
 
-    
     createNewBoard() {
     svg = d3
       .select(this.node)
       .append("svg")
       .attr("width", this.w)
       .attr("height", this.h)
-  }    
-      
+  }
+
     drawGrid() {
     for (var i = 1; i < this.row; i++) {
       svg
