@@ -1,3 +1,6 @@
 node_modules
 demos
 .idea
+fire/index.js
+public/bundle.js
+public/bundle.js.map

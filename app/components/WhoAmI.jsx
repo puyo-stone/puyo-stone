@@ -10,21 +10,39 @@ export const name = user => {
   return user.displayName || user.email
 }
 
-export const WhoAmI = ({user, auth}) =>
+export const WhoAmI = ({ user, auth }) =>
   <div className="whoami">
     <span className="whoami-user-name">Hello, {name(user)}</span>
     { // If nobody is logged in, or the current user is anonymous,
-      (!user || user.isAnonymous)?
-      // ...then show signin links...
-      <Login auth={auth}/>
-      /// ...otherwise, show a logout button.
-      : <button className='logout' onClick={() => auth.signOut()}>logout</button> }
+      (!user || user.isAnonymous) ?
+        // ...then show signin links...
+        <Login auth={auth} />
+        /// ...otherwise, show a logout button.
+        : <button className='logout' onClick={() => auth.signOut()}>logout</button>}
   </div>
+
+function checkUser(user) {
+
+}
+
+function insertUser(user) {
+  let ref = firebase.database.ref();
+  userRef = ref.push();
+      userRef.set({
+        email: user.email,
+        name: user.displayName,
+        score: 0
+      })
+}
 
 export default class extends React.Component {
   componentDidMount() {
-    const {auth} = this.props
-    this.unsubscribe = auth.onAuthStateChanged(user => this.setState({user}))
+    let find = false;
+    const { auth } = this.props
+    this.unsubscribe = auth.onAuthStateChanged(user => {
+      //insertUser(user);
+      this.setState({ user });
+    })
   }
 
   componentWillUnmount() {
@@ -32,7 +50,8 @@ export default class extends React.Component {
   }
 
   render() {
-    const {user} = this.state || {}
-    return <WhoAmI user={user} auth={auth}/>
+    const { user } = this.state || {}
+    console.log("!!!", user);
+    return <WhoAmI user={user} auth={auth} />
   }
 }
