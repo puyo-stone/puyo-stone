@@ -56,6 +56,7 @@ class Grid extends Component {
     drawGrid() {
         const node = this.node;
         const selectNode = select(node);
+        
         for (var i = 1; i < this.row; i++) {
             selectNode
                 .append("line")
@@ -66,6 +67,7 @@ class Grid extends Component {
                 .attr("stroke", "lightgray")
                 .attr("stroke-width", 0.5);
         }
+
         for (var j = 1; j < this.col; j++) {
             selectNode
                 .append("line")
@@ -77,10 +79,11 @@ class Grid extends Component {
                 .attr("stroke-width", 0.5);
         }
     }
+
     render() {
         return (
-            <svg ref={node => this.node = node} width={this.w} height={this.h}>
-            </svg>
+            <g ref={node => this.node = node} width={this.w} height={this.h}>
+            </g>
         )
     }
 }

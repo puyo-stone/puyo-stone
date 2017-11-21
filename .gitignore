@@ -4,3 +4,5 @@ demos
 fire/index.js
 public/bundle.js
 public/bundle.js.map
+.DS_Store
+firebase-debug.log
