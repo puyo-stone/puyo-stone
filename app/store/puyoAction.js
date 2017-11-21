@@ -9,11 +9,11 @@ const createPuyoAction = () => ({
     type : CREATE_PUYO
 })
 
-const moveLeftAction = () =>({
+export const moveLeftAction = () =>({
     type: MOVE_LEFT,
 });
 
-const moveRightAction = () =>({
+export const moveRightAction = () =>({
     type: MOVE_RIGHT
 })
 

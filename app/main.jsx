@@ -8,7 +8,7 @@ import NotFound from './components/NotFound'
 import Game from './components/Game'
 import store from './store';
 import {Provider} from 'react-redux';
-import firebase from 'APP/fire'
+import firebase from '../fire'
 
 // Get the auth API from Firebase.
 const auth = firebase.auth()
