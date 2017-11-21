@@ -1,26 +1,35 @@
 import React, { Component } from 'react';
-import { select } from 'd3-selection';
+import { select, selectAll } from 'd3-selection';
 import { connect } from 'react-redux';
 
-class DroppingPuyo extends Component{
+export default class DroppingPuyo extends Component{
 
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.drawPuyo = this.drawPuyo.bind(this)
     }
 
-    componentDidMount(){
+    componentDidMount() {
+        console.log('initialstate', this.props.puyo)
         this.drawPuyo()
     }
 
+    componentDidUpdate() {
+            this.drawPuyo()
+
+    }
+    
     drawPuyo(){
         const node = this.node;
         const selectNode = select(node);
         const div = 33
+        const data = [this.props.puyo.centerPuyo, this.props.puyo.rotatePuyo]
+        
+        selectAll(".puyo").remove()
 
-        selectNode
+        const puyo = selectNode
         .selectAll(".puyo")        
-        .data([this.props.centerPuyo,this.props.rotatePuyo])
+        .data(data)        
         .enter().append("rect")
         .attr("class", "puyo")
         .attr("x", d => d.col * div)
@@ -34,14 +43,16 @@ class DroppingPuyo extends Component{
     
 
     render(){
-        return <g ref={node => this.node = node} width={99} height={99}>
-        </g>
+        return <g ref={node => this.node = node} width={99} height={99}>        
+           </g>
     }
 }
 
-const mapStateToProps = state => ({
-    centerPuyo : state.puyo.centerPuyo,
-    rotatePuyo : state.puyo.rotatePuyo
-})
+//    <rect class="puyo" x={centerPuyo.col * div} y={}></rect>
+                
+// const mapStateToProps = state => ({
+//     centerPuyo : state.puyo.centerPuyo,
+//     rotatePuyo : state.puyo.rotatePuyo
+// })
 
-export default connect(mapStateToProps)(DroppingPuyo)
+// export default connect(mapStateToProps)(DroppingPuyo)
