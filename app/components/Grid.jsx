@@ -16,7 +16,6 @@ class Grid extends Component {
     componentDidMount() {
         this.drawGrid();
         this.populate();
-        console.log(this.node);
     }
 
     populate() {

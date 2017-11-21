@@ -10,7 +10,7 @@ class Board {
       this.div = 33;
       this.w = this.col * this.div;
       this.h = this.row * this.div;
-      this.node=node;
+      this.node = node;
     }
     createNewGrid(col, row) {
       const defaultGrid = [];
