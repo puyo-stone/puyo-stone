@@ -9,8 +9,6 @@ import Game from './components/Game'
 
 import firebase from 'APP/fire'
 
-import Demos from 'APP/demos'
-
 // Get the auth API from Firebase.
 const auth = firebase.auth()
 
