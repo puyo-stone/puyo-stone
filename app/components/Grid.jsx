@@ -11,13 +11,11 @@ class Grid extends Component {
         this.w = this.col * this.div;
         this.h = this.row * this.div;
         this.gamedata = props.gamedata;
-        //this.createGrid=this.createGrid.bind(this);
         this.drawGrid = this.drawGrid.bind(this);
         this.populate = this.populate.bind(this);
     }
 
     componentDidMount() {
-        //this.createGrid();
         this.drawGrid();
         this.populate();
         console.log(this.node);
@@ -43,7 +41,6 @@ class Grid extends Component {
             .enter().append("rect")
             .attr("class", "square")
             .attr("x", function (d) {
-                console.log(d);
                 if (d) { return d.col * div }
                 else { return 0 }
             })
@@ -61,14 +58,6 @@ class Grid extends Component {
             })
             .style("fill", function (d) { return colors[Math.floor(Math.random() * colors.length)] })
     }
-
-    // createGrid() {
-    //     const node = this.node;
-    //     select(node)
-    //         .append("svg")
-    //         .attr("width", 198)
-    //         .attr("height", 396)
-    // }
 
     drawGrid() {
         const node = this.node;
@@ -94,7 +83,6 @@ class Grid extends Component {
         }
     }
     render() {
-        console.log(this.props.gamedata);
         return (
             <svg ref={node => this.node = node} width={this.w} height={this.h}>
             </svg>
