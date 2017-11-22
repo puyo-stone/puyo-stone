@@ -1,34 +1,35 @@
 import React, { Component } from 'react';
-import { select } from 'd3-selection';
+import { select, selectAll } from 'd3-selection';
 import { connect } from 'react-redux';
 
 class Grid extends Component {
     constructor(props) {
         super(props);
-        // this.col = 6;
-        // this.row = 12;
-        // this.cellSize = 33;
-        // this.w = this.col * this.cellSize;
-        // this.h = this.row * this.cellSize;
         this.drawGrid = this.drawGrid.bind(this);
         this.populate = this.populate.bind(this);
     }
 
     componentDidMount() {
         this.drawGrid();
-        this.populate();
+    }
+
+    componentDidUpdate() {
+        this.populate()
     }
 
     populate() {
         const node = this.node;
         const cellSize = this.props.gridDimensions.cellSize;
 
+        selectAll(".row").remove()
+
         let row = select(node)
             .selectAll(".row")
-            .data(this.props.board)
+            .data(this.props.boardData)
             .enter().append("g")
             .attr("class", "row");
-        row
+
+            row
             .selectAll(".square")
             .data(function (d) { return d; })
             .enter().append("rect")
@@ -96,10 +97,6 @@ class Grid extends Component {
     }
 }
 
-const mapStateToProps=state=>{
-    return {
-        board : state.board
-    }
-}
 
-export default connect(mapStateToProps)(Grid);
+
+export default Grid;
