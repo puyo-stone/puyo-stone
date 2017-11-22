@@ -17,18 +17,18 @@ export default class DroppingPuyo extends Component{
         this.drawPuyo()
 
     }
-    
+
     drawPuyo(){
         const node = this.node;
         const selectNode = select(node);
         const div = 33
         const data = [this.props.puyo.centerPuyo, this.props.puyo.rotatePuyo]
-        
+
         selectAll(".puyo").remove()
 
         const puyo = selectNode
-        .selectAll(".puyo")        
-        .data(data)        
+        .selectAll(".puyo")
+        .data(data)
         .enter().append("rect")
         .attr("class", "puyo")
         .attr("x", d => d.col * div)
@@ -39,10 +39,9 @@ export default class DroppingPuyo extends Component{
             return d.color
         })
     }
-    
 
     render(){
-        return <g ref={node => this.node = node} width={99} height={99}>        
+        return <g ref={node => this.node = node} width={99} height={99}>
            </g>
     }
 }

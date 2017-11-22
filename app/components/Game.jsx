@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Grid from './Grid';
 import { connect } from 'react-redux';
 import DroppingPuyo from './DroppingPuyo';
-import { dropAction, moveLeftAction, moveRightAction } from '../store/puyoAction'
+import {dropAction, moveLeftAction, moveRightAction, rotateAction} from '../store/puyoAction';
 
 class Game extends Component {
 
@@ -24,10 +24,13 @@ class Game extends Component {
             if (e.which === 32) {
                 clearInterval(dropInterval);
             }
+            if(e.which === 38) {
+              this.props.rotate();
+            }
         })
 
         const dropInterval = setInterval(this.props.gravity, 1000);
-        
+
     }
 
 
@@ -53,8 +56,11 @@ const mapDispatchToProps = dispatch => ({
     moveRight() {
         dispatch(moveRightAction());
     },
+    rotate() {
+      dispatch(rotateAction());
+    },
     gravity() {
-        dispatch(dropAction());
+      dispatch(dropAction());
     }
 })
 
