@@ -10,7 +10,7 @@ class DropPuyo {
 export default DropPuyo;
 
 // A is clockwise, B is counter-clockwise
-export const rotateA = (puyo) => {
+export const rotateAFunc = (puyo) => {
   const axis = puyo.centerPuyo;
   const satellite = puyo.rotatePuyo;
   let index = puyo.positions.indexOf(true);
@@ -43,7 +43,7 @@ export const rotateA = (puyo) => {
   }
 }
 
-export const rotateB = (puyo) => {
+export const rotateBFunc = (puyo) => {
   const axis = puyo.centerPuyo;
   const satellite = puyo.rotatePuyo;
   let index = puyo.positions.indexOf(true);

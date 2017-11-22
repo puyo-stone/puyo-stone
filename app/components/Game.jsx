@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Grid from './Grid';
 import { connect } from 'react-redux';
 import DroppingPuyo from './DroppingPuyo';
-import {dropAction, moveLeftAction, moveRightAction, rotateActionA, rotateActionB} from '../store/puyoAction';
+import { rightMove, leftMove, rotateA, rotateB, dropMove} from '../store/puyoAction';
 
 class Game extends Component {
 
@@ -13,30 +13,26 @@ class Game extends Component {
     componentDidMount(){
         const arrowMotion = document.addEventListener('keydown', e => {
             if (e.which === 81) {
-                this.props.moveLeft();
+                this.props.left(this.props.puyo);
             }
             if(e.which === 69) {
-                this.props.moveRight();
+                this.props.right(this.props.puyo);
             }
             if(e.which === 87) {
-                this.props.gravity();
+                this.props.gravity(this.props.puyo);
             }
             if (e.which === 32) {
                 clearInterval(dropInterval);
             }
-            if(e.which === 85) {
-              this.props.rotateA();
+            if (e.which === 85) {
+              this.props.rotatePuyoA(this.props.puyo);
             }
-            if(e.which === 73) {
-              this.props.rotateB();
+            if (e.which === 73) {
+              this.props.rotatePuyoB(this.props.puyo);
             }
         })
-        const dropInterval = setInterval(this.props.gravity, 1000);
-
-
+        const dropInterval = setInterval(() => this.props.gravity(this.props.puyo), 500);
     }
-
-
 
     render() {
         return (
@@ -53,20 +49,20 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    moveLeft() {
-        dispatch(moveLeftAction());
+    right(puyo) {
+        dispatch(rightMove(puyo));
     },
-    moveRight() {
-        dispatch(moveRightAction());
+    left(puyo){
+        dispatch(leftMove(puyo));
     },
-    rotateA() {
-      dispatch(rotateActionA());
+    rotatePuyoA(puyo) {
+      dispatch(rotateA(puyo));
     },
-    rotateB() {
-      dispatch(rotateActionB());
+    rotatePuyoB(puyo) {
+      dispatch(rotateB(puyo));
     },
-    gravity() {
-      dispatch(dropAction());
+    gravity(puyo) {
+      dispatch(dropMove(puyo));
     }
 })
 
