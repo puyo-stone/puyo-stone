@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import Grid from './Grid';
 import { connect } from 'react-redux';
 import DroppingPuyo from './DroppingPuyo';
-import {dropAction, moveLeftAction, moveRightAction, rotateActionA, rotateActionB, rotateClockwise} from '../store/puyoAction';
-// const dropInterval = setInterval(this.props.gravity, 1000);
+import {dropAction, moveLeftAction, moveRightAction, rotateActionA, rotateActionB} from '../store/puyoAction';
 
 class Game extends Component {
 
@@ -32,6 +31,7 @@ class Game extends Component {
               this.props.rotateB();
             }
         })
+        const dropInterval = setInterval(this.props.gravity, 1000);
 
 
     }

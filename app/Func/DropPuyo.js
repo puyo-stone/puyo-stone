@@ -3,9 +3,7 @@ class DropPuyo {
     constructor() {
         this.centerPuyo = new SinglePuyo();
         this.rotatePuyo = new SinglePuyo(this.centerPuyo.col,this.centerPuyo.row-1);
-        this.position = 0;
-        this.positionTest = [0, 1, 2, 3];
-                          // T, R, B, L
+        this.positions = [true, false, false, false];
     }
 }
 
@@ -15,103 +13,65 @@ export default DropPuyo;
 export const rotateA = (puyo) => {
   const axis = puyo.centerPuyo;
   const satellite = puyo.rotatePuyo;
-  if (axis.row > satellite.row) {
-    // top to right
-    puyo.rotatePuyo.col = axis.col + 1;
-    puyo.rotatePuyo.row = axis.row;
-    return;
-  }
-  else if (axis.col < satellite.col) {
-    // right to bottom
-    puyo.rotatePuyo.col = axis.col;
-    puyo.rotatePuyo.row = axis.row + 1;
-    return;
-  }
-  else if (axis.row < satellite.row) {
-    // bottom to left
-    puyo.rotatePuyo.col = axis.col - 1;
-    puyo.rotatePuyo.row = axis.row;
-    return;
-  }
-  else {
-    // left to top
-    puyo.rotatePuyo.col = axis.col;
-    puyo.rotatePuyo.row = axis.row - 1;
-    return;
-  }
-}
-
-export const rotateB = (puyo) => {
-  const axis = puyo.centerPuyo;
-  const satellite = puyo.rotatePuyo;
-  if (axis.row > satellite.row) {
-    // top to left
-    puyo.rotatePuyo.col = axis.col - 1;
-    puyo.rotatePuyo.row = axis.row;
-    return;
-  }
-  else if (axis.col > satellite.col) {
-    // left to bottom
-    puyo.rotatePuyo.col = axis.col;
-    puyo.rotatePuyo.row = axis.row + 1;
-    return;
-  }
-  else if (axis.row < satellite.row) {
-    // bottom to right
-    puyo.rotatePuyo.col = axis.col + 1;
-    puyo.rotatePuyo.row = axis.row;
-    return;
-  }
-  else {
-    // right to top
-    puyo.rotatePuyo.col = axis.col;
-    puyo.rotatePuyo.row = axis.row - 1;
-    return;
-  }
-}
-
-export const rotateA2 = (puyo) => {
-  puyo.position++;
-  puyo.position = puyo.position % 4;
-  switch (puyo.position) {
+  let index = puyo.positions.indexOf(true);
+  let temp = index;
+  if (index === 3) { index = 0 }
+  else { index = index + 1 }
+  puyo.positions[temp] = false;
+  puyo.positions[index] = true;
+  switch (index) {
     case 0:
+    // from left to top
       puyo.rotatePuyo.col = puyo.centerPuyo.col;
       puyo.rotatePuyo.row = puyo.centerPuyo.row - 1;
     break;
     case 1:
+    // from top to right
       puyo.rotatePuyo.row = puyo.centerPuyo.row;
       puyo.rotatePuyo.col = puyo.centerPuyo.col + 1;
     break;
     case 2:
+    // right to bottom
       puyo.rotatePuyo.row = puyo.centerPuyo.row + 1;
       puyo.rotatePuyo.col = puyo.centerPuyo.col;
     break;
     case 3:
+    // bottom to left
     puyo.rotatePuyo.row = puyo.centerPuyo.row;
     puyo.rotatePuyo.col = puyo.centerPuyo.col - 1;
     break;
   }
 }
 
-export const rotateB2 = (puyo) => {
-  puyo.position++;
-  puyo.position = puyo.position % 4;
-  switch (puyo.position) {
+export const rotateB = (puyo) => {
+  const axis = puyo.centerPuyo;
+  const satellite = puyo.rotatePuyo;
+  let index = puyo.positions.indexOf(true);
+  let temp = index;
+  if (index === 0) { index = 3 }
+  else { index = index - 1 }
+  puyo.positions[temp] = false;
+  puyo.positions[index] = true;
+  switch (index) {
     case 0:
-      puyo.rotatePuyo.col = puyo.centerPuyo.col - 1;
-      puyo.rotatePuyo.row = puyo.centerPuyo.row;
+    // from right to top
+      puyo.rotatePuyo.col = puyo.centerPuyo.col;
+      puyo.rotatePuyo.row = puyo.centerPuyo.row - 1;
     break;
     case 1:
-      puyo.rotatePuyo.row = puyo.centerPuyo.row + 1;
-      puyo.rotatePuyo.col = puyo.centerPuyo.col;
-    break;
-    case 2:
+    // from bottom to right
       puyo.rotatePuyo.row = puyo.centerPuyo.row;
       puyo.rotatePuyo.col = puyo.centerPuyo.col + 1;
     break;
+    case 2:
+    // from left to bottom
+      puyo.rotatePuyo.row = puyo.centerPuyo.row + 1;
+      puyo.rotatePuyo.col = puyo.centerPuyo.col;
+    break;
     case 3:
-    puyo.rotatePuyo.row = puyo.centerPuyo.row - 1;
-    puyo.rotatePuyo.col = puyo.centerPuyo.col;
+    // from top to left
+      puyo.rotatePuyo.row = puyo.centerPuyo.row;
+      puyo.rotatePuyo.col = puyo.centerPuyo.col - 1;
     break;
   }
 }
