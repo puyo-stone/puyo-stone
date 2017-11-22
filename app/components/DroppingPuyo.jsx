@@ -10,12 +10,11 @@ export default class DroppingPuyo extends Component{
     }
 
     componentDidMount() {
-        console.log('initialstate', this.props.puyo)
         this.drawPuyo()
     }
 
     componentDidUpdate() {
-            this.drawPuyo()
+        this.drawPuyo()
 
     }
     
@@ -47,12 +46,3 @@ export default class DroppingPuyo extends Component{
            </g>
     }
 }
-
-//    <rect class="puyo" x={centerPuyo.col * div} y={}></rect>
-                
-// const mapStateToProps = state => ({
-//     centerPuyo : state.puyo.centerPuyo,
-//     rotatePuyo : state.puyo.rotatePuyo
-// })
-
-// export default connect(mapStateToProps)(DroppingPuyo)
