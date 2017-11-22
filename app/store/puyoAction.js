@@ -1,9 +1,7 @@
-import DropPuyo, { rotate } from '../Func/DropPuyo';
+import DropPuyo, { rotateAFunc, rotateBFunc } from '../Func/DropPuyo';
 import _ from 'lodash';
 const CREATE_PUYO = 'CREATE_PUYO';
 const ACTION_CENTER = 'ACTION_CENTER';
-
-
 
 const init = new DropPuyo();
 
@@ -18,7 +16,7 @@ export const ActionCenter = (puyo) => ({
 
 export function leftMove(puyo) {
     return function (dispatch) {
-        const newPuyo = _.cloneDeep(puyo);        
+        const newPuyo = _.cloneDeep(puyo);
         newPuyo.centerPuyo.col=puyo.centerPuyo.col-1;
         newPuyo.rotatePuyo.col=puyo.rotatePuyo.col-1;
         dispatch(ActionCenter(newPuyo));
@@ -34,10 +32,18 @@ export function rightMove(puyo) {
     };
 }
 
-export function rotateClockwise(puyo) {
+export function rotateA(puyo) {
     return function (dispatch) {
         const newPuyo = _.cloneDeep(puyo);
-        rotate(newPuyo);
+        rotateAFunc(newPuyo);
+        dispatch(ActionCenter(newPuyo));
+    }
+}
+
+export function rotateB(puyo) {
+    return function (dispatch) {
+        const newPuyo = _.cloneDeep(puyo);
+        rotateBFunc(newPuyo);
         dispatch(ActionCenter(newPuyo));
     }
 }
@@ -52,15 +58,11 @@ export function dropMove(puyo) {
 }
 
 export default function (state = init, action) {
- 
     switch (action.type) {
-        
         case CREATE_PUYO:
             return new DropPuyo();
-
         case ACTION_CENTER:
             return action.puyo;
-
         default:
             return state;
     }

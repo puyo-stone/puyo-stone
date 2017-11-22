@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Grid from './Grid';
 import { connect } from 'react-redux';
 import DroppingPuyo from './DroppingPuyo';
-import { rightMove, leftMove, rotateClockwise, dropMove} from '../store/puyoAction';
+import { rightMove, leftMove, rotateA, rotateB, dropMove} from '../store/puyoAction';
 
 class Game extends Component {
 
@@ -12,25 +12,27 @@ class Game extends Component {
 
     componentDidMount(){
         const arrowMotion = document.addEventListener('keydown', e => {
-            if (e.which === 37) {
+            if (e.which === 81) {
                 this.props.left(this.props.puyo);
             }
-            if(e.which === 39) {
+            if(e.which === 69) {
                 this.props.right(this.props.puyo);
-             }
-            if(e.which === 40) {
+            }
+            if(e.which === 87) {
                 this.props.gravity(this.props.puyo);
             }
             if (e.which === 32) {
                 clearInterval(dropInterval);
             }
-            if(e.which === 38) {
-              this.props.rotate(this.props.puyo);
+            if (e.which === 85) {
+              this.props.rotatePuyoA(this.props.puyo);
+            }
+            if (e.which === 73) {
+              this.props.rotatePuyoB(this.props.puyo);
             }
         })
         const dropInterval = setInterval(() => this.props.gravity(this.props.puyo), 500);
     }
-
 
     render() {
         return (
@@ -50,16 +52,18 @@ const mapDispatchToProps = dispatch => ({
     right(puyo) {
         dispatch(rightMove(puyo));
     },
-    rotate(puyo) {
-      dispatch(rotateClockwise(puyo));
+    left(puyo){
+        dispatch(leftMove(puyo));
+    },
+    rotatePuyoA(puyo) {
+      dispatch(rotateA(puyo));
+    },
+    rotatePuyoB(puyo) {
+      dispatch(rotateB(puyo));
     },
     gravity(puyo) {
       dispatch(dropMove(puyo));
-    },
-    left(puyo){
-        dispatch(leftMove(puyo));
     }
-    
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
