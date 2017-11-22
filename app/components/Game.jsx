@@ -2,17 +2,15 @@ import React, { Component } from 'react';
 import Grid from './Grid';
 import { connect } from 'react-redux';
 import DroppingPuyo from './DroppingPuyo';
-import {dropAction,  rightMove, rotateAction,leftMove} from '../store/puyoAction';
+import { rightMove, leftMove, rotateClockwise, dropMove} from '../store/puyoAction';
 
 class Game extends Component {
 
     constructor(props){
         super(props)
-        this.dropping=setInterval(this.props.gravity(),500);
     }
 
     componentDidMount(){
-        this.dropping
         const arrowMotion = document.addEventListener('keydown', e => {
             if (e.which === 37) {
                 this.props.left(this.props.puyo);
@@ -27,15 +25,14 @@ class Game extends Component {
                 clearInterval(dropInterval);
             }
             if(e.which === 38) {
-              this.props.rotate();
+              this.props.rotate(this.props.puyo);
             }
         })
-         const dropInterval = setInterval(this.props.gravity, 500);
+        const dropInterval = setInterval(() => this.props.gravity(this.props.puyo), 500);
     }
 
 
     render() {
-        //console.log(this.props.puyo.centerPuyo.col,this.props.puyo.centerPuyo.row);
         return (
             <svg height={500} width={500}>
                     <Grid />
@@ -53,11 +50,11 @@ const mapDispatchToProps = dispatch => ({
     right(puyo) {
         dispatch(rightMove(puyo));
     },
-    rotate() {
-      dispatch(rotateAction());
+    rotate(puyo) {
+      dispatch(rotateClockwise(puyo));
     },
-    gravity() {
-      dispatch(dropAction());
+    gravity(puyo) {
+      dispatch(dropMove(puyo));
     },
     left(puyo){
         dispatch(leftMove(puyo));
