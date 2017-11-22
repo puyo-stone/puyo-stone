@@ -2,24 +2,26 @@ import React, { Component } from 'react';
 import Grid from './Grid';
 import { connect } from 'react-redux';
 import DroppingPuyo from './DroppingPuyo';
-import {dropAction, moveLeftAction, moveRightAction, rotateAction} from '../store/puyoAction';
+import {dropAction,  rightMove, rotateAction,leftMove} from '../store/puyoAction';
 
 class Game extends Component {
 
     constructor(props){
         super(props)
+        this.dropping=setInterval(this.props.gravity(),500);
     }
 
     componentDidMount(){
+        this.dropping
         const arrowMotion = document.addEventListener('keydown', e => {
             if (e.which === 37) {
-                this.props.moveLeft();
+                this.props.left(this.props.puyo);
             }
             if(e.which === 39) {
-                this.props.moveRight();
-            }
+                this.props.right(this.props.puyo);
+             }
             if(e.which === 40) {
-                this.props.gravity();
+                this.props.gravity(this.props.puyo);
             }
             if (e.which === 32) {
                 clearInterval(dropInterval);
@@ -28,14 +30,12 @@ class Game extends Component {
               this.props.rotate();
             }
         })
-
-        const dropInterval = setInterval(this.props.gravity, 1000);
-
+         const dropInterval = setInterval(this.props.gravity, 500);
     }
 
 
-
     render() {
+        //console.log(this.props.puyo.centerPuyo.col,this.props.puyo.centerPuyo.row);
         return (
             <svg height={500} width={500}>
                     <Grid />
@@ -50,18 +50,19 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    moveLeft() {
-        dispatch(moveLeftAction());
-    },
-    moveRight() {
-        dispatch(moveRightAction());
+    right(puyo) {
+        dispatch(rightMove(puyo));
     },
     rotate() {
       dispatch(rotateAction());
     },
     gravity() {
       dispatch(dropAction());
+    },
+    left(puyo){
+        dispatch(leftMove(puyo));
     }
+    
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
