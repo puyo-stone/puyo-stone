@@ -1,9 +1,10 @@
-import DropPuyo, { rotateAFunc, rotateBFunc } from '../Func/DropPuyo';
+import DoublePuyo from '../Func/DoublePuyo';
+import { rotateAFunc, rotateBFunc } from '../Func/rotatePuyo';
 import _ from 'lodash';
 const CREATE_PUYO = 'CREATE_PUYO';
 const ACTION_CENTER = 'ACTION_CENTER';
 
-const init = new DropPuyo();
+const init = new DoublePuyo();
 
 const createPuyoAction = () => ({
     type: CREATE_PUYO
@@ -60,7 +61,7 @@ export function dropMove(puyo) {
 export default function (state = init, action) {
     switch (action.type) {
         case CREATE_PUYO:
-            return new DropPuyo();
+            return new DoublePuyo();
         case ACTION_CENTER:
             return action.puyo;
         default:

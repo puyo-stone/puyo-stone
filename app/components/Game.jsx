@@ -8,12 +8,21 @@ class Game extends Component {
 
     constructor(props){
         super(props)
+        this.gridDimensions = {
+            col: 6,
+            row: 12,
+            cellSize: 33,
+        }
+        this.gridDimensions.height = this.gridDimensions.row * this.gridDimensions.cellSize;
+        this.gridDimensions.width = this.gridDimensions.col * this.gridDimensions.cellSize;
     }
 
     componentDidMount(){
         const arrowMotion = document.addEventListener('keydown', e => {
             if (e.which === 81) {
-                this.props.left(this.props.puyo);
+                if (this.props.puyo.centerPuyo.col >= 0) {
+                    this.props.left(this.props.puyo);
+                }
             }
             if(e.which === 69) {
                 this.props.right(this.props.puyo);
@@ -36,8 +45,8 @@ class Game extends Component {
 
     render() {
         return (
-            <svg height={500} width={500}>
-                    <Grid />
+            <svg height={this.gridDimensions.height} width={this.gridDimensions.width}>
+                    <Grid gridDimensions={this.gridDimensions}/>
                     <DroppingPuyo puyo={this.props.puyo}/>
             </svg>
         )

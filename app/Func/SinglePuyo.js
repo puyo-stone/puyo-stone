@@ -1,4 +1,4 @@
-let colors = ['#FFFF00', '#0000FF', '#9400D3', '#FF0000', '#00FF00']
+let colors = ['#f4eee1', '#ebcfc4', '#e8e6d9', '#999999', '#e9ccb1']
 function randomColor() {
   return colors[Math.floor(Math.random() * colors.length)]
 }
