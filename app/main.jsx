@@ -6,8 +6,9 @@ import {render} from 'react-dom'
 import WhoAmI from './components/WhoAmI'
 import NotFound from './components/NotFound'
 import Game from './components/Game'
-
-import firebase from 'APP/fire'
+import store from './store';
+import {Provider} from 'react-redux';
+import firebase from '../fire'
 
 // Get the auth API from Firebase.
 const auth = firebase.auth()
@@ -51,11 +52,13 @@ const App = ({children}) =>
   </div>
 
 render(
+  <Provider store={store}>
   <Router history={browserHistory}>
     <Route path="/game" component={Game} />
     <Route path="/" component={App}>
     </Route>
     <Route path='*' component={NotFound}/>
-  </Router>,
+  </Router>
+  </Provider>,
   document.getElementById('main')
 )
