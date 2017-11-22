@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Grid from './Grid';
 import { connect } from 'react-redux';
 import DroppingPuyo from './DroppingPuyo';
-import {dropAction, moveLeftAction, moveRightAction, rotateAction} from '../store/puyoAction';
+import {dropAction, moveLeftAction, moveRightAction, rotateActionA, rotateActionB, rotateClockwise} from '../store/puyoAction';
+// const dropInterval = setInterval(this.props.gravity, 1000);
 
 class Game extends Component {
 
@@ -12,24 +13,26 @@ class Game extends Component {
 
     componentDidMount(){
         const arrowMotion = document.addEventListener('keydown', e => {
-            if (e.which === 37) {
+            if (e.which === 81) {
                 this.props.moveLeft();
             }
-            if(e.which === 39) {
+            if(e.which === 69) {
                 this.props.moveRight();
             }
-            if(e.which === 40) {
+            if(e.which === 87) {
                 this.props.gravity();
             }
             if (e.which === 32) {
                 clearInterval(dropInterval);
             }
-            if(e.which === 38) {
-              this.props.rotate();
+            if(e.which === 85) {
+              this.props.rotateA();
+            }
+            if(e.which === 73) {
+              this.props.rotateB();
             }
         })
 
-        const dropInterval = setInterval(this.props.gravity, 1000);
 
     }
 
@@ -56,8 +59,11 @@ const mapDispatchToProps = dispatch => ({
     moveRight() {
         dispatch(moveRightAction());
     },
-    rotate() {
-      dispatch(rotateAction());
+    rotateA() {
+      dispatch(rotateActionA());
+    },
+    rotateB() {
+      dispatch(rotateActionB());
     },
     gravity() {
       dispatch(dropAction());

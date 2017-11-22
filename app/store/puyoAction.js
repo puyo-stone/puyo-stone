@@ -1,8 +1,9 @@
-import DropPuyo, { rotate } from '../Func/DropPuyo';
+import DropPuyo, { rotateA, rotateB } from '../Func/DropPuyo';
 const MOVE_LEFT = 'MOVE_LEFT';
 const MOVE_RIGHT = 'MOVE_RIGHT';
 const CREATE_PUYO = 'CREATE_PUYO';
-const ROTATE_PUYO = 'ROTATE_PUYO';
+const ROTATE_PUYO_A = 'ROTATE_PUYO_A';
+const ROTATE_PUYO_B = 'ROTATE_PUYO_B';
 const DROP = 'DROP';
 
 const init = new DropPuyo();
@@ -19,8 +20,12 @@ export const moveRightAction = () =>({
     type: MOVE_RIGHT
 })
 
-export const rotateAction = () => ({
-  type: ROTATE_PUYO
+export const rotateActionA = () => ({
+  type: ROTATE_PUYO_A
+})
+
+export const rotateActionB = () => ({
+  type: ROTATE_PUYO_B
 })
 
 export const dropAction = () => ({
@@ -38,8 +43,11 @@ export default function (state = init,action){
             ++newState.centerPuyo.col;
             ++newState.rotatePuyo.col;
             return newState;
-        case ROTATE_PUYO:
-            rotate(newState);
+        case ROTATE_PUYO_A:
+            rotateA(newState);
+            return newState;
+        case ROTATE_PUYO_B:
+            rotateB(newState);
             return newState;
         case DROP:
             ++newState.centerPuyo.row;
