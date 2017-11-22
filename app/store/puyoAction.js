@@ -3,6 +3,8 @@ const MOVE_LEFT = 'MOVE_LEFT';
 const MOVE_RIGHT = 'MOVE_RIGHT';
 const CREATE_PUYO = 'CREATE_PUYO';
 const ROTATE_PUYO = 'ROTATE_PUYO';
+const DROP = 'DROP';
+
 
 const init = new DropPuyo();
 
@@ -22,6 +24,10 @@ export const rotateAction = () => ({
   type: ROTATE_PUYO
 })
 
+export const dropAction = () => ({
+  type: DROP
+})
+
 export default function (state = init,action){
     const newState = Object.assign({},state);
     switch(action.type){
@@ -29,6 +35,7 @@ export default function (state = init,action){
             --newState.centerPuyo.col;
             --newState.rotatePuyo.col;
             return newState;
+
         case MOVE_RIGHT:
             ++newState.centerPuyo.col;
             ++newState.rotatePuyo.col;
@@ -36,8 +43,13 @@ export default function (state = init,action){
         case ROTATE_PUYO:
             rotate(newState);
             return newState;
+        case DROP:
+            ++newState.centerPuyo.row;
+            ++newState.rotatePuyo.row;
+            return newState;
         case CREATE_PUYO:
             return new DropPuyo();
+
         default:
             return state;
     }

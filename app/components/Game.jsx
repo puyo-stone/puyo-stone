@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Grid from './Grid';
 import { connect } from 'react-redux';
 import DroppingPuyo from './DroppingPuyo';
-import {moveLeftAction, moveRightAction, rotateAction} from '../store/puyoAction';
+import {dropAction, moveLeftAction, moveRightAction, rotateAction} from '../store/puyoAction';
 
 class Game extends Component {
 
@@ -11,18 +11,29 @@ class Game extends Component {
     }
 
     componentDidMount(){
-        const arrowMotion = document.onkeydown = e => {
-            if (e.key === "ArrowLeft") {
+        const arrowMotion = document.addEventListener('keydown', e => {
+            if (e.which === 37) {
                 this.props.moveLeft();
             }
-            if(e.key === "ArrowRight") {
+            if(e.which === 39) {
                 this.props.moveRight();
             }
-            if(e.which === 32) {
+            if(e.which === 40) {
+                this.props.gravity();
+            }
+            if (e.which === 32) {
+                clearInterval(dropInterval);
+            }
+            if(e.which === 38) {
               this.props.rotate();
             }
-        }
+        })
+
+        const dropInterval = setInterval(this.props.gravity, 1000);
+
     }
+
+
 
     render() {
         return (
@@ -47,6 +58,9 @@ const mapDispatchToProps = dispatch => ({
     },
     rotate() {
       dispatch(rotateAction());
+    },
+    gravity() {
+      dispatch(dropAction());
     }
 })
 

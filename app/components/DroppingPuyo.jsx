@@ -14,7 +14,7 @@ export default class DroppingPuyo extends Component{
     }
 
     componentDidUpdate() {
-            this.drawPuyo()
+        this.drawPuyo()
 
     }
 
