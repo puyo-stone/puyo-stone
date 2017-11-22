@@ -5,7 +5,6 @@ const CREATE_PUYO = 'CREATE_PUYO';
 const ROTATE_PUYO = 'ROTATE_PUYO';
 const DROP = 'DROP';
 
-
 const init = new DropPuyo();
 
 const createPuyoAction = () => ({
@@ -35,7 +34,6 @@ export default function (state = init,action){
             --newState.centerPuyo.col;
             --newState.rotatePuyo.col;
             return newState;
-
         case MOVE_RIGHT:
             ++newState.centerPuyo.col;
             ++newState.rotatePuyo.col;
