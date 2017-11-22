@@ -4,7 +4,7 @@ function randomColor() {
 }
 
 class SinglePuyo {
-    constructor(col = 3, row = 1) {
+    constructor(col = 3, row = 0) {
       this.color = randomColor();
       this.col = col;
       this.row = row;
