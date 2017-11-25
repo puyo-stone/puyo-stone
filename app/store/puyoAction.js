@@ -1,13 +1,18 @@
 import DoublePuyo from '../Func/DoublePuyo';
 import { rotateAFunc, rotateBFunc } from '../Func/rotatePuyo';
 import _ from 'lodash';
+
 const CREATE_PUYO = 'CREATE_PUYO';
 const ACTION_CENTER = 'ACTION_CENTER';
-
+const CLEAR_PUYO = 'CLEAR_PUYO';
 const init = new DoublePuyo();
 
-const createPuyoAction = () => ({
+export const createPuyoAction = () => ({
     type: CREATE_PUYO
+})
+
+export const clearPuyoAction=()=>({
+    type: CLEAR_PUYO
 })
 
 export const ActionCenter = (puyo) => ({
@@ -18,9 +23,9 @@ export const ActionCenter = (puyo) => ({
 export function leftMove(puyo) {
     return function (dispatch) {
         const newPuyo = _.cloneDeep(puyo);
-        newPuyo.centerPuyo.col=puyo.centerPuyo.col-1;
-        newPuyo.rotatePuyo.col=puyo.rotatePuyo.col-1;
-        dispatch(ActionCenter(newPuyo));
+            newPuyo.centerPuyo.col=puyo.centerPuyo.col-1;
+            newPuyo.rotatePuyo.col=puyo.rotatePuyo.col-1;
+            dispatch(ActionCenter(newPuyo));
     };
 }
 
@@ -64,6 +69,8 @@ export default function (state = init, action) {
             return new DoublePuyo();
         case ACTION_CENTER:
             return action.puyo;
+        case CLEAR_PUYO:
+            return {};
         default:
             return state;
     }

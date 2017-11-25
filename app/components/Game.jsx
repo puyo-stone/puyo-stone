@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import Grid from './Grid';
 import { connect } from 'react-redux';
 import DroppingPuyo from './DroppingPuyo';
-import { rightMove, leftMove, rotateA, rotateB, dropMove } from '../store/puyoAction';
+import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, createPuyoAction } from '../store/puyoAction';
 import { insertPuyo } from '../store/board'
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
+import { split } from '../Func/game'
+
 
 class Game extends Component {
     constructor(props) {
@@ -31,7 +33,9 @@ class Game extends Component {
                 }
             }
             if (e.which === 87) {
-                this.props.gravity(this.props.puyo);
+                if (bottomCheck(this.props.board, this.props.puyo)) {
+                    this.props.gravity(this.props.puyo);
+                }
             }
             if (e.which === 32) {
                 clearInterval(dropInterval);
@@ -48,10 +52,16 @@ class Game extends Component {
             }
         })
         const dropInterval = setInterval(() => {
-            if (bottomCheck(this.props.board, this.props.puyo)) {
-                this.props.gravity(this.props.puyo)
-            } else {
-
+            if (Object.keys(this.props.puyo).length > 0) {
+                if (bottomCheck(this.props.board, this.props.puyo)) {
+                    this.props.gravity(this.props.puyo)
+                } else {
+                    const puyo = this.props.puyo;
+                    this.props.clearCurrent();
+                    const { board, rotate, center } = split(this.props.board, puyo);
+                    this.props.insertPuyo(board);
+                    this.props.create();
+                }
             }
         }, 500);
     }
@@ -87,8 +97,14 @@ const mapDispatchToProps = dispatch => ({
     gravity(puyo) {
         dispatch(dropMove(puyo));
     },
-    insertPuyo(puyo, board) {
-        dispatch(insertPuyo(puyo, board))
+    insertPuyo(board) {
+        dispatch(insertPuyo(board))
+    },
+    clearCurrent() {
+        dispatch(clearPuyoAction());
+    },
+    create() {
+        dispatch(createPuyoAction());
     }
 })
 
