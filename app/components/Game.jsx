@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import DroppingPuyo from './DroppingPuyo';
 import { rightMove, leftMove, rotateA, rotateB, dropMove } from '../store/puyoAction';
 import { insertPuyo } from '../store/board'
-import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/Game.js';
+import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
 
 class Game extends Component {
     constructor(props) {
@@ -12,7 +12,7 @@ class Game extends Component {
         this.gridDimensions = {
             col: 6,
             row: 12,
-            cellSize: 66,
+            cellSize: 33,
         }
         this.gridDimensions.height = this.gridDimensions.row * this.gridDimensions.cellSize;
         this.gridDimensions.width = this.gridDimensions.col * this.gridDimensions.cellSize;
@@ -53,7 +53,6 @@ class Game extends Component {
             } else {
 
             }
-
         }, 500);
     }
 
