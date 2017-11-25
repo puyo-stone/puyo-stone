@@ -20,11 +20,7 @@ class Game extends Component {
     componentDidMount(){
         const arrowMotion = document.addEventListener('keydown', e => {
             if (e.which === 81) {
-<<<<<<< HEAD
                 if(leftCheck(this.props.board,this.props.puyo)){
-=======
-                if (this.props.puyo.centerPuyo.col >= 0) {
->>>>>>> acd2b49f79af6d3a37e3fe18dc60d0c9d0e96c03
                     this.props.left(this.props.puyo);
                 }
             }
@@ -54,9 +50,8 @@ class Game extends Component {
             if(bottomCheck(this.props.board,this.props.puyo)){
                 this.props.gravity(this.props.puyo)
             }else{
-                
+                   
             }
-            
         }, 500);
     }
 
