@@ -14,8 +14,8 @@ export default class DroppingPuyo extends Component{
     }
 
     componentDidUpdate() {
+        if(Object.keys(this.props.puyo).length>0)
         this.drawPuyo();
-
     }
 
     drawPuyo() {

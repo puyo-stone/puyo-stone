@@ -15,13 +15,10 @@ const NEW_BOARD = 'NEW_BOARD';
 export const newBoardAction = ()=> ({ type: NEW_BOARD });
 export const getBoardAction = board => ({ type: GET_BOARD, board });
 export const updateBoardAction = board => ({ type: UPDATE_BOARD, board })
+import { split } from '../Func/game';
 
-export const insertPuyo = (puyo, board) => dispatch => {
-  const newMap = board.map(puyo => puyo)
-  const col = puyo.col
-  const row = puyo.row
-  newMap[row][col] = puyo
-  dispatch(updateBoardAction(newMap))
+export const insertPuyo = (board) => dispatch => {
+  dispatch(updateBoardAction(board))
 }
 
 export default function (state = iniState, action) {

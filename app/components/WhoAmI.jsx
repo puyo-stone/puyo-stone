@@ -51,7 +51,6 @@ export default class extends React.Component {
 
   render() {
     const { user } = this.state || {}
-    console.log("!!!", user);
     return <WhoAmI user={user} auth={auth} />
   }
 }
