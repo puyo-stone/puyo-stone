@@ -16,6 +16,7 @@ export const leftCheck = (board, puyo) => {
 }
 
 export const rightCheck = (board, puyo) => {
+    console.log("right check")
     const { centerPuyo, rotatePuyo } = puyo;
     const rightMostPuyo = centerPuyo.col > rotatePuyo.col ? centerPuyo : rotatePuyo;
     const sameCol = centerPuyo.col === rotatePuyo.col;
@@ -34,6 +35,7 @@ export const rightCheck = (board, puyo) => {
 }
 
 export const rotateACheck = (board, puyo) => {
+    console.log("rotate check")
     const { centerPuyo, rotatePuyo } = puyo;
     switch (puyo.positions) {
         case 0:
