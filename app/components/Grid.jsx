@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { select } from 'd3-selection';
+import { select, selectAll } from 'd3-selection';
 import { connect } from 'react-redux';
 
 class Grid extends Component {
@@ -11,19 +11,25 @@ class Grid extends Component {
 
     componentDidMount() {
         this.drawGrid();
-        this.populate();
+    }
+
+    componentDidUpdate() {
+        this.populate()
     }
 
     populate() {
         const node = this.node;
         const cellSize = this.props.gridDimensions.cellSize;
 
+        selectAll(".row").remove()
+
         let row = select(node)
             .selectAll(".row")
-            .data(this.props.board)
+            .data(this.props.boardData)
             .enter().append("g")
             .attr("class", "row");
-        row
+
+            row
             .selectAll(".square")
             .data(function (d) { return d; })
             .enter().append("rect")
@@ -91,10 +97,6 @@ class Grid extends Component {
     }
 }
 
-const mapStateToProps=state=>{
-    return {
-        board : state.board
-    }
-}
 
-export default connect(mapStateToProps)(Grid);
+
+export default Grid;

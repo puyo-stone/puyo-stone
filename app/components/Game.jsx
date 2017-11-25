@@ -3,6 +3,7 @@ import Grid from './Grid';
 import { connect } from 'react-redux';
 import DroppingPuyo from './DroppingPuyo';
 import { rightMove, leftMove, rotateA, rotateB, dropMove } from '../store/puyoAction';
+import { insertPuyo } from '../store/board'
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
 
 class Game extends Component {
@@ -58,8 +59,8 @@ class Game extends Component {
     render() {
         return (
             <svg height={this.gridDimensions.height} width={this.gridDimensions.width}>
-                <Grid gridDimensions={this.gridDimensions} />
-                <DroppingPuyo puyo={this.props.puyo} />
+                <Grid gridDimensions={this.gridDimensions} boardData={this.props.board} />
+                <DroppingPuyo puyo={this.props.puyo} cellSize={this.gridDimensions.cellSize} />
             </svg>
         )
     }
@@ -85,6 +86,9 @@ const mapDispatchToProps = dispatch => ({
     },
     gravity(puyo) {
         dispatch(dropMove(puyo));
+    },
+    insertPuyo(puyo, board) {
+        dispatch(insertPuyo(puyo, board))
     }
 })
 
