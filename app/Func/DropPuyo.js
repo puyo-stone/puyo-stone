@@ -1,77 +1,65 @@
 import SinglePuyo from './SinglePuyo';
 class DropPuyo {
-    constructor() {
-        this.centerPuyo = new SinglePuyo();
-        this.rotatePuyo = new SinglePuyo(this.centerPuyo.col,this.centerPuyo.row-1);
-        this.positions = [true, false, false, false];
-    }
+  constructor() {
+    this.centerPuyo = new SinglePuyo();
+    this.rotatePuyo = new SinglePuyo(this.centerPuyo.col, this.centerPuyo.row - 1);
+    this.positions = 0;
+  }
 }
 
 export default DropPuyo;
 
 // A is clockwise, B is counter-clockwise
 export const rotateAFunc = (puyo) => {
-  const axis = puyo.centerPuyo;
-  const satellite = puyo.rotatePuyo;
-  let index = puyo.positions.indexOf(true);
-  let temp = index;
-  if (index === 3) { index = 0 }
-  else { index = index + 1 }
-  puyo.positions[temp] = false;
-  puyo.positions[index] = true;
-  switch (index) {
+  puyo.positions++;
+  puyo.positions = puyo.positions % 4;
+  switch (puyo.positions) {
     case 0:
-    // from left to top
+      // from left to top
       puyo.rotatePuyo.col = puyo.centerPuyo.col;
       puyo.rotatePuyo.row = puyo.centerPuyo.row - 1;
-    break;
+      break;
     case 1:
-    // from top to right
+      // from top to right
       puyo.rotatePuyo.row = puyo.centerPuyo.row;
       puyo.rotatePuyo.col = puyo.centerPuyo.col + 1;
-    break;
+      break;
     case 2:
-    // right to bottom
+      // right to bottom
       puyo.rotatePuyo.row = puyo.centerPuyo.row + 1;
       puyo.rotatePuyo.col = puyo.centerPuyo.col;
-    break;
+      break;
     case 3:
-    // bottom to left
-    puyo.rotatePuyo.row = puyo.centerPuyo.row;
-    puyo.rotatePuyo.col = puyo.centerPuyo.col - 1;
-    break;
+      // bottom to left
+      puyo.rotatePuyo.row = puyo.centerPuyo.row;
+      puyo.rotatePuyo.col = puyo.centerPuyo.col - 1;
+      break;
   }
 }
 
 export const rotateBFunc = (puyo) => {
-  const axis = puyo.centerPuyo;
-  const satellite = puyo.rotatePuyo;
-  let index = puyo.positions.indexOf(true);
-  let temp = index;
-  if (index === 0) { index = 3 }
-  else { index = index - 1 }
-  puyo.positions[temp] = false;
-  puyo.positions[index] = true;
-  switch (index) {
+  puyo.positions--;
+  puyo.positions = (puyo.positions+4) % 4;
+  switch (puyo.positions) {
     case 0:
-    // from right to top
+      // from right to top
       puyo.rotatePuyo.col = puyo.centerPuyo.col;
       puyo.rotatePuyo.row = puyo.centerPuyo.row - 1;
-    break;
+      break;
     case 1:
-    // from bottom to right
+      // from bottom to right
       puyo.rotatePuyo.row = puyo.centerPuyo.row;
       puyo.rotatePuyo.col = puyo.centerPuyo.col + 1;
-    break;
+      break;
     case 2:
-    // from left to bottom
+      // from left to bottom
       puyo.rotatePuyo.row = puyo.centerPuyo.row + 1;
       puyo.rotatePuyo.col = puyo.centerPuyo.col;
-    break;
+      break;
     case 3:
-    // from top to left
+      // from top to left
       puyo.rotatePuyo.row = puyo.centerPuyo.row;
       puyo.rotatePuyo.col = puyo.centerPuyo.col - 1;
-    break;
+      break;
   }
 }
