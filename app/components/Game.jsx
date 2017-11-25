@@ -3,9 +3,9 @@ import Grid from './Grid';
 import { connect } from 'react-redux';
 import DroppingPuyo from './DroppingPuyo';
 import { rightMove, leftMove, rotateA, rotateB, dropMove} from '../store/puyoAction';
+import { leftCheck, rightCheck,rotateACheck, rotateBCheck, bottomCheck} from '../Func/Game.js';
 
 class Game extends Component {
-
     constructor(props){
         super(props)
         this.gridDimensions = {
@@ -20,12 +20,18 @@ class Game extends Component {
     componentDidMount(){
         const arrowMotion = document.addEventListener('keydown', e => {
             if (e.which === 81) {
+<<<<<<< HEAD
+                if(leftCheck(this.props.board,this.props.puyo)){
+=======
                 if (this.props.puyo.centerPuyo.col >= 0) {
+>>>>>>> acd2b49f79af6d3a37e3fe18dc60d0c9d0e96c03
                     this.props.left(this.props.puyo);
                 }
             }
             if(e.which === 69) {
-                this.props.right(this.props.puyo);
+                if(rightCheck(this.props.board,this.props.puyo)){
+                    this.props.right(this.props.puyo);
+                }
             }
             if(e.which === 87) {
                 this.props.gravity(this.props.puyo);
@@ -34,13 +40,24 @@ class Game extends Component {
                 clearInterval(dropInterval);
             }
             if (e.which === 85) {
-              this.props.rotatePuyoA(this.props.puyo);
+                if(rotateACheck(this.props.board,this.props.puyo)){
+                    this.props.rotatePuyoA(this.props.puyo);
+                }
             }
             if (e.which === 73) {
-              this.props.rotatePuyoB(this.props.puyo);
+                if(rotateBCheck(this.props.board,this.props.puyo)){
+                    this.props.rotatePuyoB(this.props.puyo);
+                }
             }
         })
-        const dropInterval = setInterval(() => this.props.gravity(this.props.puyo), 500);
+        const dropInterval = setInterval(() => {
+            if(bottomCheck(this.props.board,this.props.puyo)){
+                this.props.gravity(this.props.puyo)
+            }else{
+                
+            }
+            
+        }, 500);
     }
 
     render() {
@@ -54,7 +71,8 @@ class Game extends Component {
 }
 
 const mapStateToProps = state => ({
-    puyo: state.puyo
+    puyo: state.puyo,
+    board: state.board
 })
 
 const mapDispatchToProps = dispatch => ({
