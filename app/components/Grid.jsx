@@ -5,11 +5,6 @@ import { connect } from 'react-redux';
 class Grid extends Component {
     constructor(props) {
         super(props);
-        // this.col = 6;
-        // this.row = 12;
-        // this.cellSize = 33;
-        // this.w = this.col * this.cellSize;
-        // this.h = this.row * this.cellSize;
         this.drawGrid = this.drawGrid.bind(this);
         this.populate = this.populate.bind(this);
     }
