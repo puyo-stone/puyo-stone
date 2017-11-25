@@ -2,7 +2,6 @@ export const leftCheck = (board, puyo) => {
     const { centerPuyo, rotatePuyo } = puyo;
     const leftMostPuyo = centerPuyo.col < rotatePuyo.col ? centerPuyo : rotatePuyo;
     const sameCol = centerPuyo.col === rotatePuyo.col;
-    const bottomMost = centerPuyo.row > rotatePuyo.row ? centerPuyo : rotatePuyo;
     if (sameCol) {
         if (centerPuyo.col > 0 && board[centerPuyo.row][centerPuyo.col - 1] === null && board[rotatePuyo.row][rotatePuyo.col - 1] === null) {
             return true;
