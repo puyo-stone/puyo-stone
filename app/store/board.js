@@ -9,7 +9,7 @@ const REMOVE_PUYO_FROM_BOARD = 'REMOVE_PUYO_FROM_BOARD';
 export const newBoardAction = ()=> ({ type: NEW_BOARD });
 export const getBoardAction = board => ({ type: GET_BOARD, board });
 export const updateBoardAction = board => ({ type: UPDATE_BOARD, board });
-export const removePuyoFromBoard = board=> ({
+export const removePuyoFromBoardAction = board=> ({
   type: REMOVE_PUYO_FROM_BOARD,
   board
 })
@@ -19,7 +19,7 @@ export const insertPuyo = (board) => dispatch => {
 }
 
 export const removePuyoFromBoard = (board)=>dispatch=>{
-  dispatch(removePuyoFromBoard(board));
+  dispatch(removePuyoFromBoardAction(board));
 }
 
 export default function (state = iniState, action) {
