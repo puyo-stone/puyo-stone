@@ -2,12 +2,12 @@ const firebase = require('firebase')
 
 // -- // -- // -- // Firebase Config // -- // -- // -- //
 var config = {
-  apiKey: "AIzaSyBPKiW_fkfozsPt_G5pwToBUKv_hisZhZk",
-  authDomain: "puyo-stone.firebaseapp.com",
-  databaseURL: "https://puyo-stone.firebaseio.com",
-  projectId: "puyo-stone",
-  storageBucket: "puyo-stone.appspot.com",
-  messagingSenderId: "854792287240"
+  apiKey: 'AIzaSyBPKiW_fkfozsPt_G5pwToBUKv_hisZhZk',
+  authDomain: 'puyo-stone.firebaseapp.com',
+  databaseURL: 'https://puyo-stone.firebaseio.com',
+  projectId: 'puyo-stone',
+  storageBucket: 'puyo-stone.appspot.com',
+  messagingSenderId: '854792287240'
 };
 // -- // -- // -- // -- // -- // -- // -- // -- // -- //
 
