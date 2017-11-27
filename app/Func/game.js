@@ -26,7 +26,7 @@ const deepCopy = (board) => {
 
 const newBoard = createNewGrid();
 
-export const split = (board, puyo) => {
+export const split = (board, puyo,updateFunc) => {
     const newBoard = deepCopy(board);
 
     const { centerPuyo, rotatePuyo } = puyo;
@@ -35,18 +35,21 @@ export const split = (board, puyo) => {
     if (sameCol) {
         newBoard[centerPuyo.row][centerPuyo.col] = centerPuyo;
         newBoard[rotatePuyo.row][rotatePuyo.col] = rotatePuyo;
+        updateFunc(newBoard);
         return { board: newBoard, center: centerPuyo, rotate: rotatePuyo };
     }
     if (sameRow) {
         if (centerPuyo.row === 11 && rotatePuyo.row === 11) {
             newBoard[centerPuyo.row][centerPuyo.col] = centerPuyo;
             newBoard[rotatePuyo.row][rotatePuyo.col] = rotatePuyo;
+            updateFunc(newBoard);
             return { board: newBoard, center: centerPuyo, rotate: rotatePuyo };
         }
 
         if (newBoard[centerPuyo.row + 1][centerPuyo.col] && newBoard[rotatePuyo.row + 1][rotatePuyo.col]) {
             newBoard[centerPuyo.row][centerPuyo.col] = centerPuyo;
             newBoard[rotatePuyo.row][rotatePuyo.col] = rotatePuyo;
+            updateFunc(newBoard);
             return { board: newBoard, center: centerPuyo, rotate: rotatePuyo };
         }
 
@@ -57,6 +60,7 @@ export const split = (board, puyo) => {
                 if (newBoard[i][rotatePuyo.col] === null) {
                     newPuyo.row = i;
                     newBoard[i][newPuyo.col] = newPuyo;
+                    updateFunc(newBoard);
                     return { board: newBoard, center: centerPuyo, rotate: newPuyo };
                 }
             }
@@ -68,6 +72,7 @@ export const split = (board, puyo) => {
                 if (newBoard[i][centerPuyo.col] === null) {
                     newPuyo.row = i;
                     newBoard[i][newPuyo.col] = newPuyo;
+                    updateFunc(newBoard);
                     return { board: newBoard, center: centerPuyo, rotate: rotatePuyo };
                 }
             }
