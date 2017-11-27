@@ -45,7 +45,13 @@ module.exports = {
           'sass-loader'
         ]
       }
-    ]
+    ],
+    loaders: [
+    {
+      test: /\.(png|jpg)$/,
+      loader: 'url?limit=25000'
+    }
+  ]
   },
   plugins: devMode
     ? [new LiveReloadPlugin({ appendScriptTag: true })]

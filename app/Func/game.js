@@ -167,7 +167,9 @@ export const explosion = (board, center, rotate, updateFunc, addToScore) => {
       updateFunc(copy);
       explode = true;
       visit = {};
+      puyoCounter = remove.length;
       remove = [];
+      addToScore(scoreCalc(puyoCounter, chainCounter));
       chainCounter++;
     }
   }
