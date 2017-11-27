@@ -3,7 +3,7 @@ import Grid from './Grid';
 import { connect } from 'react-redux';
 import DroppingPuyo from './DroppingPuyo';
 import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, createPuyoAction } from '../store/puyoAction';
-import { insertPuyo } from '../store/board';
+import { insertPuyo, removePuyoFromBoard } from '../store/board';
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
 import { split, explosion } from '../Func/game';
 import { updateScore } from '../store/score';
@@ -22,49 +22,60 @@ class Game extends Component {
 
   componentDidMount() {
     const arrowMotion = document.addEventListener('keydown', e => {
-      if (e.which === 81) {
+      if (e.which === 37) {
         if (leftCheck(this.props.board, this.props.puyo)) {
           this.props.left(this.props.puyo);
         }
       }
-      if (e.which === 69) {
+      if (e.which === 39) {
         if (rightCheck(this.props.board, this.props.puyo)) {
           this.props.right(this.props.puyo);
         }
       }
-      if (e.which === 87) {
+      if (e.which === 40) {
         if (bottomCheck(this.props.board, this.props.puyo)) {
           this.props.gravity(this.props.puyo);
         }
       }
       if (e.which === 32) {
-        clearInterval(dropInterval);
+        intervalManager(false);
       }
-      if (e.which === 85) {
+      if (e.which === 82) {
+        intervalManager(true);
+      }
+      if (e.which === 87) {
         if (rotateACheck(this.props.board, this.props.puyo)) {
           this.props.rotatePuyoA(this.props.puyo);
         }
       }
-      if (e.which === 73) {
+      if (e.which === 81) {
         if (rotateBCheck(this.props.board, this.props.puyo)) {
           this.props.rotatePuyoB(this.props.puyo);
         }
       }
     })
-    const dropInterval = setInterval(() => {
-      if (Object.keys(this.props.puyo).length > 0) {
-        if (bottomCheck(this.props.board, this.props.puyo)) {
-          this.props.gravity(this.props.puyo)
-        } else {
-          const puyo = this.props.puyo;
-          this.props.clearCurrent();
-          const { board, rotate, center } = split(this.props.board, puyo, this.props.updateBoard);
-          explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore);
-          console.log(this.props.score)
-          this.props.create();
-        }
+    let intervalStatus = null;
+
+    const intervalManager = (flag) => {
+      if (flag) {
+        intervalStatus = setInterval(() => {
+          if (Object.keys(this.props.puyo).length > 0) {
+            if (bottomCheck(this.props.board, this.props.puyo)) {
+              this.props.gravity(this.props.puyo)
+            } else {
+              const puyo = this.props.puyo;
+              this.props.clearCurrent();
+              const { board, rotate, center } = split(this.props.board, puyo, this.props.updateBoard);
+              explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore);
+              this.props.create();
+            }
+          }
+        }, 500);
+      } else {
+        clearInterval(intervalStatus);
       }
-    }, 500);
+    }
+    intervalManager(true);
   }
 
   render() {

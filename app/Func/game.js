@@ -73,7 +73,7 @@ export const split = (board, puyo, updateFunc) => {
           newPuyo.row = i;
           newBoard[i][newPuyo.col] = newPuyo;
           updateFunc(newBoard);
-          return { board: newBoard, center: centerPuyo, rotate: rotatePuyo };
+          return { board: newBoard, center: newPuyo, rotate: rotatePuyo };
         }
       }
     }
