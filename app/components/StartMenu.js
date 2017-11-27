@@ -6,9 +6,9 @@ class StartMenu extends Component {
     render() {
         return (
             <div className="start container">
-                <div className="start overlay single"> 
+                <Link to="/game" className="start overlay single">
                 <h1>SinglePlayer!</h1>
-                </div>
+                </Link>
                 <div className="start overlay multiplayer">
                 <h1>MultiPlayer!</h1>
                 </div>
