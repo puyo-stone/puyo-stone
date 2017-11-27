@@ -141,7 +141,6 @@ export const exposion = (board, center, rotate, updateFunc) => {
     remove.push(...getAllConnection(board, center, visit));
     if (center.color !== rotate.color) visit = {};
     remove.push(...getAllConnection(board, rotate, visit));
-    console.log(remove);
     if (remove.length >= 4) {
         copy = removePuyo(board, remove);
         updateFunc(copy);
