@@ -57,7 +57,7 @@ render(
   <Provider store={store}>
   <Router history={browserHistory}>
     <Route exact path="/game" component={Game} />
-    <Route path="/" component={StartMenu}/>    
+    <Route path="/" component={StartMenu}/>
     <Route path='*' component={NotFound}/>
   </Router>
   </Provider>,
