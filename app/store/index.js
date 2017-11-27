@@ -4,8 +4,9 @@ import thunkMiddleware from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import board from './board';
 import puyo from './puyoAction';
+import score from './score';
 
-const reducer = combineReducers({board, puyo});
+const reducer = combineReducers({ board, puyo, score });
 
 const middleware = composeWithDevTools(applyMiddleware(
   thunkMiddleware,

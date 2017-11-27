@@ -5,7 +5,9 @@ import DroppingPuyo from './DroppingPuyo';
 import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, createPuyoAction } from '../store/puyoAction';
 import { insertPuyo } from '../store/board';
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
-import { split, exposion } from '../Func/game';
+import { split, explosion } from '../Func/game';
+
+import { updateScore } from '../store/score';
 
 class Game extends Component {
   constructor(props) {
@@ -58,7 +60,8 @@ class Game extends Component {
           const puyo = this.props.puyo;
           this.props.clearCurrent();
           const { board, rotate, center } = split(this.props.board, puyo, this.props.updateBoard);
-          exposion(board, center, rotate, this.props.updateBoard);
+          explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore);
+          console.log(this.props.score)
           this.props.create();
         }
       }
@@ -67,17 +70,23 @@ class Game extends Component {
 
   render() {
     return (
+      <div>
             <svg height={this.gridDimensions.height} width={this.gridDimensions.width}>
                 <Grid gridDimensions={this.gridDimensions} boardData={this.props.board} />
                 <DroppingPuyo puyo={this.props.puyo} cellSize={this.gridDimensions.cellSize} />
             </svg>
+            {
+              this.props.score
+            }
+      </div>
     )
   }
 }
 
 const mapStateToProps = state => ({
   puyo: state.puyo,
-  board: state.board
+  board: state.board,
+  score: state.score
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -104,6 +113,9 @@ const mapDispatchToProps = dispatch => ({
   },
   create() {
     dispatch(createPuyoAction());
+  },
+  addToScore(score) {
+    dispatch(updateScore(score))
   }
 })
 
