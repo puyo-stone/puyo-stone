@@ -25,22 +25,22 @@ function checkUser(user) {
 
 }
 
-function insertUser(user) {
-  let ref = firebase.database.ref();
-  userRef = ref.push();
-      userRef.set({
-        email: user.email,
-        name: user.displayName,
-        score: 0
-      })
-}
+// function insertUser(user) {
+//   const ref = firebase.database.ref();
+//   userRef = ref.push();
+//   userRef.set({
+//     email: user.email,
+//     name: user.displayName,
+//     score: 0
+//   })
+// }
 
 export default class extends React.Component {
   componentDidMount() {
-    let find = false;
+    const find = false;
     const { auth } = this.props
     this.unsubscribe = auth.onAuthStateChanged(user => {
-      //insertUser(user);
+      // insertUser(user);
       this.setState({ user });
     })
   }

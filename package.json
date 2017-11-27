@@ -1,5 +1,5 @@
 {
-  "name": "__BONES_NEEDS_A_NAME__",
+  "name": "puyo-stone",
   "version": "0.0.1",
   "description": "A happy little burning skeleton.",
   "main": "index.js",
@@ -52,6 +52,7 @@
     "d3": "^4.11.0",
     "d3-selection": "^1.1.0",
     "enzyme": "^2.5.1",
+    "eslint-config-fullstack": "^3.0.0",
     "express": "^4.14.0",
     "finalhandler": "^1.0.0",
     "firebase": "^3.9.0",
