@@ -26,7 +26,7 @@ const deepCopy = (board) => {
 
 const newBoard = createNewGrid();
 
-export const split = (board, puyo,updateFunc) => {
+export const split = (board, puyo, updateFunc) => {
     const newBoard = deepCopy(board);
 
     const { centerPuyo, rotatePuyo } = puyo;
@@ -73,7 +73,7 @@ export const split = (board, puyo,updateFunc) => {
                     newPuyo.row = i;
                     newBoard[i][newPuyo.col] = newPuyo;
                     updateFunc(newBoard);
-                    return { board: newBoard, center: centerPuyo, rotate: rotatePuyo };
+                    return { board: newBoard, center: newPuyo, rotate: rotatePuyo };
                 }
             }
         }
@@ -138,7 +138,7 @@ const getAllConnection = (board, puyo, visit) => {
     return result.length >= 4 ? result : [];
 }
 
-export const exposion = (board, center, rotate, updateFunc) => {
+export const explosion = (board, center, rotate, updateFunc) => {
     let remove = [];
     let expose = false;
     let copy = board;
@@ -154,7 +154,7 @@ export const exposion = (board, center, rotate, updateFunc) => {
         remove = new Array();
     }
     while (expose) {
-            expose = false;
+            expose = false;//Here
             copy = reArrange(copy);
             updateFunc(copy);
             remove = SearchBoard(copy);

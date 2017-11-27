@@ -24,14 +24,19 @@ export const removePuyoFromBoard = (board)=>dispatch=>{
 
 export default function (state = iniState, action) {
   switch (action.type) {
+
     case GET_BOARD:
       return action.board;
+
     case UPDATE_BOARD:
       return action.board;
+
     case REMOVE_PUYO_FROM_BOARD:
       return action.board;
+
     case NEW_BOARD:
       return iniState;
+
     default:
       return state;
   }
