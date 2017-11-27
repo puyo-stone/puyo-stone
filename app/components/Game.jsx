@@ -65,6 +65,7 @@ class Game extends Component {
               this.props.clearCurrent();
               const { board, rotate, center } = split(this.props.board, puyo, this.props.updateBoard);
               explosion(board, center, rotate, this.props.updateBoard, this.props.reArrange, this.props.removePuyo);
+              this.props.getNextPuyo(this.props.nextPuyo);
               this.props.create();
             }
           }

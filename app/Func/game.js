@@ -24,8 +24,6 @@ const deepCopy = (board) => {
   return newBoard;
 }
 
-const newBoard = createNewGrid();
-
 export const split = (board, puyo, updateFunc) => {
   const newBoard = deepCopy(board);
 
@@ -135,7 +133,7 @@ const getAllConnection = (board, puyo, visit) => {
   return result.length >= 4 ? result : [];
 }
 
-export const exposion = (board, center, rotate, updateFunc, reArrangeFunc, removePuyoFunc) => {
+export const explosion = (board, center, rotate, updateFunc, reArrangeFunc, removePuyoFunc) => {
   let remove = [];
   let expose = false;
   let copy = board;
