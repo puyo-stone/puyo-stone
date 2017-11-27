@@ -153,11 +153,8 @@ export const explosion = (board, center, rotate, updateFunc, addToScore) => {
     explode = true;
     visit = {};
     puyoCounter = remove.length;
-    console.log('TESTING');
-
     remove = [];
     addToScore(scoreCalc(puyoCounter, chainCounter));
-    // console.log( addToScore(scoreCalc(puyoCounter, chainCounter)) );
     chainCounter++;
   }
   while (explode) {

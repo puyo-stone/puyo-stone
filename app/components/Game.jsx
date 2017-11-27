@@ -6,7 +6,6 @@ import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, creat
 import { insertPuyo } from '../store/board';
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
 import { split, explosion } from '../Func/game';
-
 import { updateScore } from '../store/score';
 
 class Game extends Component {
