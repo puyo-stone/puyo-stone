@@ -113,10 +113,37 @@ h2 {
   width: 100vw;
   background-color: skyblue;
   background-size: 100% 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-areas:
+  "topleft grid topright"
+  "middleleft grid middleright" 
+  "bottomleft grid bottomright";
 }
 
-#grid {
-  display: block;
-  margin: auto;
+#middlegrid {
+  grid-area: grid;
   background-color: white;
+  margin: auto;
+}
+
+#score {
+  grid-area:topleft;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-end;
+  text-align: center;
+  color: red;
+  p {
+    color: green
+  }
+}
+
+#timer {
+  grid-area: middleleft;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-end;
+  text-align: center;
 }

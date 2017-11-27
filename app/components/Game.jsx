@@ -81,13 +81,19 @@ class Game extends Component {
   render() {
     return (
         <div id="game">
-            <svg id="grid" height={this.gridDimensions.height} width={this.gridDimensions.width}>
+            <svg id="middlegrid" height={this.gridDimensions.height} width={this.gridDimensions.width}>
                 <Grid gridDimensions={this.gridDimensions} boardData={this.props.board} />
                 <DroppingPuyo puyo={this.props.puyo} cellSize={this.gridDimensions.cellSize} />
             </svg>
-            {
-              this.props.score
-            }
+            <div id="score">
+                <p>Score</p>
+                    {
+                    this.props.score
+                    }
+            </div>
+            <div id="timer">
+                <p>Timer</p>
+            </div>
         </div>
     )
   }
