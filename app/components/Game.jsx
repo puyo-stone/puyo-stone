@@ -3,9 +3,10 @@ import Grid from './Grid';
 import { connect } from 'react-redux';
 import DroppingPuyo from './DroppingPuyo';
 import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, createPuyoAction } from '../store/puyoAction';
-import { insertPuyo } from '../store/board'
+import { insertPuyo } from '../store/board';
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
-import { split } from '../Func/game'
+import { split, exposion } from '../Func/game';
+
 
 
 class Game extends Component {
@@ -59,7 +60,8 @@ class Game extends Component {
                     const puyo = this.props.puyo;
                     this.props.clearCurrent();
                     const { board, rotate, center } = split(this.props.board, puyo);
-                    this.props.insertPuyo(board);
+                    this.props.updateBoard(board);
+                    exposion(board, center, rotate, this.props.updateBoard);
                     this.props.create();
                 }
             }
@@ -97,7 +99,7 @@ const mapDispatchToProps = dispatch => ({
     gravity(puyo) {
         dispatch(dropMove(puyo));
     },
-    insertPuyo(board) {
+    updateBoard(board) {
         dispatch(insertPuyo(board))
     },
     clearCurrent() {
