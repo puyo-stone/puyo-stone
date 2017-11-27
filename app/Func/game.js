@@ -24,56 +24,54 @@ const deepCopy = (board) => {
   return newBoard;
 }
 
-const newBoard = createNewGrid();
-
 export const split = (board, puyo, updateFunc) => {
   const newBoard = deepCopy(board);
 
   const { centerPuyo, rotatePuyo } = puyo;
   const sameCol = centerPuyo.col === rotatePuyo.col;
   const sameRow = centerPuyo.row === rotatePuyo.row;
+  const newCenterPuyo = _.cloneDeep(centerPuyo);
+  const newRotatePuyo = _.cloneDeep(rotatePuyo);
   if (sameCol) {
-    newBoard[centerPuyo.row][centerPuyo.col] = centerPuyo;
-    newBoard[rotatePuyo.row][rotatePuyo.col] = rotatePuyo;
+    newBoard[centerPuyo.row][centerPuyo.col] = newCenterPuyo;
+    newBoard[rotatePuyo.row][rotatePuyo.col] = newRotatePuyo;
     updateFunc(newBoard);
-    return { board: newBoard, center: centerPuyo, rotate: rotatePuyo };
+    return { board: newBoard, center: newCenterPuyo, rotate: newRotatePuyo };
   }
   if (sameRow) {
     if (centerPuyo.row === 11 && rotatePuyo.row === 11) {
-      newBoard[centerPuyo.row][centerPuyo.col] = centerPuyo;
-      newBoard[rotatePuyo.row][rotatePuyo.col] = rotatePuyo;
+      newBoard[centerPuyo.row][centerPuyo.col] = newCenterPuyo;
+      newBoard[rotatePuyo.row][rotatePuyo.col] = newRotatePuyo;
       updateFunc(newBoard);
-      return { board: newBoard, center: centerPuyo, rotate: rotatePuyo };
+      return { board: newBoard, center: newCenterPuyo, rotate: newRotatePuyo };
     }
 
     if (newBoard[centerPuyo.row + 1][centerPuyo.col] && newBoard[rotatePuyo.row + 1][rotatePuyo.col]) {
-      newBoard[centerPuyo.row][centerPuyo.col] = centerPuyo;
-      newBoard[rotatePuyo.row][rotatePuyo.col] = rotatePuyo;
+      newBoard[centerPuyo.row][centerPuyo.col] = newCenterPuyo;
+      newBoard[rotatePuyo.row][rotatePuyo.col] = newRotatePuyo;
       updateFunc(newBoard);
-      return { board: newBoard, center: centerPuyo, rotate: rotatePuyo };
+      return { board: newBoard, center: newCenterPuyo, rotate: newRotatePuyo };
     }
 
     if (newBoard[centerPuyo.row + 1][centerPuyo.col] && newBoard[rotatePuyo.row + 1][rotatePuyo.col] === null) {
-      newBoard[centerPuyo.row][centerPuyo.col] = centerPuyo;
-      const newPuyo = _.cloneDeep(rotatePuyo);
+      newBoard[centerPuyo.row][centerPuyo.col] = newCenterPuyo;
       for (let i = 11; i > rotatePuyo.row; i--) {
         if (newBoard[i][rotatePuyo.col] === null) {
-          newPuyo.row = i;
-          newBoard[i][newPuyo.col] = newPuyo;
+          newRotatePuyo.row = i;
+          newBoard[i][newRotatePuyo.col] = newRotatePuyo;
           updateFunc(newBoard);
-          return { board: newBoard, center: centerPuyo, rotate: newPuyo };
+          return { board: newBoard, center: newCenterPuyo, rotate: newRotatePuyo };
         }
       }
     }
     if (newBoard[rotatePuyo.row + 1][rotatePuyo.col] && newBoard[centerPuyo.row + 1][centerPuyo.col] === null) {
-      newBoard[rotatePuyo.row][rotatePuyo.col] = rotatePuyo;
-      const newPuyo = _.cloneDeep(centerPuyo);
+      newBoard[rotatePuyo.row][rotatePuyo.col] = newRotatePuyo;
       for (let i = 11; i > centerPuyo.row; i--) {
         if (newBoard[i][centerPuyo.col] === null) {
-          newPuyo.row = i;
-          newBoard[i][newPuyo.col] = newPuyo;
+          newCenterPuyo.row = i;
+          newBoard[i][newCenterPuyo.col] = newCenterPuyo;
           updateFunc(newBoard);
-          return { board: newBoard, center: newPuyo, rotate: rotatePuyo };
+          return { board: newBoard, center: newCenterPuyo, rotate: newRotatePuyo };
         }
       }
     }
@@ -134,22 +132,20 @@ const getAllConnection = (board, puyo, visit) => {
   return result.length >= 4 ? result : [];
 }
 
-export const explosion = (board, center, rotate, updateFunc, addToScore) => {
+export const explosion = (board, center, rotate, updateFunc, addToScore, reArrangeFunc, removePuyoFunc) => {
   let remove = [];
   let explode = false;
   let copy = board;
   let visit = {};
   let chainCounter = 1;
   let puyoCounter = 0;
-  let scoreCalc = (puyoCounter, chainCounter) => {
-    return ((10 * puyoCounter) * chainCounter);
-  }
+  const scoreCalc = (puyoCounter, chainCounter) => ((10 * puyoCounter) * chainCounter)
   remove.push(...getAllConnection(board, center, visit));
   if (center.color !== rotate.color) visit = {};
   remove.push(...getAllConnection(board, rotate, visit));
   if (remove.length >= 4) {
     copy = removePuyo(board, remove);
-    updateFunc(copy);
+    removePuyoFunc(copy);
     explode = true;
     visit = {};
     puyoCounter = remove.length;
@@ -160,11 +156,11 @@ export const explosion = (board, center, rotate, updateFunc, addToScore) => {
   while (explode) {
     explode = false;
     copy = reArrange(copy);
-    updateFunc(copy);
+    reArrangeFunc(copy);
     remove = SearchBoard(copy);
     if (remove.length >= 4) {
       copy = removePuyo(copy, remove);
-      updateFunc(copy);
+      removePuyoFunc(copy);
       explode = true;
       visit = {};
       puyoCounter = remove.length;

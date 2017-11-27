@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import Grid from './Grid';
 import { connect } from 'react-redux';
 import DroppingPuyo from './DroppingPuyo';
-import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, createPuyoAction } from '../store/puyoAction';
-import { insertPuyo, removePuyoFromBoard } from '../store/board';
+import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore } from '../store/';
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
 import { split, explosion } from '../Func/game';
-import { updateScore } from '../store/score';
 
 class Game extends Component {
   constructor(props) {
@@ -14,7 +12,7 @@ class Game extends Component {
     this.gridDimensions = {
       col: 6,
       row: 12,
-      cellSize: window.innerHeight/12,
+      cellSize: window.innerHeight / 12,
     }
     this.gridDimensions.height = this.gridDimensions.row * this.gridDimensions.cellSize;
     this.gridDimensions.width = this.gridDimensions.col * this.gridDimensions.cellSize;
@@ -66,7 +64,8 @@ class Game extends Component {
               const puyo = this.props.puyo;
               this.props.clearCurrent();
               const { board, rotate, center } = split(this.props.board, puyo, this.props.updateBoard);
-              explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore);
+              explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore, this.props.reArrange, this.props.removePuyo);
+              this.props.getNextPuyo(this.props.nextPuyo);
               this.props.create();
             }
           }
@@ -102,7 +101,8 @@ class Game extends Component {
 const mapStateToProps = state => ({
   puyo: state.puyo,
   board: state.board,
-  score: state.score
+  score: state.score,
+  nextPuyo: state.nextPuyo
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -131,8 +131,18 @@ const mapDispatchToProps = dispatch => ({
     dispatch(createPuyoAction());
   },
   addToScore(score) {
-    dispatch(updateScore(score))
+    dispatch(updateScore(score));
+  },
+  reArrange(board) {
+    dispatch(reArrangeBoard(board));
+  },
+  removePuyo(board) {
+    dispatch(removePuyoFromBoard(board));
+  },
+  getNextPuyo(puyo) {
+    dispatch(getPuyo(puyo));
   }
+
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
