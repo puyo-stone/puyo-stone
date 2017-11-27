@@ -14,7 +14,7 @@ class Game extends Component {
     this.gridDimensions = {
       col: 6,
       row: 12,
-      cellSize: 33,
+      cellSize: window.innerHeight/12,
     }
     this.gridDimensions.height = this.gridDimensions.row * this.gridDimensions.cellSize;
     this.gridDimensions.width = this.gridDimensions.col * this.gridDimensions.cellSize;
@@ -69,15 +69,15 @@ class Game extends Component {
 
   render() {
     return (
-      <div>
-            <svg height={this.gridDimensions.height} width={this.gridDimensions.width}>
+        <div id="game">
+            <svg id="grid" height={this.gridDimensions.height} width={this.gridDimensions.width}>
                 <Grid gridDimensions={this.gridDimensions} boardData={this.props.board} />
                 <DroppingPuyo puyo={this.props.puyo} cellSize={this.gridDimensions.cellSize} />
             </svg>
             {
               this.props.score
             }
-      </div>
+        </div>
     )
   }
 }

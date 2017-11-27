@@ -1,14 +1,16 @@
 'use strict'
-import React from 'react'
-import {Router, Route, IndexRedirect, browserHistory} from 'react-router'
-import {render} from 'react-dom'
+import React from 'react';
+import {Router, Route, IndexRedirect, browserHistory} from 'react-router';
+import {render} from 'react-dom';
+import './index.scss';
 
-import WhoAmI from './components/WhoAmI'
-import NotFound from './components/NotFound'
-import Game from './components/Game'
+import WhoAmI from './components/WhoAmI';
+import NotFound from './components/NotFound';
+import Game from './components/Game';
 import store from './store';
 import {Provider} from 'react-redux';
-import firebase from '../fire'
+import firebase from '../fire';
+import StartMenu from './components/StartMenu';
 
 // Get the auth API from Firebase.
 const auth = firebase.auth()
@@ -54,9 +56,8 @@ const App = ({children}) =>
 render(
   <Provider store={store}>
   <Router history={browserHistory}>
-    <Route path="/game" component={Game} />
-    <Route path="/" component={App}>
-    </Route>
+    <Route exact path="/game" component={Game} />
+    <Route path="/" component={StartMenu}/>    
     <Route path='*' component={NotFound}/>
   </Router>
   </Provider>,
