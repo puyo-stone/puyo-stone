@@ -5,8 +5,9 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import board from './board';
 import puyo from './puyoAction';
 import nextPuyo from './nextPuyo';
+import score from './score';
 
-const reducer = combineReducers({ board, puyo, nextPuyo });
+const reducer = combineReducers({ board, puyo, nextPuyo, score });
 
 const middleware = composeWithDevTools(applyMiddleware(
   thunkMiddleware,
@@ -19,3 +20,4 @@ export default store
 export * from './board';
 export * from './nextPuyo';
 export * from './puyoAction';
+export * from './score'
