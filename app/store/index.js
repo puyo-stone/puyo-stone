@@ -5,7 +5,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import board from './board';
 import puyo from './puyoAction';
 
-const reducer = combineReducers({board,puyo});
+const reducer = combineReducers({board, puyo});
 
 const middleware = composeWithDevTools(applyMiddleware(
   thunkMiddleware,
