@@ -113,11 +113,11 @@ h2 {
   background-color: skyblue;
   background-size: 100% 100%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr); 
+  grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
   grid-template-areas:
   "topleft grid topright"
-  "middleleft grid middleright" 
+  "middleleft grid middleright"
   "bottomleft grid bottomright";
 }
 
@@ -164,3 +164,6 @@ h2 {
   }
 }
 
+#pause {
+  background-color: grey;
+}
