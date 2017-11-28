@@ -30,27 +30,22 @@ class Grid extends Component {
             .attr('class', 'row');
 
     row
-            .selectAll('.square')
+            .selectAll('.circ')
             .data(function(d) { return d; })
-            .enter().append('rect')
-            .attr('class', 'square')
-            .attr('x', function(d) {
-              if (d) { return d.col * cellSize } else { return 0 }
+            .enter().append('circle')
+            .attr('class', 'circ')
+            .attr('cx', function(d) {
+              if (d) { return (d.col+0.5) * cellSize } else { return 0 }
             })
-            .attr('y', function(d) {
-              if (d) { return d.row * cellSize } else { return 0 }
+            .attr('cy', function(d) {
+              if (d) { return (d.row+0.5) * cellSize } else { return 0 }
             })
-            .attr('width', function(d) {
-              if (d) { return cellSize } else { return 0 }
-            })
-            .attr('height', function(d) {
-              if (d) { return cellSize } else { return 0 }
+            .attr('r', function(d) {
+              if (d) { return cellSize/2 } else { return 0 }
             })
             .style('fill', function(d) {
               if (d) return d.color
             })
-            .attr('stroke', 'black')
-            .attr('stroke-width', 0.3)
   }
 
   drawGrid() {
