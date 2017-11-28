@@ -49,8 +49,6 @@ class Grid extends Component {
             .style('fill', function(d) {
               if (d) return d.color
             })
-            .attr('stroke', 'black')
-            .attr('stroke-width', 0.3)
   }
 
   drawGrid() {

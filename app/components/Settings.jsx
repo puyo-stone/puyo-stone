@@ -1,7 +1,7 @@
 // settings
 // choose palette
 // set bgm
-// change controls
+// change controls; optional
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
