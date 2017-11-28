@@ -20,6 +20,7 @@ class Grid extends Component {
   populate() {
     const node = this.node;
     const cellSize = this.props.gridDimensions.cellSize;
+    const colors = this.props.colors;
 
     selectAll('.row').remove()
 
@@ -47,7 +48,7 @@ class Grid extends Component {
               if (d) { return cellSize } else { return 0 }
             })
             .style('fill', function(d) {
-              if (d) return d.color
+              if (d) return colors[d.color]
             })
   }
 

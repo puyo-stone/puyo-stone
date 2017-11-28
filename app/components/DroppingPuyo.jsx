@@ -20,6 +20,7 @@ export default class DroppingPuyo extends Component {
     const node = this.node;
     const selectNode = select(node);
     const cellSize = this.props.cellSize;
+    const colors = this.props.colors;
     const data = [this.props.puyo.centerPuyo, this.props.puyo.rotatePuyo]
 
     selectAll('.puyo').remove()
@@ -33,7 +34,7 @@ export default class DroppingPuyo extends Component {
         .attr('y', d => d.row * cellSize)
         .attr('width', cellSize)
         .attr('height', cellSize)
-        .style('fill', d => d.color)
+        .style('fill', d => colors[d.color])
   }
 
   render() {
