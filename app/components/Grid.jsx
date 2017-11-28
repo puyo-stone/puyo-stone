@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { select, selectAll } from 'd3-selection';
+import {transition} from 'd3-transition';
 import { connect } from 'react-redux';
+import * as d3 from 'd3';
 
 class Grid extends Component {
   constructor(props) {
@@ -20,6 +22,7 @@ class Grid extends Component {
   populate() {
     const node = this.node;
     const cellSize = this.props.gridDimensions.cellSize;
+    const blink = this.props.board[5].filter(e => !e).length > 2;
 
     selectAll('.row').remove()
 
@@ -29,23 +32,65 @@ class Grid extends Component {
             .enter().append('g')
             .attr('class', 'row');
 
-    row
-            .selectAll('.circ')
+    const puyoSquare = row
+            .selectAll('.square')
             .data(function(d) { return d; })
-            .enter().append('circle')
-            .attr('class', 'circ')
-            .attr('cx', function(d) {
-              if (d) { return (d.col+0.5) * cellSize } else { return 0 }
+            .enter().append('rect')
+            .attr('class', 'square')
+            .attr('x', function(d) {
+              if (d) { return d.col * cellSize } else { return 0 }
             })
-            .attr('cy', function(d) {
-              if (d) { return (d.row+0.5) * cellSize } else { return 0 }
+            .attr('y', function(d) {
+              if (d) { return d.row * cellSize } else { return 0 }
             })
-            .attr('r', function(d) {
-              if (d) { return cellSize/2 } else { return 0 }
+            .attr('width', function(d) {
+              if (d) { return cellSize } else { return 0 }
+            })
+            .attr('height', function(d) {
+              if (d) { return cellSize } else { return 0 }
+            })
+            .attr('rx', function(d) {
+              if (d) { return cellSize*0.3 } else { return 0 }
+            })
+            .attr('ry', function(d) {
+              if (d) { return cellSize*0.3 } else { return 0 }
             })
             .style('fill', function(d) {
-              if (d) return d.color
+              if (d) return d.color;
             })
+            .transition()
+              .duration(2000)
+              .on('start', function repeat() {
+                d3.active(this)
+                    .attr('rx', function(d) {
+                      if (d) { return cellSize*(0.1+0.4*Math.random()) } else { return 0 }
+                    })
+                    .attr('ry', function(d) {
+                      if (d) { return cellSize*(0.1+0.4*Math.random()) } else { return 0 }
+                    })
+                    .style('fill', function(d) {
+                      if (d && blink) {
+                        console.log('blinking!')
+                        return d.color.slice(0, -2) + `${0.2+Math.random()*0.8})`;
+                      } else if (d && !blink) {
+                        return d.color;
+                      }
+                    })
+                  .transition()
+                    .attr('rx', function(d) {
+                      if (d) { return cellSize*0.1 } else { return 0 }
+                    })
+                    .attr('ry', function(d) {
+                      if (d) { return cellSize*0.1 } else { return 0 }
+                    })
+                    .style('fill', function(d) {
+                      if (d) {
+                        return d.color;
+                      }
+                    })
+                  .transition()
+                    .on('start', repeat);
+              })
   }
 
   drawGrid() {
@@ -90,4 +135,8 @@ class Grid extends Component {
   }
 }
 
-export default Grid;
+const mapStateToProps = state => ({
+  board: state.board
+})
+
+export default connect(mapStateToProps)(Grid);
