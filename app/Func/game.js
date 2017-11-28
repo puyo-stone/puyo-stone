@@ -12,8 +12,8 @@ function timeout(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function puyoRepeatRemoval(board, reArrangeFunc, removePuyoFunc) {
-  let check=true;
+async function puyoRepeatRemoval(board, reArrangeFunc, removePuyoFunc, addToScore, chainCounter, Calc) {
+  let check = true;
   let newBoard = deepCopy(board);
   let puyoRemovalArr=[];
   while (check) {
@@ -27,6 +27,8 @@ async function puyoRepeatRemoval(board, reArrangeFunc, removePuyoFunc) {
       removePuyoFunc(boardAfterPuyoRemove);
       await timeout(300);
       check = true;
+      addToScore(Calc(puyoRemovalArr.length, chainCounter));
+      chainCounter++;
       puyoRemovalArr = [];
       newBoard=boardAfterPuyoRemove;
     }
@@ -180,7 +182,7 @@ export const explosion =async function(board, center, rotate, updateFunc, addToS
     chainCounter++;
   }
   if (explode) {
-    puyoRepeatRemoval(copy, reArrangeFunc, removePuyoFunc);
+    puyoRepeatRemoval(copy, reArrangeFunc, removePuyoFunc, addToScore, chainCounter, scoreCalc);
   }
 }
 
