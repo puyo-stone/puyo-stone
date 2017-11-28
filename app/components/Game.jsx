@@ -3,7 +3,7 @@ import DroppingPuyo from './DroppingPuyo';
 import Grid from './Grid';
 import { connect } from 'react-redux';
 import NextPuyo from './NextPuyo'
-import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore } from '../store/';
+import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore, start, stop } from '../store/';
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
 import { split, explosion } from '../Func/game';
 
@@ -15,11 +15,26 @@ class Game extends Component {
       row: 12,
       cellSize: window.innerHeight / 12,
     }
+    this.state={
+      press: false
+    }
     this.gridDimensions.height = this.gridDimensions.row * this.gridDimensions.cellSize;
     this.gridDimensions.width = this.gridDimensions.col * this.gridDimensions.cellSize;
+    this.gameStart=this.gameStart.bind(this);
+    this.gameStop=this.gameStop.bind(this);
   }
 
-  componentDidMount() {
+  // componentDidMount() {
+
+  // }
+
+  gameStop() {
+
+  }
+
+  gameStart() {
+    this.setState({press: true})
+    this.props.timerStart();
     const arrowMotion = document.addEventListener('keydown', e => {
       if (e.which === 37) {
         if (leftCheck(this.props.board, this.props.puyo)) {
@@ -78,6 +93,13 @@ class Game extends Component {
     intervalManager(true);
   }
 
+  componentWillUpdate() {
+    if (this.props.timer<=0) {
+      this.props.timerStop();
+      this.props.clearCurrent();
+    }
+  }
+
   render() {
     return (
         <div id="game">
@@ -99,6 +121,12 @@ class Game extends Component {
             </div>
             <div id="timer">
                 <h2>Timer</h2>
+                {
+                  this.props.timer
+                }
+            </div>
+            <div>
+            <button onClick={this.gameStart} disabled={ this.state.press }></button>
             </div>
         </div>
     )
@@ -109,7 +137,8 @@ const mapStateToProps = state => ({
   puyo: state.puyo,
   board: state.board,
   score: state.score,
-  nextPuyo: state.nextPuyo
+  nextPuyo: state.nextPuyo,
+  timer: state.timer
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -148,6 +177,12 @@ const mapDispatchToProps = dispatch => ({
   },
   getNextPuyo(puyo) {
     dispatch(getPuyo(puyo));
+  },
+  timerStart() {
+    dispatch(start());
+  },
+  timerStop() {
+    dispatch(stop());
   }
 
 })
