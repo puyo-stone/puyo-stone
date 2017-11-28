@@ -6,8 +6,9 @@ import board from './board';
 import puyo from './puyoAction';
 import nextPuyo from './nextPuyo';
 import score from './score';
+import pause from './pause';
 
-const reducer = combineReducers({ board, puyo, nextPuyo, score });
+const reducer = combineReducers({ board, puyo, nextPuyo, score, pause });
 
 const middleware = composeWithDevTools(applyMiddleware(
   thunkMiddleware,
@@ -20,4 +21,5 @@ export default store
 export * from './board';
 export * from './nextPuyo';
 export * from './puyoAction';
-export * from './score'
+export * from './score';
+export * from './pause';
