@@ -101,6 +101,7 @@ class Game extends Component {
           <div id="pause">
             <div>
               <h2>Paused</h2>
+              
             </div>
           </div>
         }
