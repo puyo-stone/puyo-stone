@@ -1,7 +1,6 @@
-
 body {
   margin: 0;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Bubblegum Sans", Helvetica, Arial, sans-serif;
 }
 
 a {
@@ -130,6 +129,7 @@ h2 {
 
 #score {
   grid-area:topleft;
+  font-size: 2em;
   display: flex;
   flex-flow: column;
   align-items: flex-end;
@@ -142,8 +142,23 @@ h2 {
 
 #timer {
   grid-area: middleleft;
+  font-size: 2em;
   display: flex;
   flex-flow: column;
   align-items: flex-end;
   text-align: center;
+}
+
+#topright {
+  grid-area: topright;
+}
+
+#nextpuyo {
+  display: flex;
+  flex-flow: column;
+  h2 {
+    color: black;
+    display: inline;
+    column-span: none;
+  }
 }

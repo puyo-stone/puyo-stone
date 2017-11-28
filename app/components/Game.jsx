@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import DroppingPuyo from './DroppingPuyo';
 import Grid from './Grid';
 import { connect } from 'react-redux';
-import DroppingPuyo from './DroppingPuyo';
+import NextPuyo from './NextPuyo'
 import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore } from '../store/';
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
 import { split, explosion } from '../Func/game';
@@ -83,7 +84,13 @@ class Game extends Component {
             <svg id="middlegrid" height={this.gridDimensions.height} width={this.gridDimensions.width}>
                 <Grid gridDimensions={this.gridDimensions} boardData={this.props.board} />
                 <DroppingPuyo puyo={this.props.puyo} cellSize={this.gridDimensions.cellSize} />
-            </svg>
+                </svg>
+            <div id="topright">
+                <div id="nextpuyo">
+                <h2>Next Puyo</h2>
+                <NextPuyo puyo={this.props.nextPuyo} cellSize ={this.gridDimensions.cellSize} />
+                </div>
+            </div>
             <div id="score">
                 <p>Score</p>
                     {
