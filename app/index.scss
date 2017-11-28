@@ -18,12 +18,6 @@ a {
     "settings highscore";
 }
 
-
-.top {
-  grid-area: top;
-  background-color: rgb(65, 208, 2);
-}
-
 .singleplayer {
   grid-area: single;
   background-image: url("/images/singleplayer.jpeg");
@@ -157,7 +151,7 @@ h2 {
   display: flex;
   flex-flow: column;
   h2 {
-    color: black;
+    color: white;
     display: inline;
     column-span: none;
   }
