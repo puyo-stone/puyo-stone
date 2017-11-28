@@ -37,12 +37,12 @@ class Game extends Component {
       }
 
       // 32 = space
-      if (e.which === 32) {
-        intervalManager(false);
-      }
-      if (e.which === 84) {
-        intervalManager(true);
-      }
+      // if (e.which === 32) {
+      //   intervalManager(false);
+      // }
+      // if (e.which === 84) {
+      //   intervalManager(true);
+      // }
 
       // 80 = p key, this is pause button
       // 65 is a key
@@ -90,7 +90,7 @@ class Game extends Component {
         clearInterval(intervalStatus);
       }
     }
-    intervalManager(true);
+    intervalManager(false);
   }
 
   render() {
