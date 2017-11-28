@@ -216,6 +216,12 @@ export function gameOver(board, puyo) {
       } else {
         return false;
       }
+    } else {
+      if (centerPuyo.row===0 && board[centerPuyo.row+1][centerPuyo.col]) {
+        return true;
+      } else {
+        return false;
+      }
     }
   } else {
     if (board[0][3]) {

@@ -18,7 +18,8 @@ class Game extends Component {
     }
     this.state = {
       press: false,
-      gameOver: false
+      gameOver: false,
+      done: false
     }
     this.gridDimensions.height = this.gridDimensions.row * this.gridDimensions.cellSize;
     this.gridDimensions.width = this.gridDimensions.col * this.gridDimensions.cellSize;
@@ -32,24 +33,27 @@ class Game extends Component {
 
   gameStop() {
     if (this.state.gameOver) {
+      this.setState({gameOver: false});
+      this.setState({done: true})
       this.props.timerStop();
       this.props.clearCurrent();
-      this.setState({gameOver: false});
+      this.gameStart();
     }
   }
 
   componentWillUpdate() {
-    if (this.state.gameOver) {
+    if (this.state.gameOver&&!this.state.done) {
       this.gameStop();
     }
   }
 
   gameStart() {
     let intervalStatus = null;
+    let arrowMotion;
     if (!this.state.gameOver) {
       this.setState({ press: true })
       this.props.timerStart();
-      const arrowMotion = document.addEventListener('keydown', e => {
+      arrowMotion = document.addEventListener('keydown', e => {
         // 32 = space
         // 89 = y
         // 80 is p
@@ -60,35 +64,38 @@ class Game extends Component {
             intervalManager(false);
           } else {
             this.props.turnPauseOff();
-            this.props.timerStart();
+            if (!this.state.done) {
+              this.props.timerStart();
+            }
             intervalManager(true);
           }
         }
-
-        if (!this.props.pause) {
-          if (e.which === 81 || e.which === 37) {
-            if (leftCheck(this.props.board, this.props.puyo)) {
-              this.props.left(this.props.puyo);
+        if (!this.state.done) {
+          if (!this.props.pause) {
+            if (e.which === 81 || e.which === 37) {
+              if (leftCheck(this.props.board, this.props.puyo)) {
+                this.props.left(this.props.puyo);
+              }
             }
-          }
-          if (e.which === 69 || e.which === 39) {
-            if (rightCheck(this.props.board, this.props.puyo)) {
-              this.props.right(this.props.puyo);
+            if (e.which === 69 || e.which === 39) {
+              if (rightCheck(this.props.board, this.props.puyo)) {
+                this.props.right(this.props.puyo);
+              }
             }
-          }
-          if (e.which === 87 || e.which === 40) {
-            if (bottomCheck(this.props.board, this.props.puyo)) {
-              this.props.gravity(this.props.puyo);
+            if (e.which === 87 || e.which === 40) {
+              if (bottomCheck(this.props.board, this.props.puyo)) {
+                this.props.gravity(this.props.puyo);
+              }
             }
-          }
-          if (e.which === 85 || e.which === 83) {
-            if (rotateACheck(this.props.board, this.props.puyo)) {
-              this.props.rotatePuyoA(this.props.puyo);
+            if (e.which === 85 || e.which === 83) {
+              if (rotateACheck(this.props.board, this.props.puyo)) {
+                this.props.rotatePuyoA(this.props.puyo);
+              }
             }
-          }
-          if (e.which === 73 || e.which === 65) {
-            if (rotateBCheck(this.props.board, this.props.puyo)) {
-              this.props.rotatePuyoB(this.props.puyo);
+            if (e.which === 73 || e.which === 65) {
+              if (rotateBCheck(this.props.board, this.props.puyo)) {
+                this.props.rotatePuyoB(this.props.puyo);
+              }
             }
           }
         }
@@ -125,7 +132,7 @@ class Game extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (gameOver(this.props.board, this.props.puyo)===false && gameOver(nextProps.board, nextProps.puyo)) {
+    if ((gameOver(this.props.board, this.props.puyo)===false && gameOver(nextProps.board, nextProps.puyo)) || nextProps.timer===0) {
       this.setState({
         gameOver: true
       })
@@ -155,17 +162,17 @@ class Game extends Component {
 
         <div id="game">
 
-          <svg id="middlegrid" height={this.gridDimensions.height} width={this.gridDimensions.width}>
-            <Grid gridDimensions={this.gridDimensions} boardData={this.props.board} />
-            <DroppingPuyo puyo={this.props.puyo} cellSize={this.gridDimensions.cellSize} />
-          </svg>
+            <svg id="middlegrid" height={this.gridDimensions.height} width={this.gridDimensions.width}>
+                <Grid gridDimensions={this.gridDimensions} boardData={this.props.board} colors={this.props.puyoColors}/>
+                <DroppingPuyo puyo={this.props.puyo} cellSize={this.gridDimensions.cellSize} colors={this.props.puyoColors}/>
+                </svg>
 
-          <div id="topright">
-            <div id="nextpuyo">
-              <h2>Next Puyo</h2>
-              <NextPuyo puyo={this.props.nextPuyo} cellSize={this.gridDimensions.cellSize} />
+            <div id="topright">
+                <div id="nextpuyo">
+                <h2>Next Puyo</h2>
+                <NextPuyo puyo={this.props.nextPuyo} cellSize ={this.gridDimensions.cellSize} colors={this.props.puyoColors}/>
+                </div>
             </div>
-          </div>
 
           <div id="score">
             <h2>Score</h2>
@@ -195,6 +202,7 @@ const mapStateToProps = state => ({
   board: state.board,
   score: state.score,
   nextPuyo: state.nextPuyo,
+  puyoColors: state.puyoColors,
   timer: state.timer,
   pause: state.pause
 })
