@@ -13,13 +13,13 @@ export const pauseOff = () => ({
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case ACTIVE:
-      state = true;
-      return state;
-    case INACTIVE:
-      state = false;
-      return state;
-    default:
-      return state;
+  case ACTIVE:
+    state = true;
+    return state;
+  case INACTIVE:
+    state = false;
+    return state;
+  default:
+    return state;
   }
 }

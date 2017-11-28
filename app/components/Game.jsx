@@ -46,14 +46,15 @@ class Game extends Component {
 
       // 80 = p key, this is pause button
       // 65 is a key
-      if (e.which === 81) {
-        if (!this.props.pause) {
+      if (e.which === 80) {
+        if (this.props.pause) {
         // pause if off, turning it on
-          intervalManager(false);
+          this.props.turnPauseOff();
         } else {
         // pause is on, turning it off
-          intervalManager(true);
+          this.props.turnPauseOn();
         }
+        intervalManager(this.props.pause);
       }
 
       if (e.which === 87) {
@@ -70,33 +71,25 @@ class Game extends Component {
     let intervalStatus = null;
 
     const intervalManager = (flag) => {
-    this.props.turnPauseOff();
-    console.log(this.props.pause)
-      if (!this.props.pause) {
-        if (flag) {
-          intervalStatus = setInterval(() => {
-            if (Object.keys(this.props.puyo).length > 0) {
-              if (bottomCheck(this.props.board, this.props.puyo)) {
-                this.props.gravity(this.props.puyo)
-              } else {
-                const puyo = this.props.puyo;
-                this.props.clearCurrent();
-                const { board, rotate, center } = split(this.props.board, puyo, this.props.updateBoard);
-                explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore, this.props.reArrange, this.props.removePuyo);
-                this.props.getNextPuyo(this.props.nextPuyo);
-                this.props.create();
-              }
+      if (!flag) {
+        intervalStatus = setInterval(() => {
+          if (Object.keys(this.props.puyo).length > 0) {
+            if (bottomCheck(this.props.board, this.props.puyo)) {
+              this.props.gravity(this.props.puyo)
+            } else {
+              const puyo = this.props.puyo;
+              this.props.clearCurrent();
+              const { board, rotate, center } = split(this.props.board, puyo, this.props.updateBoard);
+              explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore, this.props.reArrange, this.props.removePuyo);
+              this.props.getNextPuyo(this.props.nextPuyo);
+              this.props.create();
             }
-          }, 500);
-        }
+          }
+        }, 500);
       } else {
-        // pause is on and true
         clearInterval(intervalStatus);
-        this.props.turnPauseOn();
-
       }
     }
-
     intervalManager(true);
   }
 
@@ -183,10 +176,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(getPuyo(puyo));
   },
   turnPauseOn() {
-    dispatch(pauseOn);
+    dispatch(pauseOn());
   },
   turnPauseOff() {
-    dispatch(pauseOff);
+    dispatch(pauseOff());
   }
 })
 
