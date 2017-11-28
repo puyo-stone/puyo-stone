@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import DroppingPuyo from './DroppingPuyo';
 import Grid from './Grid';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import DroppingPuyo from './DroppingPuyo';
 import NextPuyo from './NextPuyo'
-import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore, pauseOn, pauseOff } from '../store/';
+import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore, resetScore, newBoardAction, pauseOn, pauseOff } from '../store/';
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
 import { split, explosion } from '../Func/game';
 
@@ -36,7 +36,6 @@ class Game extends Component {
           this.props.turnPauseOff();
           intervalManager(true);
         }
-        intervalManager(this.props.pause);
       }
 
       if (!this.props.pause) {
@@ -94,6 +93,12 @@ class Game extends Component {
     intervalManager(true);
   }
 
+  onClickHandler() {
+    this.props.scoreReset();
+    this.props.turnPauseOff();
+    this.props.newBoard();
+  }
+
   render() {
     const pauseStatus = this.props.pause;
     return (
@@ -103,7 +108,8 @@ class Game extends Component {
           <div id="pause">
             <div>
               <h2>Paused</h2>
-
+              <Link to="/game" onClick={this.onClickHandler} >Reset___</Link>
+              <Link to="/" onClick={this.onClickHandler} >___Return to main menu</Link>
             </div>
           </div>
         }
@@ -183,6 +189,12 @@ const mapDispatchToProps = dispatch => ({
   },
   getNextPuyo(puyo) {
     dispatch(getPuyo(puyo));
+  },
+  newBoard() {
+    dispatch(newBoardAction());
+  },
+  scoreReset() {
+    dispatch(resetScore());
   },
   turnPauseOn() {
     dispatch(pauseOn());

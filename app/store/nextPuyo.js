@@ -1,7 +1,7 @@
 import DoublePuyo from '../Func/DoublePuyo';
 const CREATE_PUYO = 'CREATE_PUYO';
 
-const init= new DoublePuyo();
+const init = new DoublePuyo();
 
 export const createPuyoAction = () => ({
   type: CREATE_PUYO
