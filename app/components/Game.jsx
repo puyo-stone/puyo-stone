@@ -22,6 +22,7 @@ class Game extends Component {
     const arrowMotion = document.addEventListener('keydown', e => {
 
       // 32 = space
+<<<<<<< HEAD
       // 89 = y
       // 80 is p
       if (e.which === 89 || e.which === 80) {
@@ -33,7 +34,26 @@ class Game extends Component {
         if (this.props.pause) {
           this.props.turnPauseOff();
           intervalManager(true);
+=======
+      // if (e.which === 32) {
+      //   intervalManager(false);
+      // }
+      // if (e.which === 84) {
+      //   intervalManager(true);
+      // }
+
+      // 80 = p key, this is pause button
+      // 65 is a key
+      if (e.which === 80) {
+        if (this.props.pause) {
+        // pause if off, turning it on
+          this.props.turnPauseOff();
+        } else {
+        // pause is on, turning it off
+          this.props.turnPauseOn();
+>>>>>>> 84b42767b606e8b737a07b544d821c8e27895d87
         }
+        intervalManager(this.props.pause);
       }
 
       if (!this.props.pause) {
@@ -68,7 +88,11 @@ class Game extends Component {
     let intervalStatus = null;
 
     const intervalManager = (flag) => {
+<<<<<<< HEAD
       if (flag) {
+=======
+      if (!flag) {
+>>>>>>> 84b42767b606e8b737a07b544d821c8e27895d87
         intervalStatus = setInterval(() => {
           if (Object.keys(this.props.puyo).length > 0) {
             if (bottomCheck(this.props.board, this.props.puyo)) {
@@ -82,6 +106,7 @@ class Game extends Component {
               this.props.create();
             }
           }
+<<<<<<< HEAD
         }, 500)
       }
       else {
@@ -89,6 +114,14 @@ class Game extends Component {
       }
     }
     intervalManager(true);
+=======
+        }, 500);
+      } else {
+        clearInterval(intervalStatus);
+      }
+    }
+    intervalManager(false);
+>>>>>>> 84b42767b606e8b737a07b544d821c8e27895d87
   }
 
   render() {
