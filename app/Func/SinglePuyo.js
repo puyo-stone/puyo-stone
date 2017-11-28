@@ -1,3 +1,8 @@
+export const palettes = [
+  ['#ffe3e3', '#fffdda', '#e0ffdc', '#ccfff6', '#deddff'],
+  ['#deddff', '#fffdda', '#e0ffdc', '#ccfff6', '#ffe3e3']
+];
+
 const colors = ['#ffe3e3', '#fffdda', '#e0ffdc', '#ccfff6', '#deddff'];
 
 function randomColor() {

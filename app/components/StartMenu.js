@@ -13,9 +13,8 @@ class StartMenu extends Component {
                     <h1>MultiPlayer!</h1>
                     <h2>(Coming Soon!)</h2>
                 </Link>
-                <Link className="start overlay settings">
+                <Link to="/settings" className="start overlay settings">
                     <h1>Settings!</h1>
-                    <h2>(Coming Soon!)</h2>
                 </Link>
                 <Link to="/tutorial" className="start overlay tutorial">
                     <h1>Tutorial!</h1>

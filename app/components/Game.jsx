@@ -20,83 +20,74 @@ class Game extends Component {
 
   componentDidMount() {
     const arrowMotion = document.addEventListener('keydown', e => {
-      if (e.which === 37) {
-        if (leftCheck(this.props.board, this.props.puyo)) {
-          this.props.left(this.props.puyo);
-        }
-      }
-      if (e.which === 39) {
-        if (rightCheck(this.props.board, this.props.puyo)) {
-          this.props.right(this.props.puyo);
-        }
-      }
-      if (e.which === 40) {
-        if (bottomCheck(this.props.board, this.props.puyo)) {
-          this.props.gravity(this.props.puyo);
-        }
-      }
 
       // 32 = space
-      if (e.which === 32) {
-        intervalManager(false);
-      }
-      if (e.which === 84) {
-        intervalManager(true);
-      }
-
-      // 80 = p key, this is pause button
-      // 65 is a key
-      if (e.which === 81) {
+      // 89 = y
+      // 80 is p
+      if (e.which === 89 || e.which === 80) {
         if (!this.props.pause) {
-        // pause if off, turning it on
+          this.props.turnPauseOn();
           intervalManager(false);
-        } else {
-        // pause is on, turning it off
+          return;
+        }
+        if (this.props.pause) {
+          this.props.turnPauseOff();
           intervalManager(true);
         }
       }
 
-      if (e.which === 87) {
-        if (rotateACheck(this.props.board, this.props.puyo)) {
-          this.props.rotatePuyoA(this.props.puyo);
+      if (!this.props.pause) {
+        if (e.which === 81 || e.which === 37) {
+          if (leftCheck(this.props.board, this.props.puyo)) {
+            this.props.left(this.props.puyo);
+          }
         }
-      }
-      if (e.which === 65) {
-        if (rotateBCheck(this.props.board, this.props.puyo)) {
-          this.props.rotatePuyoB(this.props.puyo);
+        if (e.which === 69 || e.which === 39) {
+          if (rightCheck(this.props.board, this.props.puyo)) {
+            this.props.right(this.props.puyo);
+          }
+        }
+        if (e.which === 87 || e.which === 40) {
+          if (bottomCheck(this.props.board, this.props.puyo)) {
+            this.props.gravity(this.props.puyo);
+          }
+        }
+        if (e.which === 85 || e.which === 83) {
+          if (rotateACheck(this.props.board, this.props.puyo)) {
+            this.props.rotatePuyoA(this.props.puyo);
+          }
+        }
+        if (e.which === 73 || e.which === 65) {
+          if (rotateBCheck(this.props.board, this.props.puyo)) {
+            this.props.rotatePuyoB(this.props.puyo);
+          }
         }
       }
     })
+
     let intervalStatus = null;
 
     const intervalManager = (flag) => {
-    this.props.turnPauseOff();
-    console.log(this.props.pause)
-      if (!this.props.pause) {
-        if (flag) {
-          intervalStatus = setInterval(() => {
-            if (Object.keys(this.props.puyo).length > 0) {
-              if (bottomCheck(this.props.board, this.props.puyo)) {
-                this.props.gravity(this.props.puyo)
-              } else {
-                const puyo = this.props.puyo;
-                this.props.clearCurrent();
-                const { board, rotate, center } = split(this.props.board, puyo, this.props.updateBoard);
-                explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore, this.props.reArrange, this.props.removePuyo);
-                this.props.getNextPuyo(this.props.nextPuyo);
-                this.props.create();
-              }
+      if (flag) {
+        intervalStatus = setInterval(() => {
+          if (Object.keys(this.props.puyo).length > 0) {
+            if (bottomCheck(this.props.board, this.props.puyo)) {
+              this.props.gravity(this.props.puyo)
+            } else {
+              const puyo = this.props.puyo;
+              this.props.clearCurrent();
+              const { board, rotate, center } = split(this.props.board, puyo, this.props.updateBoard);
+              explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore, this.props.reArrange, this.props.removePuyo);
+              this.props.getNextPuyo(this.props.nextPuyo);
+              this.props.create();
             }
-          }, 500);
-        }
-      } else {
-        // pause is on and true
+          }
+        }, 500)
+      }
+      else {
         clearInterval(intervalStatus);
-        this.props.turnPauseOn();
-
       }
     }
-
     intervalManager(true);
   }
 
@@ -183,10 +174,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(getPuyo(puyo));
   },
   turnPauseOn() {
-    dispatch(pauseOn);
+    dispatch(pauseOn());
   },
   turnPauseOff() {
-    dispatch(pauseOff);
+    dispatch(pauseOff());
   }
 })
 
