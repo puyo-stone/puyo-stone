@@ -137,7 +137,6 @@ const getNeighbor = (board, puyo) => {
   if (board[puyo.row][puyo.col - 1] && board[puyo.row][puyo.col - 1].color === puyo.color) {
     result.push(board[puyo.row][puyo.col - 1]);
   }
-
   return result;
 }
 
@@ -158,11 +157,14 @@ const getAllConnection = (board, puyo, visit) => {
   return result.length >= 4 ? result : [];
 }
 
-export const explosion =async function(board, center, rotate, updateFunc, reArrangeFunc, removePuyoFunc) {
+export const explosion =async function(board, center, rotate, updateFunc, addToScore, reArrangeFunc, removePuyoFunc) {
   let remove = [];
   let explode = false;
   let copy = board;
   let visit = {};
+  let chainCounter = 1;
+  let puyoCounter = 0;
+  const scoreCalc = (puyoCounter, chainCounter) => ((10 * puyoCounter) * chainCounter)
   remove.push(...getAllConnection(board, center, visit));
   if (center.color !== rotate.color) visit = {};
   remove.push(...getAllConnection(board, rotate, visit));
@@ -172,7 +174,10 @@ export const explosion =async function(board, center, rotate, updateFunc, reArra
     await timeout(300);
     explode = true;
     visit = {};
+    puyoCounter = remove.length;
     remove = [];
+    addToScore(scoreCalc(puyoCounter, chainCounter));
+    chainCounter++;
   }
   if (explode) {
     puyoRepeatRemoval(copy, reArrangeFunc, removePuyoFunc);

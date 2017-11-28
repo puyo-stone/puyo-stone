@@ -5,8 +5,8 @@ body {
 }
 
 a {
-  color: inherit; 
-  text-decoration: inherit; 
+  color: inherit;
+  text-decoration: inherit;
 }
 
 .container {
@@ -14,7 +14,7 @@ a {
   height: 100vh;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  grid-template-areas: 
+  grid-template-areas:
     "single multiplayer"
     "settings highscore";
 }
@@ -25,36 +25,36 @@ a {
   background-color: rgb(65, 208, 2);
 }
 
-.single {
+.singleplayer {
   grid-area: single;
-  background-image: url("https://i.imgur.com/2Kt5T7a.jpg");
+  background-image: url("/images/singleplayer.jpeg");
   background-size: 100% 100%
 }
 
 
 .multiplayer {
   grid-area: multiplayer;
-  background-image: url("https://i.imgur.com/ScBTnuS.jpg");
-  background-size: 100% 100%; 
+  background-image: url("/images/multiplayer.jpg");
+  background-size: 100% 100%;
 }
 
 
 .settings {
   grid-area: settings;
-  background-image: url("https://i.imgur.com/Z6NZWF9.jpg");
-  background-size: 100% 100%;     
+  background-image: url("/images/settings.jpg");
+  background-size: 100% 100%;
 }
 
 
-.highscore {
+.tutorial {
   grid-area: highscore;
-  background-image: url("https://i.imgur.com/K13DUQK.jpg");
-  background-size: 100% 100%;  
+  background-image: url("/images/tutorial.jpg");
+  background-size: 100% 100%;
 }
 
 .overlay {
   position: relative;
-  z-index:0;    
+  z-index:0;
 }
 
 .overlay:after {
@@ -65,15 +65,15 @@ a {
   width:100%;
   height:100%;
   opacity: 0.5;
-  z-index:0;  
+  z-index:0;
 }
 
 .overlay:hover:after  {
   opacity: 0;
 }
 
-.single:after {
-  background-color: rgb(253,214,215);  
+.singleplayer:after {
+  background-color: rgb(253,214,215);
 }
 
 .multiplayer:after {
@@ -84,7 +84,7 @@ a {
   background-color: rgb(229,235,197);
 }
 
-.highscore:after {
+.tutorial:after {
   background-color: rgb(221,219,243);
 }
 
@@ -94,7 +94,7 @@ h1 {
   color: white;
   text-shadow:
   3px 3px 0 #000,
--1px -1px 0 #000,  
+-1px -1px 0 #000,
  1px -1px 0 #000,
  -1px 1px 0 #000,
   1px 1px 0 #000;
@@ -105,14 +105,45 @@ h2 {
   color: white;
 }
 
-#game{
+#tutorial {
+  background-color: purple;
+}
+
+#game {
   width: 100vw;
   background-color: skyblue;
   background-size: 100% 100%;
-} 
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-areas:
+  "topleft grid topright"
+  "middleleft grid middleright" 
+  "bottomleft grid bottomright";
+}
 
-#grid {
-  display: block;
-  margin: auto;
+#middlegrid {
+  grid-area: grid;
   background-color: white;
+  margin: auto;
+}
+
+#score {
+  grid-area:topleft;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-end;
+  text-align: center;
+  color: red;
+  p {
+    color: green
+  }
+}
+
+#timer {
+  grid-area: middleleft;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-end;
+  text-align: center;
 }

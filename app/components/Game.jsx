@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Grid from './Grid';
 import { connect } from 'react-redux';
 import DroppingPuyo from './DroppingPuyo';
-import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo } from '../store/';
+import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore } from '../store/';
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
 import { split, explosion } from '../Func/game';
 
@@ -64,7 +64,7 @@ class Game extends Component {
               const puyo = this.props.puyo;
               this.props.clearCurrent();
               const { board, rotate, center } = split(this.props.board, puyo, this.props.updateBoard);
-              explosion(board, center, rotate, this.props.updateBoard, this.props.reArrange, this.props.removePuyo);
+              explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore, this.props.reArrange, this.props.removePuyo);
               this.props.getNextPuyo(this.props.nextPuyo);
               this.props.create();
             }
@@ -79,12 +79,21 @@ class Game extends Component {
 
   render() {
     return (
-      <div id="game">
-        <svg id="grid" height={this.gridDimensions.height} width={this.gridDimensions.width}>
-          <Grid gridDimensions={this.gridDimensions} boardData={this.props.board} />
-          <DroppingPuyo puyo={this.props.puyo} cellSize={this.gridDimensions.cellSize} />
-        </svg>
-      </div>
+        <div id="game">
+            <svg id="middlegrid" height={this.gridDimensions.height} width={this.gridDimensions.width}>
+                <Grid gridDimensions={this.gridDimensions} boardData={this.props.board} />
+                <DroppingPuyo puyo={this.props.puyo} cellSize={this.gridDimensions.cellSize} />
+            </svg>
+            <div id="score">
+                <p>Score</p>
+                    {
+                    this.props.score
+                    }
+            </div>
+            <div id="timer">
+                <p>Timer</p>
+            </div>
+        </div>
     )
   }
 }
@@ -92,6 +101,7 @@ class Game extends Component {
 const mapStateToProps = state => ({
   puyo: state.puyo,
   board: state.board,
+  score: state.score,
   nextPuyo: state.nextPuyo
 })
 
@@ -119,6 +129,9 @@ const mapDispatchToProps = dispatch => ({
   },
   create() {
     dispatch(createPuyoAction());
+  },
+  addToScore(score) {
+    dispatch(updateScore(score));
   },
   reArrange(board) {
     dispatch(reArrangeBoard(board));
