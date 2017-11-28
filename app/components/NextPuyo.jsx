@@ -29,7 +29,7 @@ export default class NextPuyo extends Component {
         .enter().append('rect')
         .attr('class', 'nextpuyo')
         .attr('x', d => cellSize)
-        .attr('y', d => ((d.row+1) * cellSize))
+        .attr('y', d => ((d.row+2) * cellSize))
         .attr('width', cellSize)
         .attr('height', cellSize)
         .style('fill', d => d.color)

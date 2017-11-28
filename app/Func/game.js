@@ -206,3 +206,22 @@ const SearchBoard = (board) => {
   }
   return result;
 }
+
+export function gameOver(board, puyo) {
+  if (Object.keys(puyo).length>0) {
+    const {centerPuyo, rotatePuyo} = puyo;
+    if (centerPuyo.row<0 && rotatePuyo.row<0) {
+      if (board[0][centerPuyo.col]) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  } else {
+    if (board[0][3]) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
