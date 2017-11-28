@@ -8,6 +8,33 @@ export const createNewGrid = () => {
   return defaultGrid;
 }
 
+function timeout(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function puyoRepeatRemoval(board, reArrangeFunc, removePuyoFunc, addToScore, chainCounter, Calc) {
+  let check = true;
+  let newBoard = deepCopy(board);
+  let puyoRemovalArr=[];
+  while (check) {
+    check = false;
+    const boardAfterFillEmptySpace = reArrange(newBoard);
+    reArrangeFunc(boardAfterFillEmptySpace);
+    await timeout(300);
+    puyoRemovalArr = SearchBoard(boardAfterFillEmptySpace);
+    if (puyoRemovalArr.length >= 4) {
+      const boardAfterPuyoRemove = removePuyo(boardAfterFillEmptySpace, puyoRemovalArr);
+      removePuyoFunc(boardAfterPuyoRemove);
+      await timeout(300);
+      check = true;
+      addToScore(Calc(puyoRemovalArr.length, chainCounter));
+      chainCounter++;
+      puyoRemovalArr = [];
+      newBoard=boardAfterPuyoRemove;
+    }
+  }
+}
+
 const deepCopy = (board) => {
   const newBoard = [];
   for (let i = 0; i < board.length; i++) {
@@ -132,7 +159,7 @@ const getAllConnection = (board, puyo, visit) => {
   return result.length >= 4 ? result : [];
 }
 
-export const explosion = (board, center, rotate, updateFunc, addToScore, reArrangeFunc, removePuyoFunc) => {
+export const explosion =async function(board, center, rotate, updateFunc, addToScore, reArrangeFunc, removePuyoFunc) {
   let remove = [];
   let explode = false;
   let copy = board;
@@ -146,6 +173,7 @@ export const explosion = (board, center, rotate, updateFunc, addToScore, reArran
   if (remove.length >= 4) {
     copy = removePuyo(board, remove);
     removePuyoFunc(copy);
+    await timeout(300);
     explode = true;
     visit = {};
     puyoCounter = remove.length;
@@ -153,21 +181,8 @@ export const explosion = (board, center, rotate, updateFunc, addToScore, reArran
     addToScore(scoreCalc(puyoCounter, chainCounter));
     chainCounter++;
   }
-  while (explode) {
-    explode = false;
-    copy = reArrange(copy);
-    reArrangeFunc(copy);
-    remove = SearchBoard(copy);
-    if (remove.length >= 4) {
-      copy = removePuyo(copy, remove);
-      removePuyoFunc(copy);
-      explode = true;
-      visit = {};
-      puyoCounter = remove.length;
-      remove = [];
-      addToScore(scoreCalc(puyoCounter, chainCounter));
-      chainCounter++;
-    }
+  if (explode) {
+    puyoRepeatRemoval(copy, reArrangeFunc, removePuyoFunc, addToScore, chainCounter, scoreCalc);
   }
 }
 
