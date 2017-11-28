@@ -34,8 +34,6 @@ export default class DroppingPuyo extends Component {
         .attr('width', cellSize)
         .attr('height', cellSize)
         .style('fill', d => d.color)
-        .attr('stroke', 'lightgray')
-        .attr('stroke-width', 0.5)
   }
 
   render() {

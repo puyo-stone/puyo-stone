@@ -92,13 +92,13 @@ class Game extends Component {
                 </div>
             </div>
             <div id="score">
-                <p>Score</p>
+                <h2>Score</h2>
                     {
                     this.props.score
                     }
             </div>
             <div id="timer">
-                <p>Timer</p>
+                <h2>Timer</h2>
             </div>
         </div>
     )
