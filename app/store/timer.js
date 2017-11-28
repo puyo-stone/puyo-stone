@@ -1,5 +1,6 @@
 const DECREMENT='DECREMENT';
 const RESET='RESET';
+const STOP='STOP';
 
 const decrement = () => ({
   type: DECREMENT
@@ -7,6 +8,10 @@ const decrement = () => ({
 
 const reset = () => ({
   type: RESET
+})
+
+const stopTime =() => ({
+  type: STOP
 })
 
 let timer = null;
