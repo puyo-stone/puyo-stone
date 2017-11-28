@@ -11,6 +11,8 @@ import store from './store';
 import {Provider} from 'react-redux';
 import firebase from '../fire';
 import StartMenu from './components/StartMenu';
+import Tutorial from './components/Tutorial';
+import Settings from './components/Settings';
 
 // Get the auth API from Firebase.
 const auth = firebase.auth()
@@ -57,7 +59,9 @@ render(
   <Provider store={store}>
   <Router history={browserHistory}>
     <Route exact path="/game" component={Game} />
-    <Route path="/" component={StartMenu}/>    
+    <Route path="/" component={StartMenu}/>
+    <Route path="/settings" component={Settings}/>
+    <Route path="/tutorial" component={Tutorial}/>
     <Route path='*' component={NotFound}/>
   </Router>
   </Provider>,

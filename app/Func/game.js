@@ -8,6 +8,33 @@ export const createNewGrid = () => {
   return defaultGrid;
 }
 
+function timeout(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function puyoRepeatRemoval(board, reArrangeFunc, removePuyoFunc, addToScore, chainCounter, Calc) {
+  let check = true;
+  let newBoard = deepCopy(board);
+  let puyoRemovalArr=[];
+  while (check) {
+    check = false;
+    const boardAfterFillEmptySpace = reArrange(newBoard);
+    reArrangeFunc(boardAfterFillEmptySpace);
+    await timeout(300);
+    puyoRemovalArr = SearchBoard(boardAfterFillEmptySpace);
+    if (puyoRemovalArr.length >= 4) {
+      const boardAfterPuyoRemove = removePuyo(boardAfterFillEmptySpace, puyoRemovalArr);
+      removePuyoFunc(boardAfterPuyoRemove);
+      await timeout(300);
+      check = true;
+      addToScore(Calc(puyoRemovalArr.length, chainCounter));
+      chainCounter++;
+      puyoRemovalArr = [];
+      newBoard=boardAfterPuyoRemove;
+    }
+  }
+}
+
 const deepCopy = (board) => {
   const newBoard = [];
   for (let i = 0; i < board.length; i++) {
@@ -24,56 +51,54 @@ const deepCopy = (board) => {
   return newBoard;
 }
 
-const newBoard = createNewGrid();
-
 export const split = (board, puyo, updateFunc) => {
   const newBoard = deepCopy(board);
 
   const { centerPuyo, rotatePuyo } = puyo;
   const sameCol = centerPuyo.col === rotatePuyo.col;
   const sameRow = centerPuyo.row === rotatePuyo.row;
+  const newCenterPuyo = _.cloneDeep(centerPuyo);
+  const newRotatePuyo = _.cloneDeep(rotatePuyo);
   if (sameCol) {
-    newBoard[centerPuyo.row][centerPuyo.col] = centerPuyo;
-    newBoard[rotatePuyo.row][rotatePuyo.col] = rotatePuyo;
+    newBoard[centerPuyo.row][centerPuyo.col] = newCenterPuyo;
+    newBoard[rotatePuyo.row][rotatePuyo.col] = newRotatePuyo;
     updateFunc(newBoard);
-    return { board: newBoard, center: centerPuyo, rotate: rotatePuyo };
+    return { board: newBoard, center: newCenterPuyo, rotate: newRotatePuyo };
   }
   if (sameRow) {
     if (centerPuyo.row === 11 && rotatePuyo.row === 11) {
-      newBoard[centerPuyo.row][centerPuyo.col] = centerPuyo;
-      newBoard[rotatePuyo.row][rotatePuyo.col] = rotatePuyo;
+      newBoard[centerPuyo.row][centerPuyo.col] = newCenterPuyo;
+      newBoard[rotatePuyo.row][rotatePuyo.col] = newRotatePuyo;
       updateFunc(newBoard);
-      return { board: newBoard, center: centerPuyo, rotate: rotatePuyo };
+      return { board: newBoard, center: newCenterPuyo, rotate: newRotatePuyo };
     }
 
     if (newBoard[centerPuyo.row + 1][centerPuyo.col] && newBoard[rotatePuyo.row + 1][rotatePuyo.col]) {
-      newBoard[centerPuyo.row][centerPuyo.col] = centerPuyo;
-      newBoard[rotatePuyo.row][rotatePuyo.col] = rotatePuyo;
+      newBoard[centerPuyo.row][centerPuyo.col] = newCenterPuyo;
+      newBoard[rotatePuyo.row][rotatePuyo.col] = newRotatePuyo;
       updateFunc(newBoard);
-      return { board: newBoard, center: centerPuyo, rotate: rotatePuyo };
+      return { board: newBoard, center: newCenterPuyo, rotate: newRotatePuyo };
     }
 
     if (newBoard[centerPuyo.row + 1][centerPuyo.col] && newBoard[rotatePuyo.row + 1][rotatePuyo.col] === null) {
-      newBoard[centerPuyo.row][centerPuyo.col] = centerPuyo;
-      const newPuyo = _.cloneDeep(rotatePuyo);
+      newBoard[centerPuyo.row][centerPuyo.col] = newCenterPuyo;
       for (let i = 11; i > rotatePuyo.row; i--) {
         if (newBoard[i][rotatePuyo.col] === null) {
-          newPuyo.row = i;
-          newBoard[i][newPuyo.col] = newPuyo;
+          newRotatePuyo.row = i;
+          newBoard[i][newRotatePuyo.col] = newRotatePuyo;
           updateFunc(newBoard);
-          return { board: newBoard, center: centerPuyo, rotate: newPuyo };
+          return { board: newBoard, center: newCenterPuyo, rotate: newRotatePuyo };
         }
       }
     }
     if (newBoard[rotatePuyo.row + 1][rotatePuyo.col] && newBoard[centerPuyo.row + 1][centerPuyo.col] === null) {
-      newBoard[rotatePuyo.row][rotatePuyo.col] = rotatePuyo;
-      const newPuyo = _.cloneDeep(centerPuyo);
+      newBoard[rotatePuyo.row][rotatePuyo.col] = newRotatePuyo;
       for (let i = 11; i > centerPuyo.row; i--) {
         if (newBoard[i][centerPuyo.col] === null) {
-          newPuyo.row = i;
-          newBoard[i][newPuyo.col] = newPuyo;
+          newCenterPuyo.row = i;
+          newBoard[i][newCenterPuyo.col] = newCenterPuyo;
           updateFunc(newBoard);
-          return { board: newBoard, center: newPuyo, rotate: rotatePuyo };
+          return { board: newBoard, center: newCenterPuyo, rotate: newRotatePuyo };
         }
       }
     }
@@ -114,7 +139,6 @@ const getNeighbor = (board, puyo) => {
   if (board[puyo.row][puyo.col - 1] && board[puyo.row][puyo.col - 1].color === puyo.color) {
     result.push(board[puyo.row][puyo.col - 1]);
   }
-
   return result;
 }
 
@@ -135,33 +159,31 @@ const getAllConnection = (board, puyo, visit) => {
   return result.length >= 4 ? result : [];
 }
 
-export const explosion = (board, center, rotate, updateFunc) => {
+export const explosion =async function(board, center, rotate, updateFunc, addToScore, reArrangeFunc, removePuyoFunc) {
+  await timeout(125);
   let remove = [];
-  let expose = false;
+  let explode = false;
   let copy = board;
   let visit = {};
+  let chainCounter = 1;
+  let puyoCounter = 0;
+  const scoreCalc = (puyoCounter, chainCounter) => ((10 * puyoCounter) * chainCounter)
   remove.push(...getAllConnection(board, center, visit));
   if (center.color !== rotate.color) visit = {};
   remove.push(...getAllConnection(board, rotate, visit));
   if (remove.length >= 4) {
     copy = removePuyo(board, remove);
-    updateFunc(copy);
-    expose = true;
+    removePuyoFunc(copy);
+    await timeout(300);
+    explode = true;
     visit = {};
+    puyoCounter = remove.length;
     remove = [];
+    addToScore(scoreCalc(puyoCounter, chainCounter));
+    chainCounter++;
   }
-  while (expose) {
-    expose = false;
-    copy = reArrange(copy);
-    updateFunc(copy);
-    remove = SearchBoard(copy);
-    if (remove.length >= 4) {
-      copy = removePuyo(copy, remove);
-      updateFunc(copy);
-      expose = true;
-      visit = {};
-      remove = [];
-    }
+  if (explode) {
+    puyoRepeatRemoval(copy, reArrangeFunc, removePuyoFunc, addToScore, chainCounter, scoreCalc);
   }
 }
 

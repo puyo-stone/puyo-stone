@@ -1,4 +1,3 @@
-
 // A is clockwise, B is counter-clockwise
 export const rotateAFunc = (puyo) => {
   puyo.positions++;

@@ -22,7 +22,6 @@ class Grid extends Component {
   populate() {
     const node = this.node;
     const cellSize = this.props.gridDimensions.cellSize;
-    const blink = this.props.board[5].filter(e => !e).length > 2;
 
     selectAll('.row').remove()
 
@@ -68,25 +67,12 @@ class Grid extends Component {
                     .attr('ry', function(d) {
                       if (d) { return cellSize*(0.1+0.4*Math.random()) } else { return 0 }
                     })
-                    .style('fill', function(d) {
-                      if (d && blink) {
-                        console.log('blinking!')
-                        return d.color.slice(0, -2) + `${0.2+Math.random()*0.8})`;
-                      } else if (d && !blink) {
-                        return d.color;
-                      }
-                    })
                   .transition()
                     .attr('rx', function(d) {
                       if (d) { return cellSize*0.1 } else { return 0 }
                     })
                     .attr('ry', function(d) {
                       if (d) { return cellSize*0.1 } else { return 0 }
-                    })
-                    .style('fill', function(d) {
-                      if (d) {
-                        return d.color;
-                      }
                     })
                   .transition()
                     .on('start', repeat);
