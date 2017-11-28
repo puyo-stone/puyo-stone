@@ -160,6 +160,7 @@ const getAllConnection = (board, puyo, visit) => {
 }
 
 export const explosion =async function(board, center, rotate, updateFunc, addToScore, reArrangeFunc, removePuyoFunc) {
+  await timeout(125);
   let remove = [];
   let explode = false;
   let copy = board;
