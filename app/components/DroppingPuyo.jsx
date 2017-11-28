@@ -26,6 +26,7 @@ export default class DroppingPuyo extends Component {
     centerPuyo.poly = poly;
     rotatePuyo.poly = poly;
     const data = [centerPuyo, rotatePuyo]
+    const colors = this.props.colors;
 
     selectAll('.puyo').remove()
     const puyo = selectNode
@@ -35,8 +36,8 @@ export default class DroppingPuyo extends Component {
     .attr('class', 'puyo')
     .attr('points', d => d.poly.map(e => [((e.x) / 200 + d.col) * cellSize, ((e.y) / 200 + d.row)* cellSize].join(',')).join(' '))
     .attr('transform', d => `rotate(${Math.random()*90} ${(d.col + 0.5) * cellSize} ${(d.row + 0.5) * cellSize})`)
-    .style('fill', d => d.color)
-    .attr('stroke', d => d.color.slice(0, -2) + '0.5)')
+    .style('fill', d => colors[d.color])
+    .attr('stroke', d => colors[d.color].slice(0, -2) + '0.5)')
     .attr('stroke-width', 20)
   }
 
