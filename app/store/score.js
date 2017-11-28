@@ -15,11 +15,9 @@ export const resetScore = () => ({
 export default function(state = initialState, action) {
   switch(action.type) {
     case UPDATE_SCORE:
-      state += action.score;
-      return state;
+      return state + action.score;
     case RESET_SCORE:
-      state = 0;
-      return state;
+      return 0;
     default:
       return state;
   }
