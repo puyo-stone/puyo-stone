@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import DroppingPuyo from './DroppingPuyo';
 import NextPuyo from './NextPuyo'
-import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore, resetScore, newBoardAction, pauseOn, pauseOff } from '../store/';
+import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore, resetScore, newBoardAction, pauseOn, pauseOff, start, stop } from '../store/';
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
 import { split, explosion } from '../Func/game';
 
@@ -16,24 +16,38 @@ class Game extends Component {
       row: 12,
       cellSize: window.innerHeight / 12,
     }
+    this.state={
+      press: false
+    }
     this.gridDimensions.height = this.gridDimensions.row * this.gridDimensions.cellSize;
     this.gridDimensions.width = this.gridDimensions.col * this.gridDimensions.cellSize;
+    this.gameStart=this.gameStart.bind(this);
+    this.gameStop=this.gameStop.bind(this);
   }
 
-  componentDidMount() {
-    const arrowMotion = document.addEventListener('keydown', e => {
+  // componentDidMount() {
 
+  // }
+
+  gameStop() {
+
+  }
+
+  gameStart() {
+    this.setState({press: true})
+    this.props.timerStart();
+    const arrowMotion = document.addEventListener('keydown', e => {
       // 32 = space
       // 89 = y
       // 80 is p
       if (e.which === 89 || e.which === 80) {
         if (!this.props.pause) {
           this.props.turnPauseOn();
+          this.props.timerStop();
           intervalManager(false);
-          return;
-        }
-        if (this.props.pause) {
+        } else {
           this.props.turnPauseOff();
+          this.props.timerStart();
           intervalManager(true);
         }
       }
@@ -85,14 +99,22 @@ class Game extends Component {
             }
           }
         }, 500)
-      }
-      else {
+      } else {
         clearInterval(intervalStatus);
       }
     }
     intervalManager(true);
   }
 
+  componentWillUpdate() {
+    if (this.props.timer<=0) {
+      this.props.timerStop();
+      this.props.clearCurrent();
+      this.props.scoreReset();
+      this.props.turnPauseOff();
+      this.props.newBoard()
+    }
+  }
   onClickHandler() {
     this.props.scoreReset();
     this.props.turnPauseOff();
@@ -137,6 +159,12 @@ class Game extends Component {
 
             <div id="timer">
                 <h2>Timer</h2>
+                {
+                  this.props.timer
+                }
+            </div>
+            <div>
+            <button onClick={this.gameStart} disabled={ this.state.press }></button>
             </div>
 
         </div>
@@ -150,6 +178,7 @@ const mapStateToProps = state => ({
   board: state.board,
   score: state.score,
   nextPuyo: state.nextPuyo,
+  timer: state.timer,
   pause: state.pause
 })
 
@@ -189,6 +218,12 @@ const mapDispatchToProps = dispatch => ({
   },
   getNextPuyo(puyo) {
     dispatch(getPuyo(puyo));
+  },
+  timerStart() {
+    dispatch(start());
+  },
+  timerStop() {
+    stop();
   },
   newBoard() {
     dispatch(newBoardAction());
