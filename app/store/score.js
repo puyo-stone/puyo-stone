@@ -8,11 +8,11 @@ export const updateScore = (score) => ({
 });
 
 export default function(state = initialState, action) {
-  switch(action.type) {
-    case UPDATE_SCORE:
-      state += action.score;
-      return state;
-    default:
-      return state;
+  switch (action.type) {
+  case UPDATE_SCORE:
+    state += action.score;
+    return state;
+  default:
+    return state;
   }
 };

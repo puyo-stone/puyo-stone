@@ -82,13 +82,13 @@ class Game extends Component {
     return (
         <div id="game">
             <svg id="middlegrid" height={this.gridDimensions.height} width={this.gridDimensions.width}>
-                <Grid gridDimensions={this.gridDimensions} boardData={this.props.board} />
-                <DroppingPuyo puyo={this.props.puyo} cellSize={this.gridDimensions.cellSize} />
+                <Grid gridDimensions={this.gridDimensions} boardData={this.props.board} colors={this.props.puyoColors}/>
+                <DroppingPuyo puyo={this.props.puyo} cellSize={this.gridDimensions.cellSize} colors={this.props.puyoColors}/>
                 </svg>
             <div id="topright">
                 <div id="nextpuyo">
                 <h2>Next Puyo</h2>
-                <NextPuyo puyo={this.props.nextPuyo} cellSize ={this.gridDimensions.cellSize} />
+                <NextPuyo puyo={this.props.nextPuyo} cellSize ={this.gridDimensions.cellSize} colors={this.props.puyoColors}/>
                 </div>
             </div>
             <div id="score">
@@ -109,7 +109,8 @@ const mapStateToProps = state => ({
   puyo: state.puyo,
   board: state.board,
   score: state.score,
-  nextPuyo: state.nextPuyo
+  nextPuyo: state.nextPuyo,
+  puyoColors: state.puyoColors
 })
 
 const mapDispatchToProps = dispatch => ({

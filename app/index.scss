@@ -136,9 +136,7 @@ h2 {
   flex-flow: column;
   align-items: flex-end;
   text-align: center;
-  p {
-    color: green
-  }
+  padding-right: .5em;
 }
 
 #timer {
@@ -148,6 +146,7 @@ h2 {
   flex-flow: column;
   align-items: flex-end;
   text-align: center;
+  padding-right: .5em;
 }
 
 #topright {
