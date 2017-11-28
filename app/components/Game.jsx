@@ -6,7 +6,7 @@ import DroppingPuyo from './DroppingPuyo';
 import NextPuyo from './NextPuyo'
 import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore, resetScore, newBoardAction, pauseOn, pauseOff, start, stop } from '../store/';
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
-import { split, explosion } from '../Func/game';
+import { split, explosion, gameOver } from '../Func/game';
 
 class Game extends Component {
   constructor(props) {
@@ -16,13 +16,15 @@ class Game extends Component {
       row: 12,
       cellSize: window.innerHeight / 12,
     }
-    this.state={
-      press: false
+    this.state = {
+      press: false,
+      gameOver: false,
+      done: false
     }
     this.gridDimensions.height = this.gridDimensions.row * this.gridDimensions.cellSize;
     this.gridDimensions.width = this.gridDimensions.col * this.gridDimensions.cellSize;
-    this.gameStart=this.gameStart.bind(this);
-    this.gameStop=this.gameStop.bind(this);
+    this.gameStart = this.gameStart.bind(this);
+    this.gameStop = this.gameStop.bind(this);
   }
 
   // componentDidMount() {
@@ -30,91 +32,113 @@ class Game extends Component {
   // }
 
   gameStop() {
-
-  }
-
-  gameStart() {
-    this.setState({press: true})
-    this.props.timerStart();
-    const arrowMotion = document.addEventListener('keydown', e => {
-      // 32 = space
-      // 89 = y
-      // 80 is p
-      if (e.which === 89 || e.which === 80) {
-        if (!this.props.pause) {
-          this.props.turnPauseOn();
-          this.props.timerStop();
-          intervalManager(false);
-        } else {
-          this.props.turnPauseOff();
-          this.props.timerStart();
-          intervalManager(true);
-        }
-      }
-
-      if (!this.props.pause) {
-        if (e.which === 81 || e.which === 37) {
-          if (leftCheck(this.props.board, this.props.puyo)) {
-            this.props.left(this.props.puyo);
-          }
-        }
-        if (e.which === 69 || e.which === 39) {
-          if (rightCheck(this.props.board, this.props.puyo)) {
-            this.props.right(this.props.puyo);
-          }
-        }
-        if (e.which === 87 || e.which === 40) {
-          if (bottomCheck(this.props.board, this.props.puyo)) {
-            this.props.gravity(this.props.puyo);
-          }
-        }
-        if (e.which === 85 || e.which === 83) {
-          if (rotateACheck(this.props.board, this.props.puyo)) {
-            this.props.rotatePuyoA(this.props.puyo);
-          }
-        }
-        if (e.which === 73 || e.which === 65) {
-          if (rotateBCheck(this.props.board, this.props.puyo)) {
-            this.props.rotatePuyoB(this.props.puyo);
-          }
-        }
-      }
-    })
-
-    let intervalStatus = null;
-
-    const intervalManager = (flag) => {
-      if (flag) {
-        intervalStatus = setInterval(() => {
-          if (Object.keys(this.props.puyo).length > 0) {
-            if (bottomCheck(this.props.board, this.props.puyo)) {
-              this.props.gravity(this.props.puyo)
-            } else {
-              const puyo = this.props.puyo;
-              this.props.clearCurrent();
-              const { board, rotate, center } = split(this.props.board, puyo, this.props.updateBoard);
-              explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore, this.props.reArrange, this.props.removePuyo);
-              this.props.getNextPuyo(this.props.nextPuyo);
-              this.props.create();
-            }
-          }
-        }, 500)
-      } else {
-        clearInterval(intervalStatus);
-      }
+    if (this.state.gameOver) {
+      this.setState({gameOver: false});
+      this.setState({done: true})
+      this.props.timerStop();
+      this.props.clearCurrent();
+      this.gameStart();
     }
-    intervalManager(true);
   }
 
   componentWillUpdate() {
-    if (this.props.timer<=0) {
-      this.props.timerStop();
-      this.props.clearCurrent();
-      this.props.scoreReset();
-      this.props.turnPauseOff();
-      this.props.newBoard()
+    if (this.state.gameOver&&!this.state.done) {
+      this.gameStop();
     }
   }
+
+  gameStart() {
+    let intervalStatus = null;
+    let arrowMotion;
+    if (!this.state.gameOver) {
+      this.setState({ press: true })
+      this.props.timerStart();
+      arrowMotion = document.addEventListener('keydown', e => {
+        // 32 = space
+        // 89 = y
+        // 80 is p
+        if (e.which === 89 || e.which === 80) {
+          if (!this.props.pause) {
+            this.props.turnPauseOn();
+            this.props.timerStop();
+            intervalManager(false);
+          } else {
+            this.props.turnPauseOff();
+            if (!this.state.done) {
+              this.props.timerStart();
+            }
+            intervalManager(true);
+          }
+        }
+        if (!this.state.done) {
+          if (!this.props.pause) {
+            if (e.which === 81 || e.which === 37) {
+              if (leftCheck(this.props.board, this.props.puyo)) {
+                this.props.left(this.props.puyo);
+              }
+            }
+            if (e.which === 69 || e.which === 39) {
+              if (rightCheck(this.props.board, this.props.puyo)) {
+                this.props.right(this.props.puyo);
+              }
+            }
+            if (e.which === 87 || e.which === 40) {
+              if (bottomCheck(this.props.board, this.props.puyo)) {
+                this.props.gravity(this.props.puyo);
+              }
+            }
+            if (e.which === 85 || e.which === 83) {
+              if (rotateACheck(this.props.board, this.props.puyo)) {
+                this.props.rotatePuyoA(this.props.puyo);
+              }
+            }
+            if (e.which === 73 || e.which === 65) {
+              if (rotateBCheck(this.props.board, this.props.puyo)) {
+                this.props.rotatePuyoB(this.props.puyo);
+              }
+            }
+          }
+        }
+      })
+
+      const intervalManager = (flag) => {
+        if (flag) {
+          intervalStatus = setInterval(() => {
+            if (Object.keys(this.props.puyo).length > 0) {
+              if (bottomCheck(this.props.board, this.props.puyo)) {
+                this.props.gravity(this.props.puyo)
+              } else {
+                if (gameOver(this.props.board, this.props.puyo)) {
+                  this.setState({gameOver: true});
+                  clearInterval(intervalStatus);
+                }
+                const puyo = this.props.puyo;
+                this.props.clearCurrent();
+                const { board, rotate, center } = split(this.props.board, puyo, this.props.updateBoard);
+                explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore, this.props.reArrange, this.props.removePuyo);
+                this.props.getNextPuyo(this.props.nextPuyo);
+                this.props.create();
+              }
+            }
+          }, 500)
+        } else {
+          clearInterval(intervalStatus);
+        }
+      }
+      intervalManager(true);
+    } else {
+      clearInterval(intervalStatus);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if ((gameOver(this.props.board, this.props.puyo)===false && gameOver(nextProps.board, nextProps.puyo)) || nextProps.timer===0) {
+      this.setState({
+        gameOver: true
+      })
+    }
+  }
+
   onClickHandler() {
     this.props.scoreReset();
     this.props.turnPauseOff();
@@ -150,22 +174,22 @@ class Game extends Component {
                 </div>
             </div>
 
-            <div id="score">
-                <h2>Score</h2>
-                    {
-                    this.props.score
-                    }
-            </div>
+          <div id="score">
+            <h2>Score</h2>
+            {
+              this.props.score
+            }
+          </div>
 
-            <div id="timer">
-                <h2>Timer</h2>
-                {
-                  this.props.timer
-                }
-            </div>
-            <div>
-            <button onClick={this.gameStart} disabled={ this.state.press }></button>
-            </div>
+          <div id="timer">
+            <h2>Timer</h2>
+            {
+              this.props.timer
+            }
+          </div>
+          <div>
+            <button onClick={this.gameStart} disabled={this.state.press}></button>
+          </div>
 
         </div>
       </div>

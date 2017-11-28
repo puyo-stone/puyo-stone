@@ -28,12 +28,12 @@ export const resetTimer=() => (dispatch) => {
   dispatch(reset());
 }
 
-export default function(state = 120, action) {
+export default function(state = 99, action) {
   switch (action.type) {
   case DECREMENT:
     return state - 1;
   case RESET:
-    return 120;
+    return 99;
   default:
     return state;
   }

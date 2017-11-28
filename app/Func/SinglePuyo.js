@@ -5,7 +5,7 @@ function randomColor() {
 }
 
 class SinglePuyo {
-  constructor(col = 3, row = 0) {
+  constructor(col = 3, row = -1) {
     this.color = Math.floor(Math.random()*5)
     this.col = col;
     this.row = row;
