@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Modal from 'react-modal';
 import Grid from './Grid';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
@@ -146,22 +147,26 @@ class Game extends Component {
   }
 
   render() {
+    const modalStyle = {
+      overlay: {
+        backgroundColor: 'rgba(255, 255, 255, 0.75)'
+      },
+      content: {
+        backgroundColor: 'rgb(135,206,235)',
+        borderRadius: '4px',
+        backgroundRepeat: 'no-repeat',
+        outline: 'none',
+        height: '300px',
+        width: '300px',
+        padding: '20px',
+        margin: 'auto',
+      }
+    }
+
     const pauseStatus = this.props.pause;
     return (
-      <div>
-        {
-          pauseStatus &&
-          <div id="pause">
-            <div>
-              <h2>Paused</h2>
-              <Link to="/game" onClick={this.onClickHandler} >Reset___</Link>
-              <Link to="/" onClick={this.onClickHandler} >___Return to main menu</Link>
-            </div>
-          </div>
-        }
 
         <div id="game">
-
             <svg id="middlegrid" height={this.gridDimensions.height} width={this.gridDimensions.width}>
                 <Grid gridDimensions={this.gridDimensions} boardData={this.props.board} colors={this.props.puyoColors}/>
                 <DroppingPuyo puyo={this.props.puyo} cellSize={this.gridDimensions.cellSize} colors={this.props.puyoColors}/>
@@ -188,11 +193,37 @@ class Game extends Component {
             }
           </div>
           <div>
-            <button onClick={this.gameStart} disabled={this.state.press}></button>
+            <button onClick={this.gameStart} disabled={this.state.press}>Start Game!</button>
           </div>
-
+          <Modal isOpen={pauseStatus} style={modalStyle}>
+          <div id="pause">
+            <div>
+              <h1>Paused</h1>
+              <Link to='/game'>
+              <h3 onClick={this.onClickHandler}> Reset! </h3>
+              </Link>
+              <Link to ='/'>
+              <h3 onClick={this.onClickHandler}> Return to Main Menu! </h3>
+              </Link>
+            </div>
+          </div>
+          </Modal>
+          <Modal isOpen={this.state.done} style={modalStyle}>
+          <div id="gameover">
+            <div>
+              <h1>GAME OVER!</h1>
+              <h3>Thank You For Playing!</h3>
+              <h3>Your Score is {this.props.score} </h3>
+              <Link to='/game'>
+              <h3 onClick={this.onClickHandler}> Reset! </h3>
+              </Link>
+              <Link to ='/'>
+              <h3 onClick={this.onClickHandler}> Return to Main Menu! </h3>
+              </Link>
+            </div>
+          </div>
+          </Modal>
         </div>
-      </div>
     )
   }
 }
