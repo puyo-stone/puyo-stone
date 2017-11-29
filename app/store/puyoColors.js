@@ -1,5 +1,5 @@
 const init = {
-  currentPalette: ['rgba(255,227,227,1)', 'rgba(255,253,218,1)', 'rgba(224,255,220,1)', 'rgba(204,255,246,1)', 'rgba(222,221,255,1)'],
+  currentPalette: ['rgba(255,0,0,1)', 'rgba(255, 255, 0,1)', 'rgba(0, 255, 0,1)', 'rgba(0, 0, 255,1)', 'rgba(148, 0, 211,1)'],
   palettes: [
     {title: 'Pale Skies', palette: ['rgba(255,227,227,1)', 'rgba(255,253,218,1)', 'rgba(224,255,220,1)', 'rgba(204,255,246,1)', 'rgba(222,221,255,1)']},
     {title: 'High Saturation', palette: ['rgba(255,0,0,1)', 'rgba(255, 255, 0,1)', 'rgba(0, 255, 0,1)', 'rgba(0, 0, 255,1)', 'rgba(148, 0, 211,1)']},
