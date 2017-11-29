@@ -33,6 +33,7 @@ async function puyoRepeatRemoval(board, reArrangeFunc, removePuyoFunc, addToScor
       newBoard=boardAfterPuyoRemove;
     }
   }
+  return newBoard;
 }
 
 const deepCopy = (board) => {
@@ -183,7 +184,7 @@ export const explosion =async function(board, center, rotate, updateFunc, addToS
     chainCounter++;
   }
   if (explode) {
-    puyoRepeatRemoval(copy, reArrangeFunc, removePuyoFunc, addToScore, chainCounter, scoreCalc);
+    const returnBoard=puyoRepeatRemoval(copy, reArrangeFunc, removePuyoFunc, addToScore, chainCounter, scoreCalc);
   }
 }
 
@@ -208,20 +209,11 @@ const SearchBoard = (board) => {
 }
 
 export function gameOver(board, puyo) {
-  if (Object.keys(puyo).length>0) {
-    const {centerPuyo, rotatePuyo} = puyo;
-    if (centerPuyo.row<0 && rotatePuyo.row<0) {
-      if (board[0][centerPuyo.col]) {
-        return true;
-      } else {
-        return false;
-      }
+  if (puyo.centerPuyo) {
+    if (board[1][puyo.centerPuyo.col]&&puyo.centerPuyo.row===0) {
+      return true;
     } else {
-      if (centerPuyo.row===0 && board[centerPuyo.row+1][centerPuyo.col]) {
-        return true;
-      } else {
-        return false;
-      }
+      return false;
     }
   } else {
     if (board[0][3]) {
