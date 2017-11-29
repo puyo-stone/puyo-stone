@@ -15,7 +15,7 @@ class Settings extends Component {
   render() {
     return (
       <div id="tutorial">
-        <h1>setting test</h1>
+        <h1>Settings</h1>
         <SongSelector />
         <ColorSelector />
         <Link to="/game"><button type="button" className="btn btn-default">Back to SingleGame</button></Link>
