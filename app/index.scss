@@ -8,6 +8,18 @@ a {
   text-decoration: none;
 }
 
+.controlOne {
+  z-index: 1;
+  background-image: url("/images/controls1.jpg");
+  background-repeat: no-repeat;
+}
+
+.controlTwo {
+  z-index: 1;
+  background-image: url("/images/controls2.jpg");
+  background-repeat: no-repeat;
+}
+
 .menu {
   display: grid;
   height: 100vh;
@@ -101,8 +113,49 @@ h2 {
   color: white;
 }
 
+h3 {
+  padding-left: .3em;
+  padding-left: 1em;
+  color: white;
+  text-shadow:
+  3px 3px 0 #000,
+-1px -1px 0 #000,
+ 1px -1px 0 #000,
+ -1px 1px 0 #000,
+  1px 1px 0 #000;
+}
+
+h4 {
+  padding-left: .4em;
+  padding-left: 1em;
+  color: white;
+  text-shadow:
+  3px 3px 0 #000,
+-1px -1px 0 #000,
+ 1px -1px 0 #000,
+ -1px 1px 0 #000,
+  1px 1px 0 #000;
+}
+
+p {
+  color: black;
+}
+
+#control1 {
+  background-color: skyblue;
+  grid-area: bottomleft;
+  background-position: center;
+}
+
+#control2 {
+  background-color: skyblue;
+  grid-area: bottomright;
+  background-position: center;
+}
+
 #tutorial {
-  background-color: purple;
+  background-color: skyblue;
+  text-align: center;
 }
 
 #game {
@@ -146,16 +199,22 @@ h2 {
   padding-right: .5em;
 }
 
-#gameMusic {
-  grid-area: bottomleft;
+#middleright {
+  grid-area: middleright;
   display: flex;
-  flex-flow: column;
-  align-items: flex-end;
-  padding-right: 1em;
+  justify-content: space-around;
+}
+
+#gameMusic {
+
+
 }
 
 #topright {
   grid-area: topright;
+}
+
+#start {
 }
 
 #nextpuyo {
