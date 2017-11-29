@@ -59,7 +59,12 @@ class Grid extends Component {
               if (d) return colors[d.color]
             })
             .transition()
-              .duration(2000)
+              .duration(1000)
+              .delay(function(d) {
+                if (d) {
+                  return d.col*1000+d.row*200;
+                }
+              })
               .on('start', function repeat() {
                 d3.active(this)
                     .attr('rx', function(d) {

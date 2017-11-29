@@ -28,7 +28,7 @@ export const resetTimer=() => (dispatch) => {
   dispatch(reset());
 }
 
-export default function(state = 5, action) {
+export default function(state = 99, action) {
   switch (action.type) {
   case DECREMENT:
     return state - 1;

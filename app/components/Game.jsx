@@ -19,19 +19,26 @@ class Game extends Component {
     this.state = {
       press: false,
       gameOver: false,
-      done: false
+      done: false,
+      restarted: false
     }
     this.gridDimensions.height = this.gridDimensions.row * this.gridDimensions.cellSize;
     this.gridDimensions.width = this.gridDimensions.col * this.gridDimensions.cellSize;
     this.gameStart = this.gameStart.bind(this);
     this.gameStop = this.gameStop.bind(this);
+    this.handleSet = this.handleSet.bind(this);
     this.reset = this.reset.bind(this);
+  }
+
+  handleSet() {
+    this.setState({
+      done: true
+    })
   }
 
   gameStop() {
     if (this.state.gameOver) {
-      this.setState({gameOver: false});
-      this.setState({done: true})
+      this.handleSet();
       this.props.timerStop();
       this.props.clearCurrent();
       this.gameStart();
@@ -47,74 +54,82 @@ class Game extends Component {
   gameStart() {
     let intervalStatus = null;
     let arrowMotion;
+
     if (!this.state.gameOver) {
       this.setState({ press: true })
       this.props.timerStart();
-      arrowMotion = document.addEventListener('keydown', e => {
-        // 32 = space
-        // 89 = y
-        // 80 is p
-        if (e.which === 80) {
-          if (!this.props.pause) {
-            this.props.turnPauseOn();
-            this.props.timerStop();
-            intervalManager(false);
-          } else {
-            this.props.turnPauseOff();
-            if (!this.state.done) {
-              this.props.timerStart();
-            }
-            intervalManager(true);
-          }
-        }
-        if (!this.state.done) {
-          if (!this.props.pause) {
-            if (e.which === 81 || e.which === 37) {
-              if (leftCheck(this.props.board, this.props.puyo)) {
-                this.props.left(this.props.puyo);
+
+      if (!this.state.restarted) {
+        arrowMotion = document.addEventListener('keydown', e => {
+
+          // 80 is p
+          if (e.which === 80) {
+            if (!this.props.pause) {
+              this.props.turnPauseOn();
+              this.props.timerStop();
+              intervalManager(false);
+            } else {
+              this.props.turnPauseOff();
+              if (!this.state.done) {
+                this.props.timerStart();
               }
-            }
-            if (e.which === 69 || e.which === 39) {
-              if (rightCheck(this.props.board, this.props.puyo)) {
-                this.props.right(this.props.puyo);
-              }
-            }
-            if (e.which === 87 || e.which === 40) {
-              if (bottomCheck(this.props.board, this.props.puyo)) {
-                this.props.gravity(this.props.puyo);
-              }
-            }
-            if (e.which === 73 || e.which === 88) {
-              if (rotateACheck(this.props.board, this.props.puyo)) {
-                this.props.rotatePuyoA(this.props.puyo);
-              }
-            }
-            if (e.which === 85 || e.which === 90) {
-              if (rotateBCheck(this.props.board, this.props.puyo)) {
-                this.props.rotatePuyoB(this.props.puyo);
-              }
+              intervalManager(true);
             }
           }
-        }
-      })
+          if (!this.state.done) {
+            if (!this.props.pause) {
+              if (e.which === 81 || e.which === 37) {
+                if (leftCheck(this.props.board, this.props.puyo)) {
+                  this.props.left(this.props.puyo);
+                }
+              }
+              if (e.which === 69 || e.which === 39) {
+                if (rightCheck(this.props.board, this.props.puyo)) {
+                  this.props.right(this.props.puyo);
+                }
+              }
+              if (e.which === 87 || e.which === 40) {
+                if (bottomCheck(this.props.board, this.props.puyo)) {
+                  this.props.gravity(this.props.puyo);
+                }
+              }
+              if (e.which === 73 || e.which === 88) {
+                if (rotateACheck(this.props.board, this.props.puyo)) {
+                  this.props.rotatePuyoA(this.props.puyo);
+                }
+              }
+              if (e.which === 85 || e.which === 90) {
+                if (rotateBCheck(this.props.board, this.props.puyo)) {
+                  this.props.rotatePuyoB(this.props.puyo);
+                }
+              }
+            }
+          }
+        })
+      }
 
       const intervalManager = (flag) => {
         if (flag) {
           intervalStatus = setInterval(() => {
-            if (Object.keys(this.props.puyo).length > 0) {
-              if (bottomCheck(this.props.board, this.props.puyo)) {
-                this.props.gravity(this.props.puyo)
-              } else {
-                if (gameOver(this.props.board, this.props.puyo)) {
-                  this.setState({gameOver: true});
-                  clearInterval(intervalStatus);
+            if (gameOver(this.props.board, this.props.puyo)) {
+              this.setState({gameOver: true});
+              clearInterval(intervalStatus);
+            } else {
+              if (Object.keys(this.props.puyo).length > 0) {
+                if (bottomCheck(this.props.board, this.props.puyo)) {
+                  this.props.gravity(this.props.puyo)
+                  if (gameOver(this.props.board, this.props.puyo)) {
+                    this.setState({gameOver: true})
+                    clearInterval(intervalStatus);
+                  }
+                } else {
+                  const puyo = this.props.puyo;
+                  this.props.clearCurrent();
+                  const { board, rotate, center } = split(this.props.board, puyo, this.props.updateBoard);
+                  const newBoard = explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore, this.props.reArrange, this.props.removePuyo);
+                  this.props.getNextPuyo(this.props.nextPuyo);
+                  this.props.create();
                 }
-                const puyo = this.props.puyo;
-                this.props.clearCurrent();
-                const { board, rotate, center } = split(this.props.board, puyo, this.props.updateBoard);
-                explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore, this.props.reArrange, this.props.removePuyo);
-                this.props.getNextPuyo(this.props.nextPuyo);
-                this.props.create();
               }
             }
           }, 500)
@@ -129,10 +144,12 @@ class Game extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if ((gameOver(this.props.board, this.props.puyo)===false && gameOver(nextProps.board, nextProps.puyo)) || nextProps.timer===0) {
-      this.setState({
-        gameOver: true
-      })
+    if (!this.state.gameOver) {
+      if (nextProps.timer===0) {
+        this.setState({
+          gameOver: true
+        })
+      }
     }
   }
 
@@ -143,26 +160,27 @@ class Game extends Component {
     this.props.clearCurrent();
     this.props.create();
     this.props.newBoard();
-
     this.setState({gameOver: false});
     this.setState({done: false});
   }
 
   reset() {
+    this.setState({gameOver: false});
+    this.setState({done: false});
+    this.setState({restarted: true});
     this.props.scoreReset();
     this.props.turnPauseOff();
     this.props.timerReset();
+    this.props.timerStop();
     this.props.clearCurrent();
     this.props.puyoRestart();
     this.props.create();
     this.props.newBoard();
-    this.setState({gameOver: false});
-    this.setState({done: false});
-    console.log(this.state);
-    this.gameStart();
+    this.props.timerStart();
   }
 
   render() {
+  console.log(this.state ,'THIS IS STATE');
     const pauseStatus = this.props.pause;
     const finished = this.state.done;
     return (
@@ -173,9 +191,6 @@ class Game extends Component {
             <Link to="/game">
               <button onClick={this.reset}>Reset</button>
             </Link>
-            <Link to="/">
-              <button onClick={this.reset}>Return to main menu</button>
-            </Link>
           </div>
         }
 
@@ -184,12 +199,6 @@ class Game extends Component {
           <div id="pause">
             <div>
               <h2>Paused</h2>
-              <Link to="/game">
-                <button onClick={this.reset}>Reset</button>
-              </Link>
-              <Link to="/">
-                <button onClick={this.reset}>Return to main menu</button>
-              </Link>
             </div>
           </div>
         }
