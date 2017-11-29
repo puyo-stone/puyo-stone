@@ -5,10 +5,10 @@ body {
 
 a {
   color: inherit;
-  text-decoration: inherit;
+  text-decoration: none;
 }
 
-.container {
+.menu {
   display: grid;
   height: 100vh;
   grid-template-columns: 1fr 1fr;
@@ -16,6 +16,9 @@ a {
   grid-template-areas:
     "single multiplayer"
     "settings highscore";
+    a {
+      text-decoration: none;
+    }
 }
 
 .singleplayer {
@@ -166,5 +169,27 @@ h2 {
 }
 
 #pause {
-  background-color: grey;
+  text-align: center;
+  margin: auto;
+  color: white;
+  text-shadow:
+  3px 3px 0 #000,
+-1px -1px 0 #000,
+ 1px -1px 0 #000,
+ -1px 1px 0 #000,
+  1px 1px 0 #000;
+}
+
+#gameover {
+  text-align: center;
+  margin: auto;
+  color: white;
+  z-index: 10;
+  text-shadow:
+  3px 3px 0 #000,
+-1px -1px 0 #000,
+ 1px -1px 0 #000,
+ -1px 1px 0 #000,
+  1px 1px 0 #000;
+  background-color: skyblue;
 }

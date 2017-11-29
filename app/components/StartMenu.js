@@ -6,7 +6,7 @@ import Sound from 'react-sound';
 class StartMenu extends Component {
   render() {
     return (
-      <div className="start container">
+      <div className="start menu">
         <Link to="/game" className="start overlay singleplayer">
           <h1>SinglePlayer!</h1>
         </Link>
