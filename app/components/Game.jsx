@@ -130,7 +130,7 @@ class Game extends Component {
           <div id="pause">
             <div>
               <h2>Paused</h2>
-              <Link to="/game" onClick={this.onClickHandler} >Reset___</Link>
+              <button onClick={this.onClickHandler} >Reset___</button>
               <Link to="/" onClick={this.onClickHandler} >___Return to main menu</Link>
             </div>
           </div>
