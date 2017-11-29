@@ -143,6 +143,14 @@ h2 {
   padding-right: .5em;
 }
 
+#gameMusic {
+  grid-area: bottomleft;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-end;
+  padding-right: 1em;
+}
+
 #topright {
   grid-area: topright;
 }

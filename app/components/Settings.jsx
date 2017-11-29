@@ -1,30 +1,36 @@
 // settings
 // choose palette
-// set bgm
 // change controls; optional
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import palettes from '../Func/SinglePuyo';
+import { Link } from 'react-router';
+import { palettes } from '../Func/SinglePuyo';
+import SongSelector from './SongSelector'
 
 class Settings extends Component {
-  constructor(props) {
-    super(props)
-  }
-
   componentDidMount() {
   }
 
   render() {
-  console.log(palettes);
     return (
       <div id="tutorial">
         <h1>setting test</h1>
-
+        <SongSelector />
+        <Link to="/game"><button type="button" className="btn btn-default">Back to SingleGame</button></Link>
       </div>
     )
   }
-
 }
 
-export default connect(Settings)
+const mapStateToProps = state => ({
+  puyo: state.puyo,
+  board: state.board,
+  score: state.score,
+  nextPuyo: state.nextPuyo,
+  puyoColors: state.puyoColors,
+  timer: state.timer,
+  pause: state.pause
+})
+
+export default connect(mapStateToProps)(Settings);
