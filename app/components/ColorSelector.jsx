@@ -9,7 +9,12 @@ class ColorSelector extends Component {
   }
 
   render() {
+    const squreSize = 50;
+    const barH = squreSize;
+    const barW = squreSize*5;
+    // console.log('!!!!! ', this.props.colors)
     return (
+      <div>
       <label>
         Game Color Scheme:{' '}
         <select onChange={this.handleColorChange}>
@@ -23,6 +28,14 @@ class ColorSelector extends Component {
             }
         </select>
       </label>
+      <svg height={`${barH}`} width={`${barW}`}>
+            {
+              this.props.colors.currentPalette.map((c, i) => (
+                <rect key={i} height={squreSize} width={squreSize} x={i*squreSize} y={0} fill={c} />
+              ))
+            }
+      </svg>
+      </div>
     );
   }
 
