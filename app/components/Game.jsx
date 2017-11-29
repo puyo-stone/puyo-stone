@@ -188,11 +188,11 @@ class Game extends Component {
                   this.props.timer
                 }
             </div>
-            <div>
-            <button onClick={this.gameStart} disabled={ this.state.press }></button>
+            <div id="gameStart">
+            <button type="button" className="btn btn-default" onClick={this.gameStart} disabled={ this.state.press }></button>
             </div>
-            <div id="music">
-            <Sound songUrl="/songs/Paprika-Yoki.mp3" />
+            <div id="gameMusic">
+            <Sound songUrl={this.props.sound.currentSong.url} />
             </div>
         </div>
 
@@ -208,7 +208,8 @@ const mapStateToProps = state => ({
   nextPuyo: state.nextPuyo,
   puyoColors: state.puyoColors,
   timer: state.timer,
-  pause: state.pause
+  pause: state.pause,
+  sound: state.sound
 })
 
 const mapDispatchToProps = dispatch => ({
