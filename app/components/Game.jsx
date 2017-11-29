@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import DroppingPuyo from './DroppingPuyo';
 import NextPuyo from './NextPuyo'
-import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore, resetScore, newBoardAction, pauseOn, pauseOff, start, stop } from '../store/';
+import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore, resetScore, newBoardAction, pauseOn, pauseOff, start, stop, resetTimer } from '../store/';
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
 import { split, explosion, gameOver } from '../Func/game';
 
@@ -26,10 +26,6 @@ class Game extends Component {
     this.gameStart = this.gameStart.bind(this);
     this.gameStop = this.gameStop.bind(this);
   }
-
-  // componentDidMount() {
-
-  // }
 
   gameStop() {
     if (this.state.gameOver) {
@@ -57,7 +53,7 @@ class Game extends Component {
         // 32 = space
         // 89 = y
         // 80 is p
-        if (e.which === 89 || e.which === 80) {
+        if (e.which === 80) {
           if (!this.props.pause) {
             this.props.turnPauseOn();
             this.props.timerStop();
@@ -87,12 +83,12 @@ class Game extends Component {
                 this.props.gravity(this.props.puyo);
               }
             }
-            if (e.which === 85 || e.which === 83) {
+            if (e.which === 73 || e.which === 88) {
               if (rotateACheck(this.props.board, this.props.puyo)) {
                 this.props.rotatePuyoA(this.props.puyo);
               }
             }
-            if (e.which === 73 || e.which === 65) {
+            if (e.which === 85 || e.which === 90) {
               if (rotateBCheck(this.props.board, this.props.puyo)) {
                 this.props.rotatePuyoB(this.props.puyo);
               }
@@ -139,23 +135,47 @@ class Game extends Component {
     }
   }
 
-  onClickHandler() {
+  componentWillUnmount() {
     this.props.scoreReset();
     this.props.turnPauseOff();
+    this.props.timerReset();
+    this.props.clearCurrent();
     this.props.newBoard();
+
+    this.setState({gameOver: false});
+    this.setState({done: false});
+  }
+
+  onClickHandlerMainMenu() {
+    this.setState({
+      gameOver: true
+    })
   }
 
   render() {
     const pauseStatus = this.props.pause;
+    const finished = this.state.done;
     return (
       <div>
+        {
+          finished &&
+          <div id="finished">
+            <button>Reset</button>
+            <Link to="/">
+              <button >Return to main menu</button>
+            </Link>
+          </div>
+        }
+
         {
           pauseStatus &&
           <div id="pause">
             <div>
               <h2>Paused</h2>
-              <button onClick={this.onClickHandler} >Reset___</button>
-              <Link to="/" onClick={this.onClickHandler} >___Return to main menu</Link>
+              <button>Reset</button>
+              <Link to="/">
+                <button >Return to main menu</button>
+              </Link>
             </div>
           </div>
         }
@@ -187,9 +207,13 @@ class Game extends Component {
               this.props.timer
             }
           </div>
-          <div>
-            <button onClick={this.gameStart} disabled={this.state.press}></button>
+
+          <div id="start">
+            <button onClick={this.gameStart} disabled={this.state.press}>Start Game!</button>
           </div>
+
+          <div id="control1" className="controlOne"></div>
+          <div id="control2" className="controlTwo"></div>
 
         </div>
       </div>
@@ -249,6 +273,9 @@ const mapDispatchToProps = dispatch => ({
   },
   timerStop() {
     stop();
+  },
+  timerReset() {
+    dispatch(resetTimer());
   },
   newBoard() {
     dispatch(newBoardAction());

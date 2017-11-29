@@ -1,10 +1,12 @@
 // tutorial component
 
 import React from 'react';
+import { Link } from 'react-router';
 
 export default function Tutorial(props) {
   return (
     <div id="tutorial">
+    <Link to="/" >Return to main menu</Link>
       <h1>Welcome to Puyo-stone!</h1>
         <h3>How to play</h3>
           <p>Puyos will drop from the top of the grid; you can move them left, right, and even rotate them.</p>
@@ -17,17 +19,17 @@ export default function Tutorial(props) {
           <p>Move puyo right: right arrow</p>
           <p>Move puyo left: left arrow</p>
           <p>Fast drop puyo: down arrow</p>
-          <p>Rotate clockwise: S</p>
-          <p>Rotate counter-clockwise: A</p>
+          <p>Rotate clockwise: X</p>
+          <p>Rotate counter-clockwise: Z</p>
           <p>Pause: P</p>
 
         <h4>Alternative controls:</h4>
           <p>Move puyo right: E</p>
           <p>Move puyo left: Q</p>
           <p>Fast drop puyo: W</p>
-          <p>Rotate clockwise: U</p>
-          <p>Rotate counter-clockwise: I</p>
-          <p>Pause: Y</p>
+          <p>Rotate clockwise: I</p>
+          <p>Rotate counter-clockwise: U</p>
+          <p>Pause: P</p>
 
         <h3>Online mode</h3>
           <p>Compete for the highest score against your opponent within a 99 second time limit.</p>

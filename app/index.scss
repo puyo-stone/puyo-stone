@@ -8,6 +8,18 @@ a {
   text-decoration: inherit;
 }
 
+.controlOne {
+  z-index: 1;
+  background-image: url("/images/controls1.jpg");
+  background-repeat: no-repeat;
+}
+
+.controlTwo {
+  z-index: 1;
+  background-image: url("/images/controls2.jpg");
+  background-repeat: no-repeat;
+}
+
 .container {
   display: grid;
   height: 100vh;
@@ -126,6 +138,18 @@ p {
   color: black;
 }
 
+#control1 {
+  background-color: skyblue;
+  grid-area: bottomleft;
+  background-position: center;
+}
+
+#control2 {
+  background-color: skyblue;
+  grid-area: bottomright;
+  background-position: center;
+}
+
 #tutorial {
   background-color: skyblue;
   text-align: center;
@@ -142,10 +166,6 @@ p {
   "topleft grid topright"
   "middleleft grid middleright"
   "bottomleft grid bottomright";
-}
-
-#controlsOne {
-  
 }
 
 #middlegrid {
@@ -178,6 +198,10 @@ p {
 
 #topright {
   grid-area: topright;
+}
+
+#start {
+  grid-area: middleright;
 }
 
 #nextpuyo {
