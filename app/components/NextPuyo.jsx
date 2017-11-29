@@ -21,21 +21,25 @@ export default class NextPuyo extends Component {
     const selectedNode = select(node);
     const cellSize = this.props.cellSize;
     const colors = this.props.colors;
-    const data = [this.props.puyo.centerPuyo, this.props.puyo.rotatePuyo]
+    const poly = [{'x': 130, 'y': 20}, {'x': 180, 'y': 110}, {'x': 120, 'y': 170}, {'x': 80, 'y': 180}, {'x': 20, 'y': 120}, {'x': 30, 'y': 50}];
+    const centerPuyo = this.props.puyo.centerPuyo;
+    const rotatePuyo = this.props.puyo.rotatePuyo;
+    centerPuyo.poly = poly;
+    rotatePuyo.poly = poly;
+    const data = [centerPuyo, rotatePuyo]
+    // const data = [this.props.puyo.centerPuyo, this.props.puyo.rotatePuyo]
     selectAll('.nextpuyo').remove()
 
     const puyo = selectedNode
         .selectAll('.nextpuyo')
         .data(data)
-        .enter().append('rect')
+        .enter().append('polygon')
         .attr('class', 'nextpuyo')
-        .attr('x', d => cellSize)
-        .attr('y', d => ((d.row+1) * cellSize))
-        .attr('width', cellSize)
-        .attr('height', cellSize)
+        .attr('points', d => d.poly.map(e => [((e.x) / 200) * cellSize + 30, ((e.y) / 200 + d.row + 2)* cellSize].join(',')).join(' '))
+        .attr('transform', d => `rotate(${Math.random()*90} ${0.5 * cellSize + 30} ${(d.row + 2 + 0.5) * cellSize})`)
         .style('fill', d => colors[d.color])
-        .attr('stroke', 'lightgray')
-        .attr('stroke-width', 0.5)
+        .attr('stroke', d => colors[d.color].slice(0, -2) + '0.5)')
+        .attr('stroke-width', 20)
   }
 
   render() {

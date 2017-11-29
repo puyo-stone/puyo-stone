@@ -20,21 +20,25 @@ export default class DroppingPuyo extends Component {
     const node = this.node;
     const selectNode = select(node);
     const cellSize = this.props.cellSize;
+    const centerPuyo = this.props.puyo.centerPuyo;
+    const rotatePuyo = this.props.puyo.rotatePuyo;
+    const poly = [{'x': 130, 'y': 20}, {'x': 180, 'y': 110}, {'x': 120, 'y': 170}, {'x': 80, 'y': 180}, {'x': 20, 'y': 120}, {'x': 30, 'y': 50}];
+    centerPuyo.poly = poly;
+    rotatePuyo.poly = poly;
+    const data = [centerPuyo, rotatePuyo]
     const colors = this.props.colors;
-    const data = [this.props.puyo.centerPuyo, this.props.puyo.rotatePuyo]
 
     selectAll('.puyo').remove()
-
     const puyo = selectNode
-        .selectAll('.puyo')
-        .data(data)
-        .enter().append('rect')
-        .attr('class', 'puyo')
-        .attr('x', d => d.col * cellSize)
-        .attr('y', d => d.row * cellSize)
-        .attr('width', cellSize)
-        .attr('height', cellSize)
-        .style('fill', d => colors[d.color])
+    .selectAll('.puyo')
+    .data(data)
+    .enter().append('polygon')
+    .attr('class', 'puyo')
+    .attr('points', d => d.poly.map(e => [((e.x) / 200 + d.col) * cellSize, ((e.y) / 200 + d.row)* cellSize].join(',')).join(' '))
+    .attr('transform', d => `rotate(${Math.random()*90} ${(d.col + 0.5) * cellSize} ${(d.row + 0.5) * cellSize})`)
+    .style('fill', d => colors[d.color])
+    .attr('stroke', d => colors[d.color].slice(0, -2) + '0.5)')
+    .attr('stroke-width', 20)
   }
 
   render() {
