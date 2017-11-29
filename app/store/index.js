@@ -8,9 +8,10 @@ import nextPuyo from './nextPuyo';
 import score from './score';
 import pause from './pause';
 import timer from './timer';
-import puyoColors from './puyoColors'
+import puyoColors from './puyoColors';
+import sound from './sound';
 
-const reducer = combineReducers({ board, puyo, nextPuyo, score, pause, timer, puyoColors });
+const reducer = combineReducers({ board, puyo, nextPuyo, score, pause, timer, puyoColors, sound });
 
 const middleware = composeWithDevTools(applyMiddleware(
   thunkMiddleware,
@@ -27,3 +28,4 @@ export * from './puyoColors'
 export * from './pause';
 export * from './timer';
 export * from './score';
+export * from './sound';

@@ -8,6 +8,7 @@ import NextPuyo from './NextPuyo'
 import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore, resetScore, newBoardAction, pauseOn, pauseOff, start, stop } from '../store/';
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
 import { split, explosion, gameOver } from '../Func/game';
+import Sound from './Sound';
 
 class Game extends Component {
   constructor(props) {
@@ -200,15 +201,17 @@ class Game extends Component {
               this.props.score
             }
           </div>
-
           <div id="timer">
             <h2>Timer</h2>
             {
               this.props.timer
             }
           </div>
-          <div>
-            <button onClick={this.gameStart} disabled={this.state.press}>Start Game!</button>
+          <div id="gameStart">
+          <button type="button" className="btn btn-default" onClick={this.gameStart} disabled={ this.state.press }>Start Game!</button>
+          </div>
+          <div id="gameMusic">
+          <Sound songUrl={this.props.sound.currentSong.url} />
           </div>
           <Modal isOpen={pauseStatus} style={modalStyle}>
           <div id="pause">
@@ -250,7 +253,8 @@ const mapStateToProps = state => ({
   nextPuyo: state.nextPuyo,
   puyoColors: state.puyoColors,
   timer: state.timer,
-  pause: state.pause
+  pause: state.pause,
+  sound: state.sound
 })
 
 const mapDispatchToProps = dispatch => ({
