@@ -5,10 +5,10 @@ body {
 
 a {
   color: inherit;
-  text-decoration: inherit;
+  text-decoration: none;
 }
 
-.container {
+.menu {
   display: grid;
   height: 100vh;
   grid-template-columns: 1fr 1fr;
@@ -16,6 +16,9 @@ a {
   grid-template-areas:
     "single multiplayer"
     "settings highscore";
+    a {
+      text-decoration: none;
+    }
 }
 
 .singleplayer {
