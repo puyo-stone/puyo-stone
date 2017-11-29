@@ -1,6 +1,7 @@
 body {
   margin: 0;
   font-family: "Bubblegum Sans", Helvetica, Arial, sans-serif;
+  background-color: skyblue;
 }
 
 a {
@@ -12,12 +13,14 @@ a {
   z-index: 1;
   background-image: url("/images/controls1.jpg");
   background-repeat: no-repeat;
+  height: 100%;
 }
 
 .controlTwo {
   z-index: 1;
   background-image: url("/images/controls2.jpg");
   background-repeat: no-repeat;
+  height: 100%;
 }
 
 .menu {
@@ -205,16 +208,8 @@ p {
   justify-content: space-around;
 }
 
-#gameMusic {
-
-
-}
-
 #topright {
   grid-area: topright;
-}
-
-#start {
 }
 
 #nextpuyo {
