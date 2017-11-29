@@ -65,16 +65,18 @@ class Game extends Component {
         // 89 = y
         // 80 is p
         if (e.which === 89 || e.which === 80) {
-          if (!this.props.pause) {
-            this.props.turnPauseOn();
-            this.props.timerStop();
-            intervalManager(false);
-          } else {
-            this.props.turnPauseOff();
-            if (!this.state.done) {
-              this.props.timerStart();
+          if (!this.state.done) {
+            if (!this.props.pause) {
+              this.props.turnPauseOn();
+              this.props.timerStop();
+              intervalManager(false);
+            } else {
+              this.props.turnPauseOff();
+              if (!this.state.done) {
+                this.props.timerStart();
+              }
+              intervalManager(true);
             }
-            intervalManager(true);
           }
         }
         if (!this.state.done) {
