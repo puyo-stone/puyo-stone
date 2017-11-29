@@ -62,7 +62,7 @@ render(
     <Route path="/" component={StartMenu}/>
     <Route path="/settings" component={Settings}/>
     <Route path="/tutorial" component={Tutorial}/>
-    <Route path='*' component={NotFound}/>
+    <Route path='*' component={StartMenu}/>
   </Router>
   </Provider>,
   document.getElementById('main')
