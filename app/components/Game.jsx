@@ -25,16 +25,22 @@ class Game extends Component {
     this.gridDimensions.width = this.gridDimensions.col * this.gridDimensions.cellSize;
     this.gameStart = this.gameStart.bind(this);
     this.gameStop = this.gameStop.bind(this);
+    this.handleSet = this.handleSet.bind(this);
   }
 
   // componentDidMount() {
 
   // }
 
+  handleSet() {
+    this.setState({
+      done: true
+    })
+  }
+
   gameStop() {
     if (this.state.gameOver) {
-      this.setState({gameOver: false});
-      this.setState({done: true})
+      this.handleSet();
       this.props.timerStop();
       this.props.clearCurrent();
       this.gameStart();
@@ -104,20 +110,25 @@ class Game extends Component {
       const intervalManager = (flag) => {
         if (flag) {
           intervalStatus = setInterval(() => {
-            if (Object.keys(this.props.puyo).length > 0) {
-              if (bottomCheck(this.props.board, this.props.puyo)) {
-                this.props.gravity(this.props.puyo)
-              } else {
-                if (gameOver(this.props.board, this.props.puyo)) {
-                  this.setState({gameOver: true});
-                  clearInterval(intervalStatus);
+            if (gameOver(this.props.board, this.props.puyo)) {
+              this.setState({gameOver: true});
+              clearInterval(intervalStatus);
+            } else {
+              if (Object.keys(this.props.puyo).length > 0) {
+                if (bottomCheck(this.props.board, this.props.puyo)) {
+                  this.props.gravity(this.props.puyo)
+                  if (gameOver(this.props.board, this.props.puyo)) {
+                    this.setState({gameOver: true})
+                    clearInterval(intervalStatus);
+                  }
+                } else {
+                  const puyo = this.props.puyo;
+                  this.props.clearCurrent();
+                  const { board, rotate, center } = split(this.props.board, puyo, this.props.updateBoard);
+                  const newBoard=explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore, this.props.reArrange, this.props.removePuyo);
+                  this.props.getNextPuyo(this.props.nextPuyo);
+                  this.props.create();
                 }
-                const puyo = this.props.puyo;
-                this.props.clearCurrent();
-                const { board, rotate, center } = split(this.props.board, puyo, this.props.updateBoard);
-                explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore, this.props.reArrange, this.props.removePuyo);
-                this.props.getNextPuyo(this.props.nextPuyo);
-                this.props.create();
               }
             }
           }, 500)
@@ -132,10 +143,12 @@ class Game extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if ((gameOver(this.props.board, this.props.puyo)===false && gameOver(nextProps.board, nextProps.puyo)) || nextProps.timer===0) {
-      this.setState({
-        gameOver: true
-      })
+    if (!this.state.gameOver) {
+      if (nextProps.timer===0) {
+        this.setState({
+          gameOver: true
+        })
+      }
     }
   }
 
