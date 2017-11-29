@@ -177,14 +177,14 @@ class Game extends Component {
         <div id="game">
 
             <svg id="middlegrid" height={this.gridDimensions.height} width={this.gridDimensions.width}>
-                <Grid gridDimensions={this.gridDimensions} boardData={this.props.board} colors={this.props.puyoColors}/>
-                <DroppingPuyo puyo={this.props.puyo} cellSize={this.gridDimensions.cellSize} colors={this.props.puyoColors}/>
+                <Grid gridDimensions={this.gridDimensions} boardData={this.props.board} colors={this.props.puyoColors.currentPalette}/>
+                <DroppingPuyo puyo={this.props.puyo} cellSize={this.gridDimensions.cellSize} colors={this.props.puyoColors.currentPalette}/>
                 </svg>
 
             <div id="topright">
                 <div id="nextpuyo">
                 <h2>Next Puyo</h2>
-                <NextPuyo puyo={this.props.nextPuyo} cellSize ={this.gridDimensions.cellSize} colors={this.props.puyoColors}/>
+                <NextPuyo puyo={this.props.nextPuyo} cellSize ={this.gridDimensions.cellSize} colors={this.props.puyoColors.currentPalette}/>
                 </div>
             </div>
 

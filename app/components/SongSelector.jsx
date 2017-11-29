@@ -13,14 +13,14 @@ class SongSelector extends Component {
       <label>
         Game Background Music:{' '}
         <select onChange={this.handleSongChange}>
-          <option />
-          {
-						this.props.sound.songs.map((song, id) => (
-							<option key={id} value={id}>
-								{song.title}
-							</option>
-						))
-					}
+            <option />
+            {
+                this.props.sound.songs.map((song, id) => (
+                    <option key={id} value={id}>
+                        {song.title}
+                    </option>
+                ))
+            }
         </select>
       </label>
     );
