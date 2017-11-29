@@ -20,6 +20,7 @@ export default class NextPuyo extends Component {
     const node = this.node;
     const selectedNode = select(node);
     const cellSize = this.props.cellSize;
+    const colors = this.props.colors;
     const data = [this.props.puyo.centerPuyo, this.props.puyo.rotatePuyo]
     selectAll('.nextpuyo').remove()
 
@@ -29,10 +30,10 @@ export default class NextPuyo extends Component {
         .enter().append('rect')
         .attr('class', 'nextpuyo')
         .attr('x', d => cellSize)
-        .attr('y', d => ((d.row+1) * cellSize))
+        .attr('y', d => ((d.row+2) * cellSize))
         .attr('width', cellSize)
         .attr('height', cellSize)
-        .style('fill', d => d.color)
+        .style('fill', d => colors[d.color])
         .attr('stroke', 'lightgray')
         .attr('stroke-width', 0.5)
   }

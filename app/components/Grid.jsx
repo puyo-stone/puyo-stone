@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { select, selectAll } from 'd3-selection';
+import {transition} from 'd3-transition';
 import { connect } from 'react-redux';
+import * as d3 from 'd3';
 
 class Grid extends Component {
   constructor(props) {
@@ -20,6 +22,7 @@ class Grid extends Component {
   populate() {
     const node = this.node;
     const cellSize = this.props.gridDimensions.cellSize;
+    const colors = this.props.colors;
 
     selectAll('.row').remove()
 
@@ -29,7 +32,7 @@ class Grid extends Component {
             .enter().append('g')
             .attr('class', 'row');
 
-    row
+    const puyoSquare = row
             .selectAll('.square')
             .data(function(d) { return d; })
             .enter().append('rect')
@@ -46,9 +49,35 @@ class Grid extends Component {
             .attr('height', function(d) {
               if (d) { return cellSize } else { return 0 }
             })
-            .style('fill', function(d) {
-              if (d) return d.color
+            .attr('rx', function(d) {
+              if (d) { return cellSize*0.3 } else { return 0 }
             })
+            .attr('ry', function(d) {
+              if (d) { return cellSize*0.3 } else { return 0 }
+            })
+            .style('fill', function(d) {
+              if (d) return colors[d.color]
+            })
+            .transition()
+              .duration(2000)
+              .on('start', function repeat() {
+                d3.active(this)
+                    .attr('rx', function(d) {
+                      if (d) { return cellSize*(0.1+0.4*Math.random()) } else { return 0 }
+                    })
+                    .attr('ry', function(d) {
+                      if (d) { return cellSize*(0.1+0.4*Math.random()) } else { return 0 }
+                    })
+                  .transition()
+                    .attr('rx', function(d) {
+                      if (d) { return cellSize*0.1 } else { return 0 }
+                    })
+                    .attr('ry', function(d) {
+                      if (d) { return cellSize*0.1 } else { return 0 }
+                    })
+                  .transition()
+                    .on('start', repeat);
+              })
   }
 
   drawGrid() {
@@ -93,4 +122,8 @@ class Grid extends Component {
   }
 }
 
-export default Grid;
+const mapStateToProps = state => ({
+  board: state.board
+})
+
+export default connect(mapStateToProps)(Grid);

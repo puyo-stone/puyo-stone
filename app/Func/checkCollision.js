@@ -107,6 +107,7 @@ export const rotateBCheck = (board, puyo) => {
 export const bottomCheck = (board, puyo) => {
   const { centerPuyo, rotatePuyo } = puyo;
   const sameCol = centerPuyo.col === rotatePuyo.col;
+  if (centerPuyo.row<=-1||rotatePuyo.row<=-2) return true;
   const bottomMost = centerPuyo.row > rotatePuyo.row ? centerPuyo : rotatePuyo;
   if (sameCol) {
     if (bottomMost.row < 11 && board[centerPuyo.row + 1][centerPuyo.col] === null && board[rotatePuyo.row + 1][rotatePuyo.col] === null) {
