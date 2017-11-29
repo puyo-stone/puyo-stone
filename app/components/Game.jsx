@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import Modal from 'react-modal';
 import Grid from './Grid';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import DroppingPuyo from './DroppingPuyo';
 import NextPuyo from './NextPuyo'
-import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore, resetScore, newBoardAction, pauseOn, pauseOff, start, stop } from '../store/';
+import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore, resetScore, newBoardAction, pauseOn, pauseOff, start, stop, resetTimer, restartPuyo } from '../store/';
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
 import { split, explosion, gameOver } from '../Func/game';
 import Sound from './Sound';
@@ -20,18 +21,16 @@ class Game extends Component {
     this.state = {
       press: false,
       gameOver: false,
-      done: false
+      done: false,
+      restarted: false
     }
     this.gridDimensions.height = this.gridDimensions.row * this.gridDimensions.cellSize;
     this.gridDimensions.width = this.gridDimensions.col * this.gridDimensions.cellSize;
     this.gameStart = this.gameStart.bind(this);
     this.gameStop = this.gameStop.bind(this);
     this.handleSet = this.handleSet.bind(this);
+    this.reset = this.reset.bind(this);
   }
-
-  // componentDidMount() {
-
-  // }
 
   handleSet() {
     this.setState({
@@ -57,56 +56,60 @@ class Game extends Component {
   gameStart() {
     let intervalStatus = null;
     let arrowMotion;
+
     if (!this.state.gameOver) {
       this.setState({ press: true })
       this.props.timerStart();
-      arrowMotion = document.addEventListener('keydown', e => {
-        // 32 = space
-        // 89 = y
-        // 80 is p
-        if (e.which === 89 || e.which === 80) {
-          if (!this.props.pause) {
-            this.props.turnPauseOn();
-            this.props.timerStop();
-            intervalManager(false);
-          } else {
-            this.props.turnPauseOff();
+      if (!this.state.restarted) {
+        arrowMotion = document.addEventListener('keydown', e => {
+
+          // 80 is p
+          if (e.which === 80) {
             if (!this.state.done) {
-              this.props.timerStart();
-            }
-            intervalManager(true);
-          }
-        }
-        if (!this.state.done) {
-          if (!this.props.pause) {
-            if (e.which === 81 || e.which === 37) {
-              if (leftCheck(this.props.board, this.props.puyo)) {
-                this.props.left(this.props.puyo);
-              }
-            }
-            if (e.which === 69 || e.which === 39) {
-              if (rightCheck(this.props.board, this.props.puyo)) {
-                this.props.right(this.props.puyo);
-              }
-            }
-            if (e.which === 87 || e.which === 40) {
-              if (bottomCheck(this.props.board, this.props.puyo)) {
-                this.props.gravity(this.props.puyo);
-              }
-            }
-            if (e.which === 85 || e.which === 83) {
-              if (rotateACheck(this.props.board, this.props.puyo)) {
-                this.props.rotatePuyoA(this.props.puyo);
-              }
-            }
-            if (e.which === 73 || e.which === 65) {
-              if (rotateBCheck(this.props.board, this.props.puyo)) {
-                this.props.rotatePuyoB(this.props.puyo);
+              if (!this.props.pause) {
+                this.props.turnPauseOn();
+                this.props.timerStop();
+                intervalManager(false);
+              } else {
+                this.props.turnPauseOff();
+                if (!this.state.done) {
+                  this.props.timerStart();
+                }
+                intervalManager(true);
               }
             }
           }
-        }
-      })
+          if (!this.state.done) {
+            if (!this.props.pause) {
+              if (e.which === 81 || e.which === 37) {
+                if (leftCheck(this.props.board, this.props.puyo)) {
+                  this.props.left(this.props.puyo);
+                }
+              }
+              if (e.which === 69 || e.which === 39) {
+                if (rightCheck(this.props.board, this.props.puyo)) {
+                  this.props.right(this.props.puyo);
+                }
+              }
+              if (e.which === 87 || e.which === 40) {
+                if (bottomCheck(this.props.board, this.props.puyo)) {
+                  this.props.gravity(this.props.puyo);
+                }
+              }
+              if (e.which === 73 || e.which === 88) {
+                if (rotateACheck(this.props.board, this.props.puyo)) {
+                  this.props.rotatePuyoA(this.props.puyo);
+                }
+              }
+              if (e.which === 85 || e.which === 90) {
+                if (rotateBCheck(this.props.board, this.props.puyo)) {
+                  this.props.rotatePuyoB(this.props.puyo);
+                }
+              }
+            }
+          }
+        })
+      }
 
       const intervalManager = (flag) => {
         if (flag) {
@@ -126,7 +129,7 @@ class Game extends Component {
                   const puyo = this.props.puyo;
                   this.props.clearCurrent();
                   const { board, rotate, center } = split(this.props.board, puyo, this.props.updateBoard);
-                  const newBoard=explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore, this.props.reArrange, this.props.removePuyo);
+                  const newBoard = explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore, this.props.reArrange, this.props.removePuyo);
                   this.props.getNextPuyo(this.props.nextPuyo);
                   this.props.create();
                 }
@@ -153,29 +156,55 @@ class Game extends Component {
     }
   }
 
-  onClickHandler() {
+  componentWillUnmount() {
     this.props.scoreReset();
     this.props.turnPauseOff();
+    this.props.timerReset();
+    this.props.clearCurrent();
+    this.props.create();
     this.props.newBoard();
+    this.setState({gameOver: false});
+    this.setState({done: false});
+  }
+
+  reset() {
+    this.setState({gameOver: false});
+    this.setState({done: false});
+    this.setState({restarted: true});
+    this.props.scoreReset();
+    this.props.turnPauseOff();
+    this.props.timerReset();
+    this.props.timerStop();
+    this.props.clearCurrent();
+    this.props.puyoRestart();
+    this.props.create();
+    this.props.newBoard();
+    this.props.timerStart();
   }
 
   render() {
+    const modalStyle = {
+      overlay: {
+        backgroundColor: 'rgba(255, 255, 255, 0.75)'
+      },
+      content: {
+        backgroundColor: 'rgb(135,206,235)',
+        borderRadius: '4px',
+        backgroundRepeat: 'no-repeat',
+        outline: 'none',
+        height: '300px',
+        width: '300px',
+        padding: '20px',
+        margin: 'auto',
+      }
+    }
+
     const pauseStatus = this.props.pause;
+    const finished = this.state.done;
     return (
       <div>
-        {
-          pauseStatus &&
-          <div id="pause">
-            <div>
-              <h2>Paused</h2>
-              <Link to="/game" onClick={this.onClickHandler} >Reset___</Link>
-              <Link to="/" onClick={this.onClickHandler} >___Return to main menu</Link>
-            </div>
-          </div>
-        }
 
         <div id="game">
-
             <svg id="middlegrid" height={this.gridDimensions.height} width={this.gridDimensions.width}>
                 <Grid gridDimensions={this.gridDimensions} boardData={this.props.board} colors={this.props.puyoColors.currentPalette}/>
                 <DroppingPuyo puyo={this.props.puyo} cellSize={this.gridDimensions.cellSize} colors={this.props.puyoColors.currentPalette}/>
@@ -195,20 +224,47 @@ class Game extends Component {
             }
           </div>
 
-            <div id="timer">
-                <h2>Timer</h2>
-                {
-                  this.props.timer
-                }
-            </div>
-            <div id="gameStart">
-            <button type="button" className="btn btn-default" onClick={this.gameStart} disabled={ this.state.press }></button>
-            </div>
-            <div id="gameMusic">
-            <Sound songUrl={this.props.sound.currentSong.url} />
-            </div>
-        </div>
+          <div id="timer">
+            <h2>Timer</h2>
+            {
+              this.props.timer
+            }
+          </div>
 
+          <div id="middleright">
+          <div id="gameStart">
+            <button type="button" className="btn btn-default" onClick={this.gameStart} disabled={ this.state.press }>Start Game!</button>
+          </div>
+
+          <div id="gameMusic">
+            <Sound songUrl={this.props.sound.currentSong.url} />
+          </div>
+          </div>
+
+          <Modal isOpen={pauseStatus} style={modalStyle}>
+            <div id="pause">
+              <div>
+                <h1>Paused</h1>
+              </div>
+            </div>
+          </Modal>
+
+          <Modal isOpen={this.state.done} style={modalStyle}>
+            <div id="gameover">
+              <div>
+                <h1>GAME OVER!</h1>
+                <h3>Thank You For Playing!</h3>
+                <h3>Your Score is {this.props.score} </h3>
+                <Link to='/game'>
+                  <h3 onClick={this.reset}> Reset! </h3>
+                </Link>
+              </div>
+            </div>
+          </Modal>
+
+          <div id="control1" className="controlOne"></div>
+          <div id="control2" className="controlTwo"></div>
+        </div>
       </div>
     )
   }
@@ -268,6 +324,9 @@ const mapDispatchToProps = dispatch => ({
   timerStop() {
     stop();
   },
+  timerReset() {
+    dispatch(resetTimer());
+  },
   newBoard() {
     dispatch(newBoardAction());
   },
@@ -279,6 +338,9 @@ const mapDispatchToProps = dispatch => ({
   },
   turnPauseOff() {
     dispatch(pauseOff());
+  },
+  puyoRestart() {
+    dispatch(restartPuyo());
   }
 })
 
