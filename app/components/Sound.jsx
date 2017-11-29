@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Sound from 'react-sound';
-require('bootstrap');
 
 class BGM extends Component {
   constructor() {
@@ -37,18 +36,19 @@ class BGM extends Component {
         <div>
             {
                 play ?
-                    <button type="button" class="btn btn-default" onClick={this.handlePause}>
-                        <span class="glyphicon glyphicon-music" aria-hidden="true"></span>
+                    <button type="button" className="btn btn-default" onClick={this.handlePause}>
+                        <span className="glyphicon glyphicon-music" aria-hidden="true"></span>
                     </button>
-                : <button type="button" class="btn btn-default" onClick={this.handleResume}>
-                        <span class="glyphicon glyphicon-volume-off" aria-hidden="true"></span>
+                : <button type="button" className="btn btn-default" onClick={this.handleResume}>
+                        <span className="glyphicon glyphicon-volume-off" aria-hidden="true"></span>
                     </button>
             }
             {
                 this.props.sound.currentSong && <Sound
-                                                    url={this.props.sound.currentSong.url}
+                                                    url={this.props.songUrl}
                                                     volume={this.props.sound.volume}
                                                     playStatus={this.state.status}
+                                                    loop={this.props.sound.loop}
                                                     />
             }
         </div>

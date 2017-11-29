@@ -143,6 +143,15 @@ h2 {
   padding-right: .5em;
 }
 
+#music {
+  grid-area: bottomleft;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-end;
+  text-align: center;
+  padding-right: 1em;
+}
+
 #topright {
   grid-area: topright;
 }

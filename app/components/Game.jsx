@@ -7,6 +7,7 @@ import NextPuyo from './NextPuyo'
 import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore, resetScore, newBoardAction, pauseOn, pauseOff, start, stop } from '../store/';
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
 import { split, explosion } from '../Func/game';
+import Sound from './Sound';
 
 class Game extends Component {
   constructor(props) {
@@ -166,8 +167,11 @@ class Game extends Component {
             <div>
             <button onClick={this.gameStart} disabled={ this.state.press }></button>
             </div>
-
+            <div id="music">
+            <Sound songUrl="/songs/Paprika-Yoki.mp3" />
+            </div>
         </div>
+
       </div>
     )
   }

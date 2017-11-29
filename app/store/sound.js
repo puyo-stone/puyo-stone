@@ -12,7 +12,7 @@ const CHANGE_VOLUME = 'CHANGE_VOLUME';
 export const selectSong = song => ({ type: SELECT_SONG, song });
 export const changeVolume = volume => ({ type: CHANGE_VOLUME, volume });
 
-export const chooseSong = song => dispatch => {
+export const selectSongThunk = song => dispatch => {
   dispatch(selectSong(song));
 }
 
