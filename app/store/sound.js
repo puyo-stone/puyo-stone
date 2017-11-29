@@ -1,7 +1,7 @@
 import songs from '../../public/songMenu.js';
 
 const initState = {
-  currentSong: songs[1],
+  currentSong: songs[3],
   volume: 50,
   loop: true,
   songs: songs

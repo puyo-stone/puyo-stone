@@ -62,7 +62,7 @@ class Grid extends Component {
               .duration(1000)
               .delay(function(d) {
                 if (d) {
-                  return d.col*1000+d.row*200;
+                  return d.col*50+d.row*30;
                 }
               })
               .on('start', function repeat() {

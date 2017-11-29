@@ -1,12 +1,12 @@
 // settings
-// choose palette
 // change controls; optional
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { palettes } from '../Func/SinglePuyo';
-import SongSelector from './SongSelector'
+import SongSelector from './SongSelector';
+import ColorSelector from './ColorSelector';
 
 class Settings extends Component {
   componentDidMount() {
@@ -17,6 +17,7 @@ class Settings extends Component {
       <div id="tutorial">
         <h1>setting test</h1>
         <SongSelector />
+        <ColorSelector />
         <Link to="/game"><button type="button" className="btn btn-default">Back to SingleGame</button></Link>
       </div>
     )
