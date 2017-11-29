@@ -25,14 +25,14 @@ class Game extends Component {
     this.gridDimensions.width = this.gridDimensions.col * this.gridDimensions.cellSize;
     this.gameStart = this.gameStart.bind(this);
     this.gameStop = this.gameStop.bind(this);
-    this.HandleSet = this.HandleSet.bind(this);
+    this.handleSet = this.handleSet.bind(this);
   }
 
   // componentDidMount() {
 
   // }
 
-  HandleSet() {
+  handleSet() {
     this.setState({
       done: true
     })
@@ -40,7 +40,7 @@ class Game extends Component {
 
   gameStop() {
     if (this.state.gameOver) {
-      this.HandleSet();
+      this.handleSet();
       this.props.timerStop();
       this.props.clearCurrent();
       this.gameStart();
