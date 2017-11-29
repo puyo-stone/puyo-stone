@@ -5,6 +5,7 @@ import _ from 'lodash';
 const ACTION_CENTER = 'ACTION_CENTER';
 const CLEAR_PUYO = 'CLEAR_PUYO';
 const GET_PUYO = 'GET_PUYO';
+const RESTART = 'RESTART';
 
 const init = new DoublePuyo();
 
@@ -20,6 +21,10 @@ export const ActionCenter = (puyo) => ({
 export const getPuyo = (puyo) => ({
   type: GET_PUYO,
   puyo
+})
+
+export const restartPuyo = () => ({
+  type: RESTART
 })
 
 export function leftMove(puyo) {
@@ -73,6 +78,8 @@ export default function(state = init, action) {
     return _.cloneDeep(action.puyo);
   case CLEAR_PUYO:
     return {};
+  case RESTART:
+    return new DoublePuyo();
   default:
     return state;
   }

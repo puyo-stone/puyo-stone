@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import DroppingPuyo from './DroppingPuyo';
 import NextPuyo from './NextPuyo'
-import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore, resetScore, newBoardAction, pauseOn, pauseOff, start, stop, resetTimer } from '../store/';
+import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore, resetScore, newBoardAction, pauseOn, pauseOff, start, stop, resetTimer, restartPuyo } from '../store/';
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
 import { split, explosion, gameOver } from '../Func/game';
 
@@ -25,6 +25,7 @@ class Game extends Component {
     this.gridDimensions.width = this.gridDimensions.col * this.gridDimensions.cellSize;
     this.gameStart = this.gameStart.bind(this);
     this.gameStop = this.gameStop.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   gameStop() {
@@ -140,16 +141,25 @@ class Game extends Component {
     this.props.turnPauseOff();
     this.props.timerReset();
     this.props.clearCurrent();
+    this.props.create();
     this.props.newBoard();
 
     this.setState({gameOver: false});
     this.setState({done: false});
   }
 
-  onClickHandlerMainMenu() {
-    this.setState({
-      gameOver: true
-    })
+  reset() {
+    this.props.scoreReset();
+    this.props.turnPauseOff();
+    this.props.timerReset();
+    this.props.clearCurrent();
+    this.props.puyoRestart();
+    this.props.create();
+    this.props.newBoard();
+    this.setState({gameOver: false});
+    this.setState({done: false});
+    console.log(this.state);
+    this.gameStart();
   }
 
   render() {
@@ -160,9 +170,11 @@ class Game extends Component {
         {
           finished &&
           <div id="finished">
-            <button>Reset</button>
+            <Link to="/game">
+              <button onClick={this.reset}>Reset</button>
+            </Link>
             <Link to="/">
-              <button >Return to main menu</button>
+              <button onClick={this.reset}>Return to main menu</button>
             </Link>
           </div>
         }
@@ -172,9 +184,11 @@ class Game extends Component {
           <div id="pause">
             <div>
               <h2>Paused</h2>
-              <button>Reset</button>
+              <Link to="/game">
+                <button onClick={this.reset}>Reset</button>
+              </Link>
               <Link to="/">
-                <button >Return to main menu</button>
+                <button onClick={this.reset}>Return to main menu</button>
               </Link>
             </div>
           </div>
@@ -288,6 +302,9 @@ const mapDispatchToProps = dispatch => ({
   },
   turnPauseOff() {
     dispatch(pauseOff());
+  },
+  puyoRestart() {
+    dispatch(restartPuyo());
   }
 })
 
