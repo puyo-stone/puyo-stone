@@ -8,7 +8,6 @@ a {
   text-decoration: none;
 }
 
-<<<<<<< HEAD
 .controlOne {
   z-index: 1;
   background-image: url("/images/controls1.jpg");
@@ -21,10 +20,7 @@ a {
   background-repeat: no-repeat;
 }
 
-.container {
-=======
 .menu {
->>>>>>> 6ea628b2125c2f61fe0823c9991f818245acdf8a
   display: grid;
   height: 100vh;
   grid-template-columns: 1fr 1fr;
@@ -203,12 +199,15 @@ p {
   padding-right: .5em;
 }
 
-#gameMusic {
-  grid-area: bottomleft;
+#middleright {
+  grid-area: middleright;
   display: flex;
-  flex-flow: column;
-  align-items: flex-end;
-  padding-right: 1em;
+  justify-content: space-around;
+}
+
+#gameMusic {
+
+
 }
 
 #topright {
@@ -216,7 +215,6 @@ p {
 }
 
 #start {
-  grid-area: middleright;
 }
 
 #nextpuyo {

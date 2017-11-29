@@ -231,6 +231,7 @@ class Game extends Component {
             }
           </div>
 
+          <div id="middleright">
           <div id="gameStart">
             <button type="button" className="btn btn-default" onClick={this.gameStart} disabled={ this.state.press }>Start Game!</button>
           </div>
@@ -238,17 +239,12 @@ class Game extends Component {
           <div id="gameMusic">
             <Sound songUrl={this.props.sound.currentSong.url} />
           </div>
+          </div>
 
           <Modal isOpen={pauseStatus} style={modalStyle}>
             <div id="pause">
               <div>
                 <h1>Paused</h1>
-                <Link to='/game'>
-                  <h3 onClick={this.onClickHandler}> Reset! </h3>
-                  </Link>
-                <Link to ='/'>
-                  <h3 onClick={this.onClickHandler}> Return to Main Menu! </h3>
-                </Link>
               </div>
             </div>
           </Modal>
@@ -260,10 +256,7 @@ class Game extends Component {
                 <h3>Thank You For Playing!</h3>
                 <h3>Your Score is {this.props.score} </h3>
                 <Link to='/game'>
-                  <h3 onClick={this.onClickHandler}> Reset! </h3>
-                </Link>
-                <Link to ='/'>
-                  <h3 onClick={this.onClickHandler}> Return to Main Menu! </h3>
+                  <h3 onClick={this.reset}> Reset! </h3>
                 </Link>
               </div>
             </div>
