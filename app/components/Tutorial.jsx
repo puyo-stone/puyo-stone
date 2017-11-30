@@ -11,9 +11,9 @@ export default function Tutorial(props) {
         <h3>How to play</h3>
           <p>Puyos will drop from the top of the grid; you can move them left, right, and even rotate them.</p>
 
-          <p>Groups of four or more landed puyos will form a chain. Chains are removed from the grid and will cause other puyos on top to fall down.</p>
+          <p>Groups of four or more same color landed puyos will form a chain. Chains are removed from the grid and will cause other puyos on top to fall down.</p>
 
-          <p>Chains of puyos can cause other chains to form. Linking chain removals will net more points than normal single chains.</p>
+          <p>Removed chains of puyos can cause other chains to form from the falling puyos. Linking chain removals will net more points than normal single chains.</p>
 
         <h3>Controls</h3>
           <p>Move puyo right: right arrow</p>
@@ -31,8 +31,9 @@ export default function Tutorial(props) {
           <p>Rotate counter-clockwise: U</p>
           <p>Pause: P</p>
 
-        <h3>Online mode</h3>
-          <p>Compete for the highest score against your opponent within a 99 second time limit.</p>
+        <h3>Modes</h3>
+          <p>Time attack: Try to get the highest score in the time limit. Time limit can be changed in settings.</p>
+          <p>Time endurance: Survive as long as possible while achieving a high score. Puyo chain removals will also regain lost time.</p>
     </div>
   )
 }

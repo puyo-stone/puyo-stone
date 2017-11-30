@@ -58,7 +58,8 @@ const App = ({children}) =>
 render(
   <Provider store={store}>
   <Router history={browserHistory}>
-    <Route exact path="/game" component={Game} />
+    <Route exact path="/timeattack" component={Game} />
+    <Route exact path="/timeendurance" component={Game} />
     <Route path="/" component={StartMenu}/>
     <Route path="/settings" component={Settings}/>
     <Route path="/tutorial" component={Tutorial}/>
