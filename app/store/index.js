@@ -11,14 +11,24 @@ import timer from './timer';
 import puyoColors from './puyoColors';
 import sound from './sound';
 
-const reducer = combineReducers({ board, puyo, nextPuyo, score, pause, timer, puyoColors, sound });
+const appReducer = combineReducers({ board, puyo, nextPuyo, score, pause, timer, puyoColors, sound });
+const rootReducer = (state, action) => {
+  if (action.type === 'CLEAR_STORE') {
+    state = undefined;
+  }
+  return appReducer(state, action);
+}
+
+export const clearStore = () => ({
+  type: 'CLEAR_STORE'
+});
 
 const middleware = composeWithDevTools(applyMiddleware(
   thunkMiddleware,
   createLogger({ collapsed: true })
 ))
 
-const store = createStore(reducer, middleware)
+const store = createStore(rootReducer, middleware)
 
 export default store
 export * from './board';
