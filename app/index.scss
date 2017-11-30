@@ -1,11 +1,6 @@
 body {
   margin: 0;
   font-family: "Bubblegum Sans", Helvetica, Arial, sans-serif;
-<<<<<<< HEAD
-  background-color: skyblue;
-=======
-  background-color: skyblue
->>>>>>> 6c51f88964b0b9c5c56149348ba39d6acd351229
 }
 
 a {
@@ -150,12 +145,14 @@ p {
   background-color: skyblue;
   grid-area: bottomleft;
   background-position: center;
+  background-size: contain;
 }
 
 #control2 {
   background-color: skyblue;
   grid-area: bottomright;
   background-position: center;
+  background-size: contain;
 }
 
 #tutorial {
@@ -178,7 +175,7 @@ p {
 
 #middlegrid {
   grid-area: grid;
-  background-color: white;
+  background-color: rgba(0,0,0,0.25);
   margin: auto;
   border-left: .5px solid black;
   border-right: .5px solid black;
