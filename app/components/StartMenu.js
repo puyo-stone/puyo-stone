@@ -7,18 +7,18 @@ class StartMenu extends Component {
   render() {
     return (
       <div className="start menu">
-        <Link to="/game" className="start overlay singleplayer">
-          <h1>SinglePlayer!</h1>
+        <Link to="/game" className="start overlay timeattack">
+          <h1>Time Attack!</h1>
         </Link>
-        <Link className="start overlay multiplayer">
-          <h1>MultiPlayer!</h1>
+        <Link className="start overlay endurancemode">
+          <h1>Endurance Mode!</h1>
           <h2>(Coming Soon!)</h2>
-        </Link>
-        <Link to="/settings" className="start overlay settings">
-          <h1>Settings!</h1>
         </Link>
         <Link to="/tutorial" className="start overlay tutorial">
           <h1>Tutorial!</h1>
+        </Link>
+        <Link to="/settings" className="start overlay settings">
+          <h1>Settings!</h1>
         </Link>
         <Sound url="/songs/Spirited Away.mp3" volume={this.props.sound.volume} loop={true} playStatus={Sound.status.PLAYING}/>
       </div>

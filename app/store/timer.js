@@ -2,7 +2,7 @@ const DECREMENT='DECREMENT';
 const RESET='RESET';
 const SET = 'SET';
 const STOP='STOP';
-const init = 99;
+const init = 200;
 
 const decrement = () => ({
   type: DECREMENT
