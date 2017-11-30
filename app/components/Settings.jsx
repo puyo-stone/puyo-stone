@@ -1,4 +1,3 @@
-// settings
 // change controls; optional
 
 import React, { Component } from 'react';
@@ -10,9 +9,6 @@ import ColorSelector from './ColorSelector';
 import TimerSelector from './TimerSelector';
 
 class Settings extends Component {
-  componentDidMount() {
-  }
-
   render() {
     return (
       <div id="tutorial">
@@ -27,14 +23,4 @@ class Settings extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  puyo: state.puyo,
-  board: state.board,
-  score: state.score,
-  nextPuyo: state.nextPuyo,
-  puyoColors: state.puyoColors,
-  timer: state.timer,
-  pause: state.pause
-})
-
-export default connect(mapStateToProps)(Settings);
+export default Settings;
