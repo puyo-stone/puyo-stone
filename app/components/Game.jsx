@@ -23,8 +23,7 @@ class Game extends Component {
     this.state = {
       press: false,
       gameOver: false,
-      done: false,
-      restarted: false
+      done: false
     }
     this.gridDimensions.height = this.gridDimensions.row * this.gridDimensions.cellSize;
     this.gridDimensions.width = this.gridDimensions.col * this.gridDimensions.cellSize;
@@ -124,7 +123,7 @@ class Game extends Component {
               const puyo = this.props.puyo;
               this.props.clearCurrent();
               const { board, rotate, center } = split(this.props.board, puyo, this.props.updateBoard);
-              const newBoard = explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore, this.props.reArrange, this.props.removePuyo, this.props.addToTime, this.props.router.location.pathname );
+              const newBoard = explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore, this.props.reArrange, this.props.removePuyo, this.props.addToTime, this.props.router.location.pathname);
               this.props.getNextPuyo(this.props.nextPuyo);
               this.props.create();
             }
@@ -141,9 +140,7 @@ class Game extends Component {
 
     if (!this.state.gameOver) {
       this.setState({ press: true })
-      if (!this.state.restarted) {
-        arrowMotion = document.addEventListener('keydown', this.keyControl);
-      }
+      arrowMotion = document.addEventListener('keydown', this.keyControl);
       this.intervalManager(true);
       this.props.timerStart();
     } else {
@@ -166,7 +163,7 @@ class Game extends Component {
   }
 
   reset() {
-    this.setState({gameOver: false, done: false, restarted: true, press: false});
+    this.setState({gameOver: false, done: false, press: false});
     this.props.scoreReset();
     this.props.turnPauseOff();
     this.props.timerReset();
@@ -175,6 +172,7 @@ class Game extends Component {
     this.props.puyoRestart();
     this.props.create();
     this.props.newBoard();
+    document.removeEventListener('keydown', this.keyControl);
   }
 
   handleGoHome() {
@@ -338,7 +336,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(resetTimer());
   },
   addToTime(time) {
-    console.log("THIS IS TIME", time)
+    console.log('THIS IS TIME', time)
     dispatch(timeGain(time));
   },
   newBoard() {
