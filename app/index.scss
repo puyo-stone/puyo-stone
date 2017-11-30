@@ -27,23 +27,23 @@ a {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   grid-template-areas:
-    "single multiplayer"
-    "settings highscore";
+    "time endurance"
+    "tutorial settings";
     a {
       text-decoration: none;
     }
 }
 
-.singleplayer {
-  grid-area: single;
-  background-image: url("/images/singleplayer.jpeg");
+.timeattack {
+  grid-area: time;
+  background-image: url("/images/timeattack.jpeg");
   background-size: 100% 100%
 }
 
 
-.multiplayer {
-  grid-area: multiplayer;
-  background-image: url("/images/multiplayer.jpg");
+.endurancemode {
+  grid-area: endurance;
+  background-image: url("/images/endurancemode.jpg");
   background-size: 100% 100%;
 }
 
@@ -56,7 +56,7 @@ a {
 
 
 .tutorial {
-  grid-area: highscore;
+  grid-area: tutorial;
   background-image: url("/images/tutorial.jpg");
   background-size: 100% 100%;
 }
@@ -81,11 +81,11 @@ a {
   opacity: 0;
 }
 
-.singleplayer:after {
+.timeattack:after {
   background-color: rgb(253,214,215);
 }
 
-.multiplayer:after {
+.endurancemode:after {
   background-color: rgb(219,239,237);
 }
 

@@ -62,7 +62,6 @@ class Game extends Component {
       this.props.timerStart();
       if (!this.state.restarted) {
         arrowMotion = document.addEventListener('keydown', e => {
-
           // 80 is p
           if (e.which === 80) {
             if (!this.state.done) {
