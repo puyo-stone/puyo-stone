@@ -23,7 +23,8 @@ module.exports = {
     ? 'cheap-module-eval-source-map'
     : 'source-map',
   resolve: {
-    extensions: ['.js', '.jsx', '.json', '*']
+    extensions: ['.js', '.jsx', '.json', '*'],
+    alias: { soundmanager2: 'soundmanager2/script/soundmanager2-nodebug-jsmin.js' }
   },
   module: {
     rules: [
@@ -49,11 +50,11 @@ module.exports = {
       }
     ],
     loaders: [
-    {
-      test: /\.(png|jpg)$/,
-      loader: 'url?limit=25000'
-    }
-  ]
+      {
+        test: /\.(png|jpg)$/,
+        loader: 'url?limit=25000'
+      }
+    ]
   },
   plugins: devMode
     ? [new LiveReloadPlugin({ appendScriptTag: true })]
