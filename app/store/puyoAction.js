@@ -11,21 +11,21 @@ const init = new DoublePuyo();
 
 export const clearPuyoAction = () => ({
   type: CLEAR_PUYO
-})
+});
 
 export const ActionCenter = (puyo) => ({
   type: ACTION_CENTER,
   puyo
-})
+});
 
 export const getPuyo = (puyo) => ({
   type: GET_PUYO,
   puyo
-})
+});
 
 export const restartPuyo = () => ({
   type: RESTART
-})
+});
 
 export function leftMove(puyo) {
   return function(dispatch) {
@@ -34,7 +34,7 @@ export function leftMove(puyo) {
     newPuyo.rotatePuyo.col = puyo.rotatePuyo.col - 1;
     dispatch(ActionCenter(newPuyo));
   };
-}
+};
 
 export function rightMove(puyo) {
   return function(dispatch) {
@@ -43,23 +43,23 @@ export function rightMove(puyo) {
     newPuyo.rotatePuyo.col = puyo.rotatePuyo.col + 1;
     dispatch(ActionCenter(newPuyo));
   };
-}
+};
 
 export function rotateA(puyo) {
   return function(dispatch) {
     const newPuyo = _.cloneDeep(puyo);
     rotateAFunc(newPuyo);
     dispatch(ActionCenter(newPuyo));
-  }
-}
+  };
+};
 
 export function rotateB(puyo) {
   return function(dispatch) {
     const newPuyo = _.cloneDeep(puyo);
     rotateBFunc(newPuyo);
     dispatch(ActionCenter(newPuyo));
-  }
-}
+  };
+};
 
 export function dropMove(puyo) {
   return function(dispatch) {
@@ -68,7 +68,7 @@ export function dropMove(puyo) {
     newPuyo.rotatePuyo.row = puyo.rotatePuyo.row + 1;
     dispatch(ActionCenter(newPuyo));
   };
-}
+};
 
 export default function(state = init, action) {
   switch (action.type) {
@@ -83,4 +83,4 @@ export default function(state = init, action) {
   default:
     return state;
   }
-}
+};
