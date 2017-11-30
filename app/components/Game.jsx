@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import DroppingPuyo from './DroppingPuyo';
 import NextPuyo from './NextPuyo'
-import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore, resetScore, newBoardAction, pauseOn, pauseOff, start, stop, resetTimer, restartPuyo, clearStore } from '../store/';
+import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore, resetScore, newBoardAction, pauseOn, pauseOff, start, stop, resetTimer, restartPuyo, clearStore, timeGain } from '../store/';
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
 import { split, explosion, gameOver } from '../Func/game';
 import Sound from './Sound';
@@ -124,7 +124,7 @@ class Game extends Component {
               const puyo = this.props.puyo;
               this.props.clearCurrent();
               const { board, rotate, center } = split(this.props.board, puyo, this.props.updateBoard);
-              const newBoard = explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore, this.props.reArrange, this.props.removePuyo);
+              const newBoard = explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore, this.props.reArrange, this.props.removePuyo, this.props.addToTime, this.props.router.location.pathname );
               this.props.getNextPuyo(this.props.nextPuyo);
               this.props.create();
             }
@@ -264,7 +264,7 @@ class Game extends Component {
                 <h1>GAME OVER!</h1>
                 <h3>Thank You For Playing!</h3>
                 <h3>Your Score is {this.props.score} </h3>
-                <Link to='/game'>
+                <Link>
                   <h3 onClick={this.reset}> Reset! </h3>
                 </Link>
                 <Link to="/"><h3 onClick={this.handleGoHome}>Home</h3></Link>
@@ -336,6 +336,10 @@ const mapDispatchToProps = dispatch => ({
   },
   timerReset() {
     dispatch(resetTimer());
+  },
+  addToTime(time) {
+    console.log("THIS IS TIME", time)
+    dispatch(timeGain(time));
   },
   newBoard() {
     dispatch(newBoardAction());

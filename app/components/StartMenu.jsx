@@ -10,9 +10,8 @@ class StartMenu extends Component {
 				<Link to="/timeattack" className="start overlay timeattack">
 					<h1>Time Attack Mode</h1>
 				</Link>
-				<Link to="/endurance" className="start overlay endurance">
+				<Link to="/timeendurance" className="start overlay endurancemode">
 					<h1>Endurance Mode</h1>
-					<h2>(Coming Soon!)</h2>
 				</Link>
 				<Link to="/settings" className="start overlay settings">
 					<h1>Settings!</h1>

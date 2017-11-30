@@ -160,7 +160,7 @@ const getAllConnection = (board, puyo, visit) => {
   return result.length >= 4 ? result : [];
 }
 
-export const explosion =async function(board, center, rotate, updateFunc, addToScore, reArrangeFunc, removePuyoFunc) {
+export const explosion =async function(board, center, rotate, updateFunc, addToScore, reArrangeFunc, removePuyoFunc, addToTime, mode) {
   await timeout(125);
   let remove = [];
   let explode = false;
@@ -180,7 +180,11 @@ export const explosion =async function(board, center, rotate, updateFunc, addToS
     visit = {};
     puyoCounter = remove.length;
     remove = [];
-    addToScore(scoreCalc(puyoCounter, chainCounter));
+		let value = scoreCalc(puyoCounter, chainCounter)
+    addToScore(value);
+		if (mode === '/timeendurance') {
+			addToTime(Math.floor(value / 10));
+		}
     chainCounter++;
   }
   if (explode) {

@@ -16,7 +16,6 @@ class Settings extends Component {
         <SongSelector />
         <ColorSelector />
         <TimerSelector />
-        <Link to="/game"><button type="button" className="btn btn-default">Back to Single Game</button></Link>
         <Link to="/"><button type="button" className="btn btn-default">Back to Home Page</button></Link>
       </div>
     )
