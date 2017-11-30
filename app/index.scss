@@ -34,14 +34,14 @@ a {
     }
 }
 
-.singleplayer {
+.timeattack {
   grid-area: single;
   background-image: url("/images/singleplayer.jpeg");
   background-size: 100% 100%
 }
 
 
-.multiplayer {
+.endurance {
   grid-area: multiplayer;
   background-image: url("/images/multiplayer.jpg");
   background-size: 100% 100%;
@@ -81,11 +81,11 @@ a {
   opacity: 0;
 }
 
-.singleplayer:after {
+.timeattack:after {
   background-color: rgb(253,214,215);
 }
 
-.multiplayer:after {
+.endurance:after {
   background-color: rgb(219,239,237);
 }
 

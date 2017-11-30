@@ -11,7 +11,7 @@ export default function Tutorial(props) {
         <h3>How to play</h3>
           <p>Puyos will drop from the top of the grid; you can move them left, right, and even rotate them.</p>
 
-          <p>Groups of four or more landed puyos will form a chain. Chains are removed from the grid and will cause other puyos on top to fall down.</p>
+          <p>Groups of four or more same color landed puyos will form a chain. Chains are removed from the grid and will cause other puyos on top to fall down.</p>
 
           <p>Chains of puyos can cause other chains to form. Linking chain removals will net more points than normal single chains.</p>
 
