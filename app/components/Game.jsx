@@ -5,10 +5,12 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import DroppingPuyo from './DroppingPuyo';
 import NextPuyo from './NextPuyo'
-import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore, resetScore, newBoardAction, pauseOn, pauseOff, start, stop, resetTimer, restartPuyo } from '../store/';
+import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore, resetScore, newBoardAction, pauseOn, pauseOff, start, stop, resetTimer, restartPuyo, clearStore } from '../store/';
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
 import { split, explosion, gameOver } from '../Func/game';
 import Sound from './Sound';
+
+let intervalStatus = null;
 
 class Game extends Component {
   constructor(props) {
@@ -30,6 +32,9 @@ class Game extends Component {
     this.gameStop = this.gameStop.bind(this);
     this.handleSet = this.handleSet.bind(this);
     this.reset = this.reset.bind(this);
+    this.handleGoHome = this.handleGoHome.bind(this);
+    this.intervalManager = this.intervalManager.bind(this);
+    this.keyControl = this.keyControl.bind(this);
   }
 
   handleSet() {
@@ -53,94 +58,94 @@ class Game extends Component {
     }
   }
 
+  keyControl(e) {
+    // 80 is p
+    if (e.which === 80) {
+      if (!this.state.done) {
+        if (!this.props.pause) {
+          this.props.turnPauseOn();
+          this.props.timerStop();
+          this.intervalManager(false);
+        } else {
+          this.props.turnPauseOff();
+          if (!this.state.done) {
+            this.props.timerStart();
+          }
+          this.intervalManager(true);
+        }
+      }
+    }
+    if (!this.state.done) {
+      if (!this.props.pause) {
+        if (e.which === 81 || e.which === 37) {
+          if (leftCheck(this.props.board, this.props.puyo)) {
+            this.props.left(this.props.puyo);
+          }
+        }
+        if (e.which === 69 || e.which === 39) {
+          if (rightCheck(this.props.board, this.props.puyo)) {
+            this.props.right(this.props.puyo);
+          }
+        }
+        if (e.which === 87 || e.which === 40) {
+          if (bottomCheck(this.props.board, this.props.puyo)) {
+            this.props.gravity(this.props.puyo);
+          }
+        }
+        if (e.which === 73 || e.which === 88) {
+          if (rotateACheck(this.props.board, this.props.puyo)) {
+            this.props.rotatePuyoA(this.props.puyo);
+          }
+        }
+        if (e.which === 85 || e.which === 90) {
+          if (rotateBCheck(this.props.board, this.props.puyo)) {
+            this.props.rotatePuyoB(this.props.puyo);
+          }
+        }
+      }
+    }
+  }
+
+  intervalManager = (flag) => {
+    if (flag) {
+      intervalStatus = setInterval(() => {
+        if (gameOver(this.props.board, this.props.puyo)) {
+          this.setState({gameOver: true});
+          clearInterval(intervalStatus);
+        } else {
+          if (Object.keys(this.props.puyo).length > 0) {
+            if (bottomCheck(this.props.board, this.props.puyo)) {
+              this.props.gravity(this.props.puyo)
+              if (gameOver(this.props.board, this.props.puyo)) {
+                this.setState({gameOver: true})
+                clearInterval(intervalStatus);
+              }
+            } else {
+              const puyo = this.props.puyo;
+              this.props.clearCurrent();
+              const { board, rotate, center } = split(this.props.board, puyo, this.props.updateBoard);
+              const newBoard = explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore, this.props.reArrange, this.props.removePuyo);
+              this.props.getNextPuyo(this.props.nextPuyo);
+              this.props.create();
+            }
+          }
+        }
+      }, 500)
+    } else {
+      clearInterval(intervalStatus);
+    }
+  }
+
   gameStart() {
-    let intervalStatus = null;
     let arrowMotion;
 
     if (!this.state.gameOver) {
       this.setState({ press: true })
-      this.props.timerStart();
       if (!this.state.restarted) {
-        arrowMotion = document.addEventListener('keydown', e => {
-
-          // 80 is p
-          if (e.which === 80) {
-            if (!this.state.done) {
-              if (!this.props.pause) {
-                this.props.turnPauseOn();
-                this.props.timerStop();
-                intervalManager(false);
-              } else {
-                this.props.turnPauseOff();
-                if (!this.state.done) {
-                  this.props.timerStart();
-                }
-                intervalManager(true);
-              }
-            }
-          }
-          if (!this.state.done) {
-            if (!this.props.pause) {
-              if (e.which === 81 || e.which === 37) {
-                if (leftCheck(this.props.board, this.props.puyo)) {
-                  this.props.left(this.props.puyo);
-                }
-              }
-              if (e.which === 69 || e.which === 39) {
-                if (rightCheck(this.props.board, this.props.puyo)) {
-                  this.props.right(this.props.puyo);
-                }
-              }
-              if (e.which === 87 || e.which === 40) {
-                if (bottomCheck(this.props.board, this.props.puyo)) {
-                  this.props.gravity(this.props.puyo);
-                }
-              }
-              if (e.which === 73 || e.which === 88) {
-                if (rotateACheck(this.props.board, this.props.puyo)) {
-                  this.props.rotatePuyoA(this.props.puyo);
-                }
-              }
-              if (e.which === 85 || e.which === 90) {
-                if (rotateBCheck(this.props.board, this.props.puyo)) {
-                  this.props.rotatePuyoB(this.props.puyo);
-                }
-              }
-            }
-          }
-        })
+        arrowMotion = document.addEventListener('keydown', this.keyControl);
       }
-
-      const intervalManager = (flag) => {
-        if (flag) {
-          intervalStatus = setInterval(() => {
-            if (gameOver(this.props.board, this.props.puyo)) {
-              this.setState({gameOver: true});
-              clearInterval(intervalStatus);
-            } else {
-              if (Object.keys(this.props.puyo).length > 0) {
-                if (bottomCheck(this.props.board, this.props.puyo)) {
-                  this.props.gravity(this.props.puyo)
-                  if (gameOver(this.props.board, this.props.puyo)) {
-                    this.setState({gameOver: true})
-                    clearInterval(intervalStatus);
-                  }
-                } else {
-                  const puyo = this.props.puyo;
-                  this.props.clearCurrent();
-                  const { board, rotate, center } = split(this.props.board, puyo, this.props.updateBoard);
-                  const newBoard = explosion(board, center, rotate, this.props.updateBoard, this.props.addToScore, this.props.reArrange, this.props.removePuyo);
-                  this.props.getNextPuyo(this.props.nextPuyo);
-                  this.props.create();
-                }
-              }
-            }
-          }, 500)
-        } else {
-          clearInterval(intervalStatus);
-        }
-      }
-      intervalManager(true);
+      this.intervalManager(true);
+      this.props.timerStart();
     } else {
       clearInterval(intervalStatus);
     }
@@ -157,20 +162,11 @@ class Game extends Component {
   }
 
   componentWillUnmount() {
-    this.props.scoreReset();
-    this.props.turnPauseOff();
-    this.props.timerReset();
-    this.props.clearCurrent();
-    this.props.create();
-    this.props.newBoard();
-    this.setState({gameOver: false});
-    this.setState({done: false});
+    this.handleGoHome();
   }
 
   reset() {
-    this.setState({gameOver: false});
-    this.setState({done: false});
-    this.setState({restarted: true});
+    this.setState({gameOver: false, done: false, restarted: true, press: false});
     this.props.scoreReset();
     this.props.turnPauseOff();
     this.props.timerReset();
@@ -179,7 +175,14 @@ class Game extends Component {
     this.props.puyoRestart();
     this.props.create();
     this.props.newBoard();
-    this.props.timerStart();
+  }
+
+  handleGoHome() {
+    this.setState({gameOver: false, pressed: false, done: false});
+    this.props.timerStop();
+    clearInterval(intervalStatus);
+    document.removeEventListener('keydown', this.keyControl);
+    this.props.clearEverything();
   }
 
   render() {
@@ -239,12 +242,18 @@ class Game extends Component {
           <div id="gameMusic">
             <Sound songUrl={this.props.sound.currentSong.url} />
           </div>
+
+          <div id="goHome">
+            <Link to="/"><button type="button" className="btn btn-default" onClick={this.handleGoHome}>Home</button></Link>
+          </div>
+
           </div>
 
           <Modal isOpen={pauseStatus} style={modalStyle}>
             <div id="pause">
               <div>
                 <h1>Paused</h1>
+                <h4>Press 'P' to resume</h4>
               </div>
             </div>
           </Modal>
@@ -258,6 +267,7 @@ class Game extends Component {
                 <Link to='/game'>
                   <h3 onClick={this.reset}> Reset! </h3>
                 </Link>
+                <Link to="/"><h3 onClick={this.handleGoHome}>Home</h3></Link>
               </div>
             </div>
           </Modal>
@@ -341,6 +351,9 @@ const mapDispatchToProps = dispatch => ({
   },
   puyoRestart() {
     dispatch(restartPuyo());
+  },
+  clearEverything() {
+    dispatch(clearStore());
   }
 })
 

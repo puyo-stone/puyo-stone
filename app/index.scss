@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-family: "Bubblegum Sans", Helvetica, Arial, sans-serif;
-  background-color: skyblue
+  background-color: skyblue;
 }
 
 a {
@@ -27,23 +27,23 @@ a {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   grid-template-areas:
-    "single multiplayer"
-    "settings highscore";
+    "time endurance"
+    "tutorial settings";
     a {
       text-decoration: none;
     }
 }
 
 .timeattack {
-  grid-area: single;
-  background-image: url("/images/singleplayer.jpeg");
+  grid-area: time;
+  background-image: url("/images/timeattack.jpeg");
   background-size: 100% 100%
 }
 
 
-.endurance {
-  grid-area: multiplayer;
-  background-image: url("/images/multiplayer.jpg");
+.endurancemode {
+  grid-area: endurance;
+  background-image: url("/images/endurancemode.jpg");
   background-size: 100% 100%;
 }
 
@@ -56,7 +56,7 @@ a {
 
 
 .tutorial {
-  grid-area: highscore;
+  grid-area: tutorial;
   background-image: url("/images/tutorial.jpg");
   background-size: 100% 100%;
 }
@@ -85,7 +85,7 @@ a {
   background-color: rgb(253,214,215);
 }
 
-.endurance:after {
+.endurancemode:after {
   background-color: rgb(219,239,237);
 }
 
@@ -146,12 +146,14 @@ p {
   background-color: skyblue;
   grid-area: bottomleft;
   background-position: center;
+  background-size: contain;
 }
 
 #control2 {
   background-color: skyblue;
   grid-area: bottomright;
   background-position: center;
+  background-size: contain;
 }
 
 #tutorial {
@@ -174,7 +176,7 @@ p {
 
 #middlegrid {
   grid-area: grid;
-  background-color: white;
+  background-color: rgba(0,0,0,0.25);
   margin: auto;
   border-left: .5px solid black;
   border-right: .5px solid black;
@@ -203,19 +205,12 @@ p {
 #middleright {
   grid-area: middleright;
   display: flex;
+  flex-flow: column;
   justify-content: space-around;
-}
-
-#gameMusic {
-
-
 }
 
 #topright {
   grid-area: topright;
-}
-
-#start {
 }
 
 #nextpuyo {

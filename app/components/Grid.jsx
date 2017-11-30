@@ -94,26 +94,26 @@ class Grid extends Component {
     const w = this.props.gridDimensions.width;
     const h = this.props.gridDimensions.height;
 
-    for (var i = 1; i < row; i++) {
+    for (let i = 1; i < row; i++) {
       selectNode
                 .append('line')
                 .attr('x1', 0)
                 .attr('y1', i * cellSize)
                 .attr('x2', w)
                 .attr('y2', i * cellSize)
-                .attr('stroke', 'lightgray')
-                .attr('stroke-width', 0.5);
+                .attr('stroke', 'white')
+                .attr('stroke-width', 1);
     }
 
-    for (var j = 1; j < col; j++) {
+    for (let j = 1; j < col; j++) {
       selectNode
                 .append('line')
                 .attr('x1', j * cellSize)
                 .attr('y1', 0)
                 .attr('x2', j * cellSize)
                 .attr('y2', h)
-                .attr('stroke', 'lightgray')
-                .attr('stroke-width', 0.5);
+                .attr('stroke', 'white')
+                .attr('stroke-width', 1);
     }
   }
 

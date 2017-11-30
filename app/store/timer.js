@@ -1,6 +1,8 @@
 const DECREMENT='DECREMENT';
 const RESET='RESET';
+const SET = 'SET';
 const STOP='STOP';
+const init = 200;
 
 const decrement = () => ({
   type: DECREMENT
@@ -8,6 +10,11 @@ const decrement = () => ({
 
 const reset = () => ({
   type: RESET
+})
+
+export const setTimer = duration => ({
+  type: SET,
+  duration
 })
 
 const stopTime =() => ({
@@ -28,12 +35,14 @@ export const resetTimer=() => (dispatch) => {
   dispatch(reset());
 }
 
-export default function(state = 99, action) {
+export default function(state = init, action) {
   switch (action.type) {
   case DECREMENT:
     return state - 1;
   case RESET:
-    return 99;
+    return init;
+  case SET:
+    return action.duration;
   default:
     return state;
   }
