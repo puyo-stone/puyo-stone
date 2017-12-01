@@ -5,11 +5,11 @@ const INACTIVE = 'INACTIVE';
 
 export const pauseOn = () => ({
   type: ACTIVE
-})
+});
 
 export const pauseOff = () => ({
   type: INACTIVE
-})
+});
 
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -20,4 +20,4 @@ export default function(state = initialState, action) {
   default:
     return state;
   }
-}
+};
