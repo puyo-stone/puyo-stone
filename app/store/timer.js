@@ -23,8 +23,8 @@ const stopTime =() => ({
 });
 
 export const timeGain = (time) => ({
-	type: GAIN,
-	time
+  type: GAIN,
+  time
 });
 
 let timer = null;
@@ -42,16 +42,16 @@ export const resetTimer=() => (dispatch) => {
 };
 
 export default function(state = init, action) {
-	switch (action.type) {
-		case DECREMENT:
-			return state - 1;
-		case RESET:
-			return init;
-		case SET:
-			return action.duration;
-		case GAIN:
-			return state + action.time;
-		default:
-			return state;
-	}
+  switch (action.type) {
+  case DECREMENT:
+    return state - 1;
+  case RESET:
+    return init;
+  case SET:
+    return action.duration;
+  case GAIN:
+    return state + action.time;
+  default:
+    return state;
+  }
 };
