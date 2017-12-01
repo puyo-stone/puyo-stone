@@ -9,13 +9,14 @@ const init = {
     {title: 'Summer Ice Cream', palette: ['rgba(154,255,247,1)', 'rgba(162,255,89,1)', 'rgba(253,255,70,1)', 'rgba(255,159,159,1)', 'rgba(161,105,58,1)']},
     {title: 'Yellow into the Blues', palette: ['rgba(214,132,110,1)', 'rgba(255,238,176,1)', 'rgba(150,207,185,1)', 'rgba(110,192,214,1)', 'rgba(83,127,187,1)']},
   ]
-}
+};
+
 const SET_COLORS = 'SET_COLORS';
 
 export const setColors = (paletteId) => ({
   type: SET_COLORS,
   paletteId
-})
+});
 
 export default function(state = init, action) {
   switch (action.type) {
@@ -23,6 +24,6 @@ export default function(state = init, action) {
     const palette = state.palettes[action.paletteId].palette;
     return Object.assign({}, state, {currentPalette: palette});
   default:
-    return state
+    return state;
   }
-}
+};

@@ -13,24 +13,24 @@ export const updateBoardAction = board => ({ type: UPDATE_BOARD, board });
 export const reArrangeAction = board => ({
   type: REARRANGE,
   board
-})
+});
 
 export const removePuyoFromBoardAction = board => ({
   type: REMOVE_PUYO_FROM_BOARD,
   board
-})
+});
 
 export const insertPuyo = (board) => dispatch => {
   dispatch(updateBoardAction(board));
-}
+};
 
 export const removePuyoFromBoard = (board) => dispatch => {
   dispatch(removePuyoFromBoardAction(board));
-}
+};
 
 export const reArrangeBoard = (board) => dispatch => {
   dispatch(reArrangeAction(board));
-}
+};
 
 export default function(state = iniState, action) {
   switch (action.type) {
@@ -47,4 +47,4 @@ export default function(state = iniState, action) {
   default:
     return state;
   }
-}
+};

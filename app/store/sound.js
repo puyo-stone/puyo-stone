@@ -18,11 +18,9 @@ export default function(state = initState, action) {
   case SELECT_SONG:
     const song = state.songs[action.songId];
     return Object.assign({}, state, {currentSong: song});
-
   case CHANGE_VOLUME:
     return Object.assign({}, state, {volume: action.volume});
-
   default:
     return state;
   }
-}
+};

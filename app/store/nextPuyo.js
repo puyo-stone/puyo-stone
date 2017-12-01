@@ -5,7 +5,7 @@ const init = new DoublePuyo();
 
 export const createPuyoAction = () => ({
   type: CREATE_PUYO
-})
+});
 
 export default function(state = init, action) {
   switch (action.type) {
@@ -14,4 +14,4 @@ export default function(state = init, action) {
   default:
     return state;
   }
-}
+};

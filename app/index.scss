@@ -40,20 +40,17 @@ a {
   background-size: 100% 100%
 }
 
-
 .endurancemode {
   grid-area: endurance;
   background-image: url("/images/endurancemode.jpg");
   background-size: 100% 100%;
 }
 
-
 .settings {
   grid-area: settings;
   background-image: url("/images/settings.jpg");
   background-size: 100% 100%;
 }
-
 
 .tutorial {
   grid-area: tutorial;
@@ -145,14 +142,14 @@ p {
 #control1 {
   background-color: skyblue;
   grid-area: bottomleft;
-  background-position: center;
+  background-position: right;
   background-size: contain;
 }
 
 #control2 {
   background-color: skyblue;
   grid-area: bottomright;
-  background-position: center;
+  background-position: left;
   background-size: contain;
 }
 
