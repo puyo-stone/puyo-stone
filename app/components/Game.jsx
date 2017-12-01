@@ -336,7 +336,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(resetTimer());
   },
   addToTime(time) {
-    console.log('THIS IS TIME', time)
     dispatch(timeGain(time));
   },
   newBoard() {

@@ -28,7 +28,6 @@ class SongSelector extends Component {
 
   handleSongChange(ev) {
     ev.preventDefault();
-    console.log('handling')
     this.props.changeSong(ev.target.value);
   }
 }
@@ -39,7 +38,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => ({
   changeSong(songId) {
-    console.log('dispatching, songId', songId)
     dispatch(selectSong(songId));
   }
 })

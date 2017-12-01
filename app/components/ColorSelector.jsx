@@ -12,7 +12,6 @@ class ColorSelector extends Component {
     const squreSize = 50;
     const barH = squreSize;
     const barW = squreSize*5;
-    // console.log('!!!!! ', this.props.colors)
     return (
       <div>
       <label>

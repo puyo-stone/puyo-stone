@@ -24,8 +24,8 @@ export const clearStore = () => ({
 });
 
 const middleware = composeWithDevTools(applyMiddleware(
-  thunkMiddleware,
-  createLogger({ collapsed: true })
+  thunkMiddleware
+  // createLogger({ collapsed: true })
 ))
 
 const store = createStore(rootReducer, middleware)
