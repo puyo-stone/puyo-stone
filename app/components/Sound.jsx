@@ -36,10 +36,10 @@ class BGM extends Component {
             {
                 play ?
                     <button type="button" className="btn btn-default" onClick={this.handlePause}>
-                        <span className="glyphicon glyphicon-music" aria-hidden="true"></span>
+                        <span className="glyphicon glyphicon-volume-off" aria-hidden="true"></span>
                     </button>
                 : <button type="button" className="btn btn-default" onClick={this.handleResume}>
-                        <span className="glyphicon glyphicon-volume-off" aria-hidden="true"></span>
+                        <span className="glyphicon glyphicon-music" aria-hidden="true"></span>
                     </button>
             }
             {
