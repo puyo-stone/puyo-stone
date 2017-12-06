@@ -12,7 +12,7 @@ function timeout(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function puyoRepeatRemoval(board, reArrangeFunc, removePuyoFunc, addToScore, chainCounter, Calc) {
+export async function puyoRepeatRemoval(board, reArrangeFunc, removePuyoFunc, addToScore, chainCounter, Calc) {
   let check = true;
   let newBoard = deepCopy(board);
   let puyoRemovalArr=[];
@@ -36,7 +36,7 @@ async function puyoRepeatRemoval(board, reArrangeFunc, removePuyoFunc, addToScor
   return newBoard;
 }
 
-const deepCopy = (board) => {
+export const deepCopy = (board) => {
   const newBoard = [];
   for (let i = 0; i < board.length; i++) {
     newBoard[i] = board[i].slice(0);
@@ -106,7 +106,7 @@ export const split = (board, puyo, updateFunc) => {
   }
 }
 
-const reArrange = (board) => {
+export const reArrange = (board) => {
   const emptyBoard = createNewGrid();   // createNewGrid just a function to make a empty 2D array and fill with null
   for (let i = 0; i < 6; i++) {
     let counter = 11;
@@ -180,11 +180,11 @@ export const explosion =async function(board, center, rotate, updateFunc, addToS
     visit = {};
     puyoCounter = remove.length;
     remove = [];
-		let value = scoreCalc(puyoCounter, chainCounter)
+    const value = scoreCalc(puyoCounter, chainCounter)
     addToScore(value);
-		if (mode === '/timeendurance') {
-			addToTime(Math.floor(value / 10));
-		}
+    if (mode === '/timeendurance') {
+      addToTime(Math.floor(value / 10));
+    }
     chainCounter++;
   }
   if (explode) {
@@ -192,7 +192,7 @@ export const explosion =async function(board, center, rotate, updateFunc, addToS
   }
 }
 
-const removePuyo = (board, arr) => {
+export const removePuyo = (board, arr) => {
   const returnBoard = deepCopy(board);
   arr.forEach(puyo => {
     returnBoard[puyo.row][puyo.col] = null;
@@ -200,7 +200,7 @@ const removePuyo = (board, arr) => {
   return returnBoard;
 }
 
-const SearchBoard = (board) => {
+export const SearchBoard = (board) => {
   const result = [];
   const visit = {};
   for (let i = 11; i >= 0; i--) {
