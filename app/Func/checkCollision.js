@@ -1,4 +1,13 @@
+function puyoExist(puyo) {
+  if (puyo) {
+    if (puyo.centerPuyo.row<1) {
+      return true
+    }
+  }
+}
+
 export const leftCheck = (board, puyo) => {
+  if (puyoExist(puyo)) return false;
   const { centerPuyo, rotatePuyo } = puyo;
   const leftMostPuyo = centerPuyo.col < rotatePuyo.col ? centerPuyo : rotatePuyo;
   const sameCol = centerPuyo.col === rotatePuyo.col;
@@ -20,6 +29,7 @@ export const leftCheck = (board, puyo) => {
 }
 
 export const rightCheck = (board, puyo) => {
+  if (puyoExist(puyo)) return false;
   const { centerPuyo, rotatePuyo } = puyo;
   const rightMostPuyo = centerPuyo.col > rotatePuyo.col ? centerPuyo : rotatePuyo;
   const sameCol = centerPuyo.col === rotatePuyo.col;
@@ -42,6 +52,7 @@ export const rightCheck = (board, puyo) => {
 }
 
 export const rotateACheck = (board, puyo) => {
+  if (puyoExist(puyo)) return false;
   const { centerPuyo, rotatePuyo } = puyo;
   switch (puyo.positions) {
   case 0:
@@ -73,6 +84,7 @@ export const rotateACheck = (board, puyo) => {
 }
 
 export const rotateBCheck = (board, puyo) => {
+  if (puyoExist(puyo)) return false;
   const { centerPuyo, rotatePuyo } = puyo;
   switch (puyo.positions) {
   case 0:
@@ -105,6 +117,7 @@ export const rotateBCheck = (board, puyo) => {
 }
 
 export const bottomCheck = (board, puyo) => {
+  if (puyoExist(puyo)) return true;
   const { centerPuyo, rotatePuyo } = puyo;
   const sameCol = centerPuyo.col === rotatePuyo.col;
   if (centerPuyo.row<=-1||rotatePuyo.row<=-2) return true;

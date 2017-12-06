@@ -58,7 +58,6 @@ class Game extends Component {
   }
 
   keyControl(e) {
-    // 80 is p
     if (e.which === 80) {
       if (!this.state.done) {
         if (!this.props.pause) {
@@ -193,8 +192,8 @@ class Game extends Component {
         borderRadius: '4px',
         backgroundRepeat: 'no-repeat',
         outline: 'none',
-        height: '300px',
-        width: '300px',
+        height: '700px',
+        width: '350px',
         padding: '20px',
         margin: 'auto',
       }
@@ -336,7 +335,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(resetTimer());
   },
   addToTime(time) {
-    console.log('THIS IS TIME', time)
     dispatch(timeGain(time));
   },
   newBoard() {
