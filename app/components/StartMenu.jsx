@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Sound from 'react-sound';
 
-class StartMenu extends Component {
-	render() {
-		return (
+export class StartMenu extends Component {
+  render() {
+    return (
 			<div className="start menu">
 				<Link to="/timeattack" className="start overlay timeattack">
 					<h1>Time Attack Mode</h1>
@@ -21,12 +21,12 @@ class StartMenu extends Component {
 				</Link>
 				<Sound url="/songs/Spirited Away.mp3" volume={this.props.sound.volume} loop={true} playStatus={Sound.status.PLAYING}/>
 			</div>
-		)
-	}
+    )
+  }
 }
 
 const mapStateToProps = state => ({
-	sound: state.sound
+  sound: state.sound
 })
 
 export default connect(mapStateToProps)(StartMenu);
