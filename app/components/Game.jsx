@@ -186,10 +186,9 @@ class Game extends Component {
   }
 
   displayScores() {
-    const scoreRef = firebase.database().ref('scores/')
-    // let scoresObj = {};
-    scoreRef.orderByChild('score').limitToLast(5).on('value', snapshot => {
-      console.log('scoreBoard: ', snapshot.val());
+    const mode = this.props.router.location.pathname;
+    const scoreRef = firebase.database().ref(mode)
+    scoreRef.orderByChild('score').limitToLast(10).on('value', snapshot => {
       this.setState({scoreBoard: snapshot.val()});
     })
   }
@@ -203,8 +202,9 @@ class Game extends Component {
   }
 
   handleSubmitScore(e) {
+    const mode = this.props.router.location.pathname;
     e.preventDefault()
-    const scoreRef = firebase.database().ref('scores');
+    const scoreRef = firebase.database().ref(mode);
     const score = {
       user: e.target.username.value,
       score: this.props.score
@@ -223,7 +223,7 @@ class Game extends Component {
         borderRadius: '4px',
         backgroundRepeat: 'no-repeat',
         outline: 'none',
-        height: '500px',
+        height: '900px',
         width: '350px',
         padding: '20px',
         margin: 'auto',
@@ -232,11 +232,12 @@ class Game extends Component {
 
     const pauseStatus = this.props.pause;
     const finished = this.state.done;
-    const scoresArr = _.map(this.state.scoreBoard, function(val, key) { var o = {}; o[key] = val; return o; })
-    let scoreBoard = ''
-    for (const key in this.state.scoreBoard) {
-      scoreBoard += this.state.scoreBoard[key].user + ': ' + this.state.scoreBoard[key].score + '\n';
-    }
+    const scoreBoard = _.map(this.state.scoreBoard, function(val, key) {
+      var o = {};
+      o.score = val.score;
+      o.user = val.user;
+      return o;
+    }).sort((a, b) => b.score - a.score);
 
     return (
       <div>
@@ -303,9 +304,10 @@ class Game extends Component {
                   <h3 onClick={this.reset}> Reset! </h3>
                 </Link>
                 <Link to="/"><h3 onClick={this.handleGoHome}>Home</h3></Link>
-                <h4>Score Board: {
-                  scoreBoard
-                 }</h4>
+                <h3>Score Board</h3>
+                  <ol>{
+                    scoreBoard.map((x, i) => <li key={i}>{x.user + '  ' + x.score}</li>)
+                  }</ol>
               </div>
             </div>
           </Modal>
