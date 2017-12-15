@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
-import Grid from './Grid';
+import firebase from '../../fire'
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import Grid from './Grid';
 import DroppingPuyo from './DroppingPuyo';
 import NextPuyo from './NextPuyo'
+import ScoreForm from './ScoreForm'
 import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, insertPuyo, reArrangeBoard, removePuyoFromBoard, createPuyoAction, getPuyo, updateScore, resetScore, newBoardAction, pauseOn, pauseOff, start, stop, resetTimer, restartPuyo, clearStore, timeGain } from '../store/';
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
 import { split, explosion, gameOver } from '../Func/game';
@@ -23,7 +25,8 @@ class Game extends Component {
     this.state = {
       press: false,
       gameOver: false,
-      done: false
+      done: false,
+      submittedScore: false
     }
     this.gridDimensions.height = this.gridDimensions.row * this.gridDimensions.cellSize;
     this.gridDimensions.width = this.gridDimensions.col * this.gridDimensions.cellSize;
@@ -34,6 +37,7 @@ class Game extends Component {
     this.handleGoHome = this.handleGoHome.bind(this);
     this.intervalManager = this.intervalManager.bind(this);
     this.keyControl = this.keyControl.bind(this);
+    this.handleSubmitScore = this.handleSubmitScore.bind(this);
   }
 
   handleSet() {
@@ -52,7 +56,7 @@ class Game extends Component {
   }
 
   componentWillUpdate() {
-    if (this.state.gameOver&&!this.state.done) {
+    if (this.state.gameOver && !this.state.done) {
       this.gameStop();
     }
   }
@@ -108,14 +112,14 @@ class Game extends Component {
     if (flag) {
       intervalStatus = setInterval(() => {
         if (gameOver(this.props.board, this.props.puyo)) {
-          this.setState({gameOver: true});
+          this.setState({ gameOver: true });
           clearInterval(intervalStatus);
         } else {
           if (Object.keys(this.props.puyo).length > 0) {
             if (bottomCheck(this.props.board, this.props.puyo)) {
               this.props.gravity(this.props.puyo)
               if (gameOver(this.props.board, this.props.puyo)) {
-                this.setState({gameOver: true})
+                this.setState({ gameOver: true })
                 clearInterval(intervalStatus);
               }
             } else {
@@ -149,7 +153,7 @@ class Game extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (!this.state.gameOver) {
-      if (nextProps.timer===0) {
+      if (nextProps.timer === 0) {
         this.setState({
           gameOver: true
         })
@@ -162,7 +166,7 @@ class Game extends Component {
   }
 
   reset() {
-    this.setState({gameOver: false, done: false, press: false});
+    this.setState({ gameOver: false, done: false, press: false, submittedScore: false });
     this.props.scoreReset();
     this.props.turnPauseOff();
     this.props.timerReset();
@@ -175,11 +179,22 @@ class Game extends Component {
   }
 
   handleGoHome() {
-    this.setState({gameOver: false, pressed: false, done: false});
+    this.setState({ gameOver: false, pressed: false, done: false, submittedScore: false });
     this.props.timerStop();
     clearInterval(intervalStatus);
     document.removeEventListener('keydown', this.keyControl);
     this.props.clearEverything();
+  }
+
+  handleSubmitScore(e) {
+    e.preventDefault()
+    const scoreRef = firebase.database().ref('scores');
+    const score = {
+      user: e.target.username.value,
+      score: this.props.score
+    }
+    scoreRef.push(score)
+    this.setState({ submittedScore: true })
   }
 
   render() {
@@ -192,7 +207,7 @@ class Game extends Component {
         borderRadius: '4px',
         backgroundRepeat: 'no-repeat',
         outline: 'none',
-        height: '700px',
+        height: '500px',
         width: '350px',
         padding: '20px',
         margin: 'auto',
@@ -205,17 +220,17 @@ class Game extends Component {
       <div>
 
         <div id="game">
-            <svg id="middlegrid" height={this.gridDimensions.height} width={this.gridDimensions.width}>
-                <Grid gridDimensions={this.gridDimensions} boardData={this.props.board} colors={this.props.puyoColors.currentPalette}/>
-                <DroppingPuyo puyo={this.props.puyo} cellSize={this.gridDimensions.cellSize} colors={this.props.puyoColors.currentPalette}/>
-                </svg>
+          <svg id="middlegrid" height={this.gridDimensions.height} width={this.gridDimensions.width}>
+            <Grid gridDimensions={this.gridDimensions} boardData={this.props.board} colors={this.props.puyoColors.currentPalette} />
+            <DroppingPuyo puyo={this.props.puyo} cellSize={this.gridDimensions.cellSize} colors={this.props.puyoColors.currentPalette} />
+          </svg>
 
-            <div id="topright">
-                <div id="nextpuyo">
-                <h2>Next Puyo</h2>
-                <NextPuyo puyo={this.props.nextPuyo} cellSize ={this.gridDimensions.cellSize} colors={this.props.puyoColors.currentPalette}/>
-                </div>
+          <div id="topright">
+            <div id="nextpuyo">
+              <h2>Next Puyo</h2>
+              <NextPuyo puyo={this.props.nextPuyo} cellSize={this.gridDimensions.cellSize} colors={this.props.puyoColors.currentPalette} />
             </div>
+          </div>
 
           <div id="score">
             <h2>Score</h2>
@@ -232,17 +247,17 @@ class Game extends Component {
           </div>
 
           <div id="middleright">
-          <div id="gameStart">
-            <button type="button" className="btn btn-default" onClick={this.gameStart} disabled={ this.state.press }>Start Game!</button>
-          </div>
+            <div id="gameStart">
+              <button type="button" className="btn btn-default" onClick={this.gameStart} disabled={this.state.press}>Start Game!</button>
+            </div>
 
-          <div id="gameMusic">
-            <Sound songUrl={this.props.sound.currentSong.url} />
-          </div>
+            <div id="gameMusic">
+              <Sound songUrl={this.props.sound.currentSong.url} />
+            </div>
 
-          <div id="goHome">
-            <Link to="/"><button type="button" className="btn btn-default" onClick={this.handleGoHome}>Home</button></Link>
-          </div>
+            <div id="goHome">
+              <Link to="/"><button type="button" className="btn btn-default" onClick={this.handleGoHome}>Home</button></Link>
+            </div>
 
           </div>
 
@@ -261,6 +276,7 @@ class Game extends Component {
                 <h1>GAME OVER!</h1>
                 <h3>Thank You For Playing!</h3>
                 <h3>Your Score is {this.props.score} </h3>
+                <ScoreForm submitted={this.state.submittedScore} handleSubmit={this.handleSubmitScore} />
                 <Link>
                   <h3 onClick={this.reset}> Reset! </h3>
                 </Link>
