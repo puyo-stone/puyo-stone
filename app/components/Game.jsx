@@ -9,6 +9,7 @@ import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, inser
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
 import { split, explosion, gameOver } from '../Func/game';
 import Sound from './Sound';
+import firebase from '../../fire';
 
 let intervalStatus = null;
 
@@ -174,6 +175,14 @@ class Game extends Component {
     document.removeEventListener('keydown', this.keyControl);
   }
 
+  displayScores() {
+    const scoreRef = firebase.database().ref('scores/')
+    scoreRef.orderByChild('score').limitToLast(5).on('value', snapshot => {
+      console.log('scores: ', snapshot.val())
+      return snapshot.val()
+    })
+  }
+
   handleGoHome() {
     this.setState({gameOver: false, pressed: false, done: false});
     this.props.timerStop();
@@ -261,6 +270,9 @@ class Game extends Component {
                 <h1>GAME OVER!</h1>
                 <h3>Thank You For Playing!</h3>
                 <h3>Your Score is {this.props.score} </h3>
+                <h3>Score Board: {
+                 this.state.gameOver ? this.displayScores() : null
+                }</h3>
                 <Link>
                   <h3 onClick={this.reset}> Reset! </h3>
                 </Link>
