@@ -178,8 +178,12 @@ class Game extends Component {
   displayScores() {
     const scoreRef = firebase.database().ref('scores/')
     scoreRef.orderByChild('score').limitToLast(5).on('value', snapshot => {
-      console.log('scores: ', snapshot.val())
-      return snapshot.val()
+      console.log('scores: ', snapshot.val());
+      let scores = ''
+      for (let key in snapshot.val()) {
+        scores += 'name: ' + snapshot.val()[key].user + ' score: ' + snapshot.val()[key].score
+      }
+      return scores
     })
   }
 
