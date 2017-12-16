@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
-import firebase from '../../fire'
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Grid from './Grid';
@@ -11,6 +10,8 @@ import { rightMove, leftMove, rotateA, rotateB, dropMove, clearPuyoAction, inser
 import { leftCheck, rightCheck, rotateACheck, rotateBCheck, bottomCheck } from '../Func/checkCollision.js';
 import { split, explosion, gameOver } from '../Func/game';
 import Sound from './Sound';
+import firebase from '../../fire';
+import _ from 'loDash';
 
 let intervalStatus = null;
 
@@ -26,7 +27,8 @@ class Game extends Component {
       press: false,
       gameOver: false,
       done: false,
-      submittedScore: false
+      submittedScore: false,
+      scoreBoard: []
     }
     this.gridDimensions.height = this.gridDimensions.row * this.gridDimensions.cellSize;
     this.gridDimensions.width = this.gridDimensions.col * this.gridDimensions.cellSize;
@@ -38,6 +40,7 @@ class Game extends Component {
     this.intervalManager = this.intervalManager.bind(this);
     this.keyControl = this.keyControl.bind(this);
     this.handleSubmitScore = this.handleSubmitScore.bind(this);
+    this.displayScores = this.displayScores.bind(this);
   }
 
   handleSet() {
@@ -165,6 +168,10 @@ class Game extends Component {
     this.handleGoHome();
   }
 
+  componentDidMount() {
+    this.displayScores();
+  }
+
   reset() {
     this.setState({ gameOver: false, done: false, press: false, submittedScore: false });
     this.props.scoreReset();
@@ -178,6 +185,20 @@ class Game extends Component {
     document.removeEventListener('keydown', this.keyControl);
   }
 
+  displayScores() {
+    const mode = this.props.router.location.pathname;
+    const scoreRef = firebase.database().ref(mode)
+    scoreRef.orderByChild('score').limitToLast(10).on('value', snapshot => {
+      const scores = _.map(snapshot.val(), function(val, key) {
+        var o = {};
+        o.score = val.score;
+        o.user = val.user;
+        return o;
+      }).sort((a, b) => b.score - a.score);
+      this.setState({scoreBoard: scores})
+    })
+  }
+
   handleGoHome() {
     this.setState({ gameOver: false, pressed: false, done: false, submittedScore: false });
     this.props.timerStop();
@@ -187,8 +208,9 @@ class Game extends Component {
   }
 
   handleSubmitScore(e) {
+    const mode = this.props.router.location.pathname;
     e.preventDefault()
-    const scoreRef = firebase.database().ref('scores');
+    const scoreRef = firebase.database().ref(mode);
     const score = {
       user: e.target.username.value,
       score: this.props.score
@@ -207,7 +229,7 @@ class Game extends Component {
         borderRadius: '4px',
         backgroundRepeat: 'no-repeat',
         outline: 'none',
-        height: '500px',
+        height: '900px',
         width: '350px',
         padding: '20px',
         margin: 'auto',
@@ -216,6 +238,8 @@ class Game extends Component {
 
     const pauseStatus = this.props.pause;
     const finished = this.state.done;
+    const scoreBoard = this.state.scoreBoard;
+
     return (
       <div>
 
@@ -281,6 +305,10 @@ class Game extends Component {
                   <h3 onClick={this.reset}> Reset! </h3>
                 </Link>
                 <Link to="/"><h3 onClick={this.handleGoHome}>Home</h3></Link>
+                <h3>Score Board</h3>
+                  <ol>{
+                    scoreBoard.map((x, i) => <li key={i}>{x.user + '  ' + x.score}</li>)
+                  }</ol>
               </div>
             </div>
           </Modal>
