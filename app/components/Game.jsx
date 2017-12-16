@@ -28,7 +28,7 @@ class Game extends Component {
       gameOver: false,
       done: false,
       submittedScore: false,
-      scoreBoard: {}
+      scoreBoard: []
     }
     this.gridDimensions.height = this.gridDimensions.row * this.gridDimensions.cellSize;
     this.gridDimensions.width = this.gridDimensions.col * this.gridDimensions.cellSize;
@@ -189,7 +189,13 @@ class Game extends Component {
     const mode = this.props.router.location.pathname;
     const scoreRef = firebase.database().ref(mode)
     scoreRef.orderByChild('score').limitToLast(10).on('value', snapshot => {
-      this.setState({scoreBoard: snapshot.val()});
+      const scores = _.map(snapshot.val(), function(val, key) {
+        var o = {};
+        o.score = val.score;
+        o.user = val.user;
+        return o;
+      }).sort((a, b) => b.score - a.score);
+      this.setState({scoreBoard: scores})
     })
   }
 
@@ -232,12 +238,7 @@ class Game extends Component {
 
     const pauseStatus = this.props.pause;
     const finished = this.state.done;
-    const scoreBoard = _.map(this.state.scoreBoard, function(val, key) {
-      var o = {};
-      o.score = val.score;
-      o.user = val.user;
-      return o;
-    }).sort((a, b) => b.score - a.score);
+    const scoreBoard = this.state.scoreBoard;
 
     return (
       <div>
